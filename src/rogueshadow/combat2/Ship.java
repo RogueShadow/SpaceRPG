@@ -60,7 +60,7 @@ public class Ship extends AbstractEntity implements Entity {
 			manager.getGame().getEngine().addBox(pos.getX(), pos.getY());
 		}
 		if (in.isKeyDown(Input.KEY_S) || in.isKeyDown(Input.KEY_DOWN)){
-			getVelocity().add(new Vector2f((getAngle())).scale(-delta));
+		//	getVelocity().add(new Vector2f((getAngle())).scale(-delta));
 		}
 		if (in.isKeyDown(Input.KEY_A) || in.isKeyDown(Input.KEY_LEFT)){
 			angle -= 5f;
