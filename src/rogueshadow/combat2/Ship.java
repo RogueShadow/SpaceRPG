@@ -11,23 +11,30 @@ import rogueshadow.combat2.Entity;
 
 
 public class Ship extends AbstractEntity implements Entity {
-	public final int DELAY = 0;
-	public final int LIFE = 1;
-	public final int PIERCE = 2;
-	public final int HOMING = 3;
-	public final int SIZE = 4;
-	public final int MULTI = 5;
+	public static final int DELAY = 0;
+	public static final int LIFE = 1;
+	public static final int PIERCE = 2;
+	public static final int HOMING = 3;
+	public static final int SIZE = 4;
+	public static final int MULTI = 5;
 	
-	int shipLife = 500;
+	static int startShipLife = 5;
+	int shipLife = startShipLife;
+	int invulnerable = 2000;
 	float angle = 0;
 	int fireCounter = 0;
-	String names[] = {"Delay","Life","Pierce","Homing","Size","Multi"};
-	float stepValue[] = {50f, 500f, 1f, 0.25f, 8f, 1f};
-	float minValue[] = {0f,1500f,0f,0f,8f,0f};
-	float maxValue[] = {500f,6000f,5f,8f,36f,5f};
+	static String names[] = {"6)Delay","5)Life","4)Pierce","3)Homing","2)Size","1)Multi"};
+	String cursurON = " <ON>";
+	String cursurOFF = " <OFF>";
+	boolean selected[] = {true,true,true,true,true,true};
+	static float stepValue[] = {50f, 500f, 1f, 0.25f, 8f, 1f};
+	static float minValue[] = {0f,1500f,0f,0f,8f,0f};
+	static float maxValue[] = {500f,6000f,5f,8f,36f,5f};
 	float powerTimerCurrent[] = {0,0,0,0,0,0};
-	float powerTimerTickRate[] = {30000,30000,15000,15000,30000,15000};
-	float currentValue[] = {0f,1500f,0f,0f,8f,0f};
+	static float powerTimerTickRate[] = {20,20,20,20,20,20};
+	static float startValue[] = {0f,1500f,0f,0f,8f,0f};
+	float currentValue[] = new float[startValue.length]; 
+	
 	
 	
 	public float getAngle() {
@@ -38,22 +45,25 @@ public class Ship extends AbstractEntity implements Entity {
 		this.angle = angle;
 	}
 
-	public Ship(Vector2f position, Vector2f velocity) {
-		super(position, velocity);
+	public Ship(Vector2f position) {
+		super(position, new Vector2f(0,0));
 		setSize(15);
-
+		System.arraycopy(startValue, 0, currentValue, 0, startValue.length);
 	}
 
 	@Override
 	public void update(EntityManager manager, int delta) {
 		Input in = manager.getContainer().getInput();
 		fireCounter += delta;
-		for (int i = 0; i < names.length; i ++){
-			powerTimerCurrent[i] += delta;
-			if (powerTimerCurrent[i] > powerTimerTickRate[i]){
-				subtractPower(i);
-			}
-		}
+		if (invulnerable > 0)invulnerable -= delta;
+		
+		if (in.isKeyPressed(Input.KEY_1))selected[5] = (selected[5]) ? false:true;
+		if (in.isKeyPressed(Input.KEY_2))selected[4] = (selected[4]) ? false:true;
+		if (in.isKeyPressed(Input.KEY_3))selected[3] = (selected[3]) ? false:true;
+		if (in.isKeyPressed(Input.KEY_4))selected[2] = (selected[2]) ? false:true;
+		if (in.isKeyPressed(Input.KEY_5))selected[1] = (selected[1]) ? false:true;
+		if (in.isKeyPressed(Input.KEY_6))selected[0] = (selected[0]) ? false:true;
+		
 		if (in.isKeyDown(Input.KEY_W) || in.isKeyDown(Input.KEY_UP)){
 			getVelocity().add(new Vector2f((getAngle())).scale(delta));
 			Vector2f pos = getPosition().copy().add(new Vector2f(getAngle()).scale(-15));
@@ -74,15 +84,26 @@ public class Ship extends AbstractEntity implements Entity {
 			Bullet b =  new Bullet(pos.copy(), new Vector2f(getAngle()).scale(400),maxValue);
 			manager.add(b);
 		}
-		if (in.isKeyDown(Input.KEY_SPACE) && fireCounter > (maxValue[DELAY] - currentValue[DELAY])){
-			
-			fireWeapon(manager);
-			fireCounter = 0;
+		if (in.isKeyDown(Input.KEY_SPACE)){
+			if ((fireCounter > (maxValue[DELAY] - currentValue[DELAY]) && selected[DELAY]) ||
+					((fireCounter > maxValue[DELAY] - minValue[DELAY]))){
+				fireWeapon(manager);
+				fireCounter = 0;
+				for (int i = 0; i < names.length; i ++){
+					if (!selected[i])continue;
+					powerTimerCurrent[i] += 1;
+					if (powerTimerCurrent[i] > powerTimerTickRate[i]){
+						subtractPower(i);
+					}
+				}
+			}
 		}
 		getVelocity().scale(0.97f);
 		
 		for (int i = 0; i < manager.game.bars.size(); i ++){
 			manager.game.bars.get(i).setCurrentValue(currentValue[i]);
+			if (selected[i])manager.getGame().bars.get(i).setLabel(names[i] + cursurON);else
+				manager.getGame().bars.get(i).setLabel(names[i] + cursurOFF);
 		}
 		for (int i = 0; i < manager.game.tickers.size(); i ++){
 			manager.game.tickers.get(i).setCurrentValue(powerTimerTickRate[i]-powerTimerCurrent[i]);
@@ -90,27 +111,41 @@ public class Ship extends AbstractEntity implements Entity {
 		manager.game.lifebar.setCurrentValue(shipLife);
 		
 		super.update(delta);
+		
+		if (shipLife <= 0){
+			manager.getGame().score = 0;
+			manager.getGame().round = 0;
+			manager.resetGame();
+			manager.setPaused(true);
+		}
+		
 	}
 
 	private void fireWeapon(EntityManager manager) {
+		if (isInvulnerable())return;
 		Vector2f pos = getPosition().copy();
 		pos.add(new Vector2f(getAngle()).scale(30));
 		
 		Bullet b;
-		float angleStep = 15;
-		float startAngle = getAngle() - (int)((currentValue[MULTI] * angleStep)/2f);
+		if (selected[MULTI]){
+			float angleStep = 15;
+			float startAngle = getAngle() - (int)((currentValue[MULTI] * angleStep)/2f);
 		
-		for (int i = 0; i < currentValue[MULTI] + 1; i++){
-			b =  new Bullet(pos.copy(), new Vector2f(startAngle).scale(300),currentValue);
+			for (int i = 0; i < currentValue[MULTI] + 1; i++){
+				b =  new Bullet(pos.copy(), new Vector2f(startAngle).scale(300),getValues());
+				manager.add(b);
+				startAngle += angleStep;
+			}
+		}else{
+			b = new Bullet(pos.copy(), new Vector2f(getAngle()).scale(300),getValues());
 			manager.add(b);
-			startAngle += angleStep;
 		}
-		manager.getGame().shot.play();
+		manager.getGame().playShoot();
 	}
 
 	@Override
 	public void render(Graphics g) {
-
+		if (isInvulnerable())if ((int)(invulnerable/150f) % 2 == 0)return;
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.rotate(0, 0, getAngle()+90);
@@ -127,12 +162,20 @@ public class Ship extends AbstractEntity implements Entity {
 			int type = ((Powerup) other).type;
 			addPower(type);
 		}
+		if (isInvulnerable())return;
 		if (other instanceof Rock){
 			shipLife--;	
-			Vector2f vec = new Vector2f(getCenterX()-other.getCenterX(),getCenterY()-other.getCenterY());
-			getVelocity().add(vec);
+			if (getVelocity().length() > 100)getVelocity().negateLocal();
+			manager.getGame().playBlast();
+			invulnerable = 2000;
+			for (int i = 0; i < names.length; i++ ){
+				subtractPower(i);
+			}
 		}
 		
+	}
+	public boolean isInvulnerable(){
+		return (invulnerable > 0);
 	}
 	public void addPower(int type){
 		currentValue[type] += stepValue[type];
@@ -147,5 +190,13 @@ public class Ship extends AbstractEntity implements Entity {
 		if (currentValue[type] < minValue[type]){
 			currentValue[type] = minValue[type];
 		}
+	}
+	public float[] getValues(){
+		float values[] = new float[names.length];
+		System.arraycopy(startValue, 0, values, 0, names.length);
+		for (int i = 0; i < names.length; i++){
+			if (selected[i])values[i] = currentValue[i];
+		}
+		return values;
 	}
 }

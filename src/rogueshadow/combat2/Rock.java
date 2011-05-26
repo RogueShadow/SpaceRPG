@@ -78,7 +78,10 @@ public class Rock extends AbstractEntity implements Entity {
 			getVelocity().add(vec);
 		}
 		if (other instanceof Ship){
-
+			if (!((Ship) other).isInvulnerable()){
+				Vector2f vec = new Vector2f(other.getCenterX()-getCenterX(),other.getCenterY()-getCenterY());
+				other.getVelocity().sub(vec.scale(2));
+			}
 		}else
 		if (other instanceof Bullet){
 			if (rockSize > 1){

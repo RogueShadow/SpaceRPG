@@ -119,7 +119,12 @@ public class Bullet extends AbstractEntity implements Entity {
 				setDestroyed(true);
 				manager.remove(this);
 			}
-			manager.getGame().explosion.play(0.4f,0.7f);
+			manager.getGame().score += 1;
+			if (manager.getGame().score > manager.getGame().highscore){
+				manager.getGame().highscore = manager.getGame().score;
+			}
+			//manager.getGame().explosion.play(0.4f,0.7f);
+			manager.getGame().playBlast();
 			manager.getGame().getEngine().explosion(getCenterX(), getCenterY());
 		}
 		

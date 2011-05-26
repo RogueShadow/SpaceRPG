@@ -1,8 +1,8 @@
 package rogueshadow.combat2;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -34,6 +34,7 @@ public class EntityManager {
 	public EntityManager(GameContainer container, Combat2 game){
 		this.container = container;
 		this.game = game;
+		add(new Ship(new Vector2f(400,300)));
 	}
 	
 	public void update(int delta){
@@ -112,8 +113,7 @@ public class EntityManager {
 			Entity e = (Entity) entities.get(i);
 			e.render(g);
 		}
-		g.setColor(Color.white);
-		g.drawString(debug, 10, 30);
+		
 	}
 	
 	public void remove(Entity other){
@@ -128,6 +128,12 @@ public class EntityManager {
 	}
 	
 	public void generateRocks(int round){
+		for (Iterator<Entity> i = entities.iterator(); i.hasNext(); ){
+			Entity e = i.next();
+			if (e instanceof Rock){
+				i.remove();
+			}
+		}
 		ArrayList<Rock> rocks = new ArrayList<Rock>();
 		Rock rock;
 		float x, y, angle, speed;
@@ -170,5 +176,12 @@ public class EntityManager {
 
 	public void setGame(Combat2 game) {
 		this.game = game;
+	}
+
+	public void resetGame() {
+		entities.clear();
+		removeList.clear();
+		addList.clear();
+		add(new Ship(new Vector2f(400,300)));
 	}
 }
