@@ -34,7 +34,7 @@ public class EntityManager {
 	public EntityManager(GameContainer container, Combat2 game){
 		this.container = container;
 		this.game = game;
-		add(new Ship(new Vector2f(400,300)));
+		resetGame();
 	}
 	
 	public void update(int delta){
@@ -82,9 +82,6 @@ public class EntityManager {
 			game.clearedRound();
 			
 		}
-		
-
-		debug = "ChecksDone: " + Integer.toString(count[CHECKS]);
 		
 	}
 	
@@ -139,7 +136,7 @@ public class EntityManager {
 		float x, y, angle, speed;
 		speed = 100f;
 		int number = round * 10;
-		int size = 6;
+		int size = 5;
 		while (number > 0){
 			while (Math.pow(2, size) > number)size--;
 			number -= Math.pow(2, size);
@@ -182,6 +179,8 @@ public class EntityManager {
 		entities.clear();
 		removeList.clear();
 		addList.clear();
-		add(new Ship(new Vector2f(400,300)));
+		Ship ship = new Ship(new Vector2f(400,300));
+		add(ship);
+		getGame().cam.setFollowing(ship.position);
 	}
 }

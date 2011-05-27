@@ -11,12 +11,13 @@ import org.newdawn.slick.geom.Vector2f;
  *
  */
 public abstract class AbstractEntity implements Entity {
-	protected final int WIDTH = 800;
-	protected final int HEIGHT = 600;
+	protected final int WIDTH = Combat2.WORLD_WIDTH;
+	protected final int HEIGHT = Combat2.WORLD_HEIGHT;
 	protected Vector2f position = new Vector2f();
 	protected Vector2f velocity = new Vector2f();
 	protected float size = 0;
 	protected boolean destroyed = false;
+	protected Camera cam;
 	
 	public boolean isDestroyed() {
 		return destroyed;

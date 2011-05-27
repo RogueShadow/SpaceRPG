@@ -1,5 +1,6 @@
 package rogueshadow.combat2;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
@@ -16,8 +17,12 @@ import rogueshadow.particles.ParticleEngine;
 public class Combat2 extends BasicGame{
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
+	public static final int WORLD_WIDTH = 1600;
+	public static final int WORLD_HEIGHT = 1200;
+	public static Camera cam = new Camera();
 	EntityManager manager;
 	ParticleEngine engine;
+	//Camera cam = new Camera();
 	ArrayList<GUILevelBar> bars = new ArrayList<GUILevelBar>();
 	ArrayList<GUILevelBar> tickers = new ArrayList<GUILevelBar>();
 	GUILevelBar lifebar;
@@ -26,6 +31,7 @@ public class Combat2 extends BasicGame{
 	int round = 0;
 	int score = 0;
 	int highscore = 0;
+	DecimalFormat f = new DecimalFormat("0000.00");
 
 	public Combat2(String title) {
 		super(title);
@@ -47,10 +53,10 @@ public class Combat2 extends BasicGame{
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		manager.render(g);
 		for (GUILevelBar b: bars)b.render(g);
 		for (GUILevelBar b: tickers)b.render(g);
 		lifebar.render(g);
+		
 		if (manager.isPaused()){
 			g.pushTransform();
 			g.setColor(Color.yellow);
@@ -58,11 +64,23 @@ public class Combat2 extends BasicGame{
 			g.drawString("'p')PAUSED", 70, 70);
 			g.popTransform();
 		}
+		
+		cam.translateIn(g);
+		manager.render(g);
 		engine.render(g);
+		g.setColor(Color.red);
+		g.drawRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+		g.setColor(Color.magenta);
+		g.drawRect(16, 16, WORLD_WIDTH-32, WORLD_HEIGHT-32);
+		cam.translateOut(g);
+
+		
 		g.setColor(Color.white);
 		g.drawString("Score: " + Integer.toString(score), 10, 50);
 		g.drawString("High Score: " + Integer.toString(highscore), 10, 30);
 		g.drawString("Round: " + Integer.toString(round), 10, 70);
+		g.drawString("CameraPos X:" + f.format(cam.getX()) + " Y:" + f.format(cam.getY()), 10, 90);
+		g.drawString("ShipPos   X:" + f.format(cam.getFollowing().getX()) + " Y:" + f.format(cam.getFollowing().getY()), 10, 110);
 		
 	}
 
