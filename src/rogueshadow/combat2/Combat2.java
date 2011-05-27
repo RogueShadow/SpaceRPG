@@ -102,6 +102,7 @@ public class Combat2 extends BasicGame{
 			round += 5;
 			clearedRound();
 		}
+		if (container.getInput().isKeyPressed(Input.KEY_ESCAPE))container.exit();
 	}
 
 	public ParticleEngine getEngine() {

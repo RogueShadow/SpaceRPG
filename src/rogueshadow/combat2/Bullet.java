@@ -69,7 +69,7 @@ public class Bullet extends AbstractEntity implements Entity {
 		life -= delta;
 		rotate += 10;
 		if (life <= 0){
-			manager.getGame().getEngine().explosion(getX(), getY());
+			manager.getGame().getEngine().explosion(getX(), getY(), 1);
 			manager.remove(this);
 		}
 		if (getHoming() > 0 && closest != null){
@@ -125,7 +125,7 @@ public class Bullet extends AbstractEntity implements Entity {
 			}
 			//manager.getGame().explosion.play(0.4f,0.7f);
 			manager.getGame().playBlast();
-			manager.getGame().getEngine().explosion(getCenterX(), getCenterY());
+			manager.getGame().getEngine().explosion(getCenterX(), getCenterY(), 1);
 		}
 		
 	}

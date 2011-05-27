@@ -167,6 +167,7 @@ public class Ship extends AbstractEntity implements Entity {
 			shipLife--;	
 			if (getVelocity().length() > 100)getVelocity().negateLocal();
 			manager.getGame().playBlast();
+			manager.getGame().getEngine().explosion(getCenterX(), getCenterY(), 2);
 			invulnerable = 2000;
 			for (int i = 0; i < names.length; i++ ){
 				subtractPower(i);
