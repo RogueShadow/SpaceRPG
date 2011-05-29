@@ -13,16 +13,26 @@ import org.newdawn.slick.geom.Vector2f;
 public abstract class AbstractEntity implements Entity {
 	protected final int WIDTH = Combat2.WORLD_WIDTH;
 	protected final int HEIGHT = Combat2.WORLD_HEIGHT;
-	protected Vector2f position = new Vector2f();
-	protected Vector2f velocity = new Vector2f();
+	protected Vector2f position = new Vector2f(0,0);
+	protected Vector2f velocity = new Vector2f(0,0);
 	protected float size = 0;
 	protected boolean destroyed = false;
-	protected Camera cam;
+	protected Camera cam = new Camera();
 	
 	public boolean isDestroyed() {
 		return destroyed;
 	}
 
+	public boolean isVisible(){
+		boolean visible = true;
+		if (getX() + getSize() < cam.getX())visible = false;
+		if (getY() + getSize() < cam.getY())visible = false;
+		if (getX() > cam.getX() + Combat2.WIDTH)visible = false;
+		if (getY() > cam.getY() + Combat2.HEIGHT)visible = false;
+		
+		return visible;
+	}
+	
 	public void setDestroyed(boolean destroyed) {
 		this.destroyed = destroyed;
 	}
@@ -91,6 +101,10 @@ public abstract class AbstractEntity implements Entity {
 	}
 	public void setSize(float size){
 		this.size = size;
+	}
+
+	public void setCam(Camera cam) {
+		this.cam = cam;
 	}
 	
 }

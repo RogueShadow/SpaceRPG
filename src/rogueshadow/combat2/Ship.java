@@ -18,20 +18,20 @@ public class Ship extends AbstractEntity implements Entity {
 	public static final int SIZE = 4;
 	public static final int MULTI = 5;
 	
-	static int startShipLife = 5;
+	static int startShipLife = 15;  // times the ship can get hit before game over.
 	int shipLife = startShipLife;
-	int invulnerable = 2000;
+	int invulnerable = 1500; // time in ms ship remains invulnerable after getting hit
 	float angle = 0;
 	int fireCounter = 0;
 	static String names[] = {"6)Delay","5)Life","4)Pierce","3)Homing","2)Size","1)Multi"};
-	String cursurON = " <ON>";
-	String cursurOFF = " <OFF>";
+	String cursurON = "<ON>";
+	String cursurOFF = "<OFF>";
 	boolean selected[] = {true,true,true,true,true,true};
-	static float stepValue[] = {50f, 500f, 1f, 0.25f, 8f, 1f};
-	static float minValue[] = {0f,1500f,0f,0f,8f,0f};
-	static float maxValue[] = {500f,6000f,5f,8f,36f,5f};
+	static float stepValue[] = {25f, 500f, 1f, 0.25f, 8f, 1f};
+	static float minValue[] = {25f,1500f,0f,0f,8f,0f};
+	static float maxValue[] = {500f,9000f,5f,8f,36f,5f};
 	float powerTimerCurrent[] = {0,0,0,0,0,0};
-	static float powerTimerTickRate[] = {20,20,20,20,20,20};
+	static float powerTimerTickRate[] = {80,50,20,20,70,35};
 	static float startValue[] = {0f,1500f,0f,0f,8f,0f};
 	float currentValue[] = new float[startValue.length]; 
 	

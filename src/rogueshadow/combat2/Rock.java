@@ -60,10 +60,13 @@ public class Rock extends AbstractEntity implements Entity {
 
 	@Override
 	public void render(Graphics g) {
+		if (!isVisible())return;
 		g.pushTransform();
-		g.translate(getX(), getY());
-		g.rotate(0,0, rotate);
 		g.setColor(Color.cyan);
+		g.translate(getX(), getY());
+		g.drawString(Integer.toString(rockSize), 0, 0);
+		g.rotate(0,0, rotate);
+		
 		g.draw(poly);
 		//g.fillOval(-getSize()/2,-getSize()/2, getSize()	,getSize());
 		g.popTransform();
@@ -94,7 +97,7 @@ public class Rock extends AbstractEntity implements Entity {
 			}else{
 				if (Math.random() > 0.85){
 					float angle = (float)Math.random()*360;
-					manager.add(new Powerup(getPosition().copy(),new Vector2f(angle).scale(50)));
+					manager.add(new Powerup(getPosition().copy(),new Vector2f(angle).scale(150)));
 				}
 				manager.remove(this);
 			}

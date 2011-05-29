@@ -97,6 +97,7 @@ public class Bullet extends AbstractEntity implements Entity {
 
 	@Override
 	public void render(Graphics g) {
+		if (!isVisible())return;
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.rotate(0, 0, rotate);
@@ -125,7 +126,7 @@ public class Bullet extends AbstractEntity implements Entity {
 			}
 			//manager.getGame().explosion.play(0.4f,0.7f);
 			manager.getGame().playBlast();
-			manager.getGame().getEngine().explosion(getCenterX(), getCenterY(), 1);
+			if (isVisible())manager.getGame().getEngine().explosion(getCenterX(), getCenterY(), 1);
 		}
 		
 	}

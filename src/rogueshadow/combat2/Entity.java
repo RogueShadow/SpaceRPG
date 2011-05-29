@@ -36,6 +36,8 @@ public interface Entity {
 	
 	public boolean isDestroyed();
 	
+	public void setCam(Camera cam);
+	
 	public void setDestroyed(boolean destroyed);
 	
 }

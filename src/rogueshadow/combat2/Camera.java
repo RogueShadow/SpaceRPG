@@ -8,43 +8,45 @@ public class Camera {
 	public static final int HEIGHT = Combat2.HEIGHT;
 	public static final int WORLD_WIDTH = Combat2.WORLD_WIDTH;
 	public static final int WORLD_HEIGHT = Combat2.WORLD_HEIGHT;
-	public Vector2f following;
+	public Vector2f following = new Vector2f(0,0);
 	public float rotation = 0;
 	public float scale = 1;
 	
 	public Camera(Vector2f following){
+		super();
 		this.following = following;
 	}
 	public Camera(){
-		following = new Vector2f(0,0);
+		this(new Vector2f(0,0));
 	}
 	public void translateIn(Graphics g){
 		g.pushTransform();
-		g.translate(-getX(),-getY());
-		g.rotate(0, 0, rotation);
 		g.scale(scale, scale);
+		g.translate(-getX(),-getY());
+		g.rotate(following.getX(), following.getY(), rotation);
+		
 	}	
 	public void translateOut(Graphics g){
 		g.popTransform();
 	}
 
 	public float getX() {
-		float x = following.copy().getX() - (WIDTH/2f);
+		float x = following.copy().getX() - ((WIDTH/2f)/scale);
 		if (x < 0){
 			x = 0;
 		}else
-		if (x > (WORLD_WIDTH - WIDTH)){
-			x = (WORLD_WIDTH - WIDTH);
+		if (x > ((WORLD_WIDTH - (WIDTH/scale)))){
+			x = ((WORLD_WIDTH - (WIDTH/scale)));
 		}
 		return x;
 	}
 	public float getY() {
-		float y = following.copy().getY() - (HEIGHT/2f);
+		float y = following.copy().getY() - ((HEIGHT/2f)/scale);
 		if (y < 0){
 			y = 0;
 		}else
-		if (y > (WORLD_HEIGHT - HEIGHT)){
-			y = (WORLD_HEIGHT - HEIGHT);
+		if (y > ((WORLD_HEIGHT - (HEIGHT/scale)))){
+			y = ((WORLD_HEIGHT - (HEIGHT/scale)));
 			
 		}
 		return y;

@@ -17,9 +17,10 @@ import rogueshadow.particles.ParticleEngine;
 public class Combat2 extends BasicGame{
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final int WORLD_WIDTH = 1600;
-	public static final int WORLD_HEIGHT = 1200;
-	public static Camera cam = new Camera();
+	public static final int WORLD_WIDTH = 2200;
+	public static final int WORLD_HEIGHT = 2200;
+	public Camera cam = new Camera();
+	public Ship ship;
 	EntityManager manager;
 	ParticleEngine engine;
 	//Camera cam = new Camera();
@@ -31,7 +32,7 @@ public class Combat2 extends BasicGame{
 	int round = 0;
 	int score = 0;
 	int highscore = 0;
-	DecimalFormat f = new DecimalFormat("0000.00");
+	DecimalFormat f = new DecimalFormat("00000.00");
 
 	public Combat2(String title) {
 		super(title);
@@ -53,27 +54,22 @@ public class Combat2 extends BasicGame{
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		for (GUILevelBar b: bars)b.render(g);
-		for (GUILevelBar b: tickers)b.render(g);
-		lifebar.render(g);
-		
-		if (manager.isPaused()){
-			g.pushTransform();
-			g.setColor(Color.yellow);
-			g.scale(4, 4);
-			g.drawString("'p')PAUSED", 70, 70);
-			g.popTransform();
-		}
-		
+
 		cam.translateIn(g);
+		
 		manager.render(g);
 		engine.render(g);
+		
 		g.setColor(Color.red);
 		g.drawRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 		g.setColor(Color.magenta);
 		g.drawRect(16, 16, WORLD_WIDTH-32, WORLD_HEIGHT-32);
+		
 		cam.translateOut(g);
-
+		
+		for (GUILevelBar b: bars)b.render(g);
+		for (GUILevelBar b: tickers)b.render(g);
+		lifebar.render(g);
 		
 		g.setColor(Color.white);
 		g.drawString("Score: " + Integer.toString(score), 10, 50);
@@ -82,6 +78,13 @@ public class Combat2 extends BasicGame{
 		g.drawString("CameraPos X:" + f.format(cam.getX()) + " Y:" + f.format(cam.getY()), 10, 90);
 		g.drawString("ShipPos   X:" + f.format(cam.getFollowing().getX()) + " Y:" + f.format(cam.getFollowing().getY()), 10, 110);
 		
+		if (manager.isPaused()){
+			g.pushTransform();
+			g.setColor(Color.yellow);
+			g.scale(4, 4);
+			g.drawString("'p')PAUSED", 70, 70);
+			g.popTransform();
+		}
 	}
 
 	@Override
@@ -136,7 +139,7 @@ public class Combat2 extends BasicGame{
 
 	public void clearedRound() {
 		manager.generateRocks(++round);
-		manager.setPaused(true);
+		manager.setPaused(false);
 		
 	}
 }

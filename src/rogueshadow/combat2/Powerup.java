@@ -29,11 +29,14 @@ public class Powerup extends AbstractEntity implements Entity {
 		life -= delta;
 		if (life <= 0)manager.remove(this);
 		rotation -= 3;
+		Vector2f vec = new Vector2f(manager.getGame().ship.getCenterX() - getCenterX(),manager.getGame().ship.getCenterY() - getCenterY());
+		getVelocity().setTheta(vec.getTheta());
 		super.update(delta);
 	}
 
 	@Override
 	public void render(Graphics g) {
+		if (!isVisible())return;
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.setColor(Color.magenta);

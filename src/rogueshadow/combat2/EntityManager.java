@@ -121,6 +121,7 @@ public class EntityManager {
 		if (other instanceof Powerup){
 			if (count[POWERUPS] >= Powerup.MAX_POWERUPS)return;
 		}
+		other.setCam(getGame().cam);
 		addList.add(other);
 	}
 	
@@ -135,25 +136,18 @@ public class EntityManager {
 		Rock rock;
 		float x, y, angle, speed;
 		speed = 100f;
-		int number = round * 10;
-		int size = 5;
+		int number = round * 150;
+		int size = 10;
 		while (number > 0){
 			while (Math.pow(2, size) > number)size--;
 			number -= Math.pow(2, size);
-			if (Math.random() > 0.5){
-				x = (float)(Math.random()*(container.getWidth()/3f));
-			}else{
-				x = container.getWidth()-(container.getWidth()/3f);
-				x += (float)(Math.random()*(container.getWidth()/3f));
-			}
-			if (Math.random() > 0.5){
-				y = (float)(Math.random()*(container.getHeight()/3f));
-			}else{
-				y = container.getHeight()-(container.getHeight()/3f);
-				y += (float)(Math.random()*(container.getHeight()/3f));
-			}
+			
+			x = (float)Math.random()*Combat2.WORLD_WIDTH;
+			y = (float)Math.random()*Combat2.WORLD_HEIGHT;
+			
 			angle = (float)(Math.random()*360);
 			rock = new Rock(new Vector2f(x,y), new Vector2f(angle).scale(speed), size);
+			rock.setCam(getGame().cam);
 			rocks.add(rock);
 		}
 		entities.addAll( rocks );
@@ -181,6 +175,7 @@ public class EntityManager {
 		addList.clear();
 		Ship ship = new Ship(new Vector2f(400,300));
 		add(ship);
+		getGame().ship = ship;
 		getGame().cam.setFollowing(ship.position);
 	}
 }
