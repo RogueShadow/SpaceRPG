@@ -51,7 +51,7 @@ public class Ship extends AbstractEntity implements Entity {
 	public void update(EntityManager manager, int delta) {
 		
 		if (isEngineActive()){
-			getVelocity().add(new Vector2f((getAngle())).scale(delta*0.05f));
+			getVelocity().add(new Vector2f((getAngle())).scale(delta*0.05f*(getEngineStrength()+1)));
 			Vector2f pos = getPosition().copy().add(new Vector2f(getAngle()).scale(-15));
 			manager.getGame().getEngine().addBox(pos.getX(), pos.getY());
 		}

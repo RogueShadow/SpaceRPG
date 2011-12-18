@@ -1,14 +1,10 @@
 package rogueshadow.SpaceRPG;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -16,28 +12,30 @@ import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.particles.ParticleEngine;
 
+/**
+ * @author Adam
+ *
+ */
 public class SpaceRPG extends BasicGame{
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 600;
+	public static final int WIDTH = 1920;
+	public static final int HEIGHT = 1080;
 	public static final int WORLD_WIDTH = 100000;
 	public static final int WORLD_HEIGHT = 100000;
 	
 	Input input;
-	public Camera cam = new Camera();
+	public Camera cam;
 	public Ship ship;
 
 	EntityManager manager;
 	ParticleEngine engine;
-	KeyBind keyBinds = new KeyBind();
+	KeyBind keyBinds;
 
 	Sound explosion;
 	Sound shot;
 
-	DecimalFormat f = new DecimalFormat("00000.00");
-
 	public SpaceRPG(String title) {
 		super(title);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	/**
@@ -45,10 +43,11 @@ public class SpaceRPG extends BasicGame{
 	 * @throws SlickException 
 	 */
 	public static void main(String[] args) throws SlickException {
-		// TODO Auto-generated method stub
-		AppGameContainer container = new AppGameContainer(new SpaceRPG("SpaceRPG Prototype!"), 800,600,false);
+
+		AppGameContainer container = new AppGameContainer(new SpaceRPG("SpaceRPG Prototype!"), WIDTH,HEIGHT,false);
 		container.setTargetFrameRate(60);
 		container.setVSync(true);
+		container.setFullscreen(true);
 		container.start();
 	}
 
@@ -83,6 +82,9 @@ public class SpaceRPG extends BasicGame{
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		
+		// Initialize key binding class
+		keyBinds = new KeyBind();
+		// set key binds, .bind(name, abbreviation, int key code) or .bind(name, int key code)
 		keyBinds.bind("Thrust",Input.KEY_W);
 		keyBinds.bind("Left",Input.KEY_A);
 		keyBinds.bind("Right",Input.KEY_D);
@@ -93,19 +95,26 @@ public class SpaceRPG extends BasicGame{
 		keyBinds.bind("Cheat", Input.KEY_X);
 		keyBinds.bind("Brake", Input.KEY_S);
 		
+		//load sound
 		explosion = new Sound("res/blast2.wav");
 		shot = new Sound("res/shot2.wav");
-		
+
 		input = container.getInput();
-		
 		engine = new ParticleEngine();
 		manager = new EntityManager(container, this);
 		
 		ship = new Ship(new Vector2f(170,150));
-
+		ship.setThrusterStrength(10);
+		ship.setEngineStrength(10);
+		
+		cam = new Camera();
 		cam.setFollowing(ship.getPosition());
+		
 		manager.add(ship);
-
+		
+		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
+		//TODO Some kind of level file format, to handle loading various entities, NPCs, etc.
+		
 	}
 
 	@Override
@@ -128,6 +137,7 @@ public class SpaceRPG extends BasicGame{
 		return engine;
 	}
 	
+	//TODO put sounds in thier own class
 	public void playBlast(){
 		explosion.play(0.3f + (float)Math.random()*0.7f,1f);
 	}
@@ -135,9 +145,18 @@ public class SpaceRPG extends BasicGame{
 		shot.play();
 	}
 	
+	
+	/**
+	 * @param key
+	 * @return
+	 */
 	public boolean isKD(String key){
 		return input.isKeyDown(keyBinds.getKey(key));
 	}
+	/**
+	 * @param key
+	 * @return
+	 */
 	public boolean isKP(String key){
 		return input.isKeyPressed(keyBinds.getKey(key));
 	}

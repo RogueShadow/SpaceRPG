@@ -3,6 +3,9 @@ package rogueshadow.SpaceRPG;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+//TODO When rotating the world is positions weird, needs fix (if using rotation will ever be needed)
+//TODO When the world is smaller than the game window make it centered on the screen. (if that will ever happen also o.O)
+
 public class Camera {
 	public static final int WIDTH = SpaceRPG.WIDTH;
 	public static final int HEIGHT = SpaceRPG.HEIGHT;
