@@ -19,6 +19,11 @@ public class KeyBind {
 				return bind;
 			}
 		}
+		for (Bind bind: binds){
+			if (bind.getAbbrev().equals(name)){
+				return bind;
+			}
+		}
 		return new Bind();
 	}
 	public int getKey(String name){
