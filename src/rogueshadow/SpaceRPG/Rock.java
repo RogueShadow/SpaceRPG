@@ -54,12 +54,6 @@ public class Rock extends AbstractEntity implements Entity {
 		if (isDestroyed())return;
 		super.update(delta);
 		rotate += rotateSpeed;
-		if (getVelocity().lengthSquared() > (maxVel*maxVel)){
-			getVelocity().scale(0.9f);
-		}else getVelocity().scale(1.05f);
-		if (manager.getContainer().getInput().isKeyPressed(Input.KEY_X)){
-			generatePolygon();
-		}
 	}
 
 	@Override
@@ -72,7 +66,7 @@ public class Rock extends AbstractEntity implements Entity {
 		g.rotate(0,0, rotate);
 		
 		g.draw(poly);
-		//g.fillOval(-getSize()/2,-getSize()/2, getSize()	,getSize());
+
 		g.popTransform();
 	}
 	
@@ -80,19 +74,7 @@ public class Rock extends AbstractEntity implements Entity {
 	@Override
 	public void collided(EntityManager manager, Entity other) {
 		if (isDestroyed())return;
-		if (other instanceof Rock){
-			//Vector2f vec = new Vector2f(getCenterX()-other.getCenterX(),getCenterY()-other.getCenterY());
-			//getVelocity().add(vec);
-		}
-		if (other instanceof Ship){
 
-
-
-		}else
-		if (other instanceof Bullet){
-
-			
-		}
 	}
 	
 

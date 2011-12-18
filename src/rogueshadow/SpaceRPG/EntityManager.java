@@ -9,12 +9,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class EntityManager {
 	protected boolean paused = false;
-	public final int ROCKS = 0;
-	public final int BULLETS = 1;
-	public final int POWERUPS = 2;
-	public final int CHECKS = 3;
-	
-	protected int count[] = {0,0,0,0};
+
 	protected GameContainer container;
 	protected SpaceRPG game;
 	protected ArrayList<Entity> entities = new ArrayList<Entity>();
@@ -41,9 +36,6 @@ public class EntityManager {
 	
 	public void update(int delta){
 		if (isPaused())return;
-		
-		
-		for (int i = 0; i < count.length; i++)count[i] = 0;
 
 		for (int i = 0; i < entities.size(); i++ ){
 			Entity e = (Entity) entities.get(i);
@@ -53,10 +45,6 @@ public class EntityManager {
 			
 			Entity entity = (Entity) entities.get(i);
 			
-			if (entity instanceof Rock)count[ROCKS]++;
-			if (entity instanceof Bullet)count[BULLETS]++;
-			if (entity instanceof Powerup)count[POWERUPS]++;
-			
 			for (int j = i+1; j < entities.size(); j++){
 				
 				Entity other = (Entity) entities.get(j);
@@ -65,7 +53,6 @@ public class EntityManager {
 				
 				setClosestEntities(c);
 				
-				count[CHECKS]++;
 				if (c.isCollided()){
 					entity.collided(this, other);
 					other.collided(this, entity);
@@ -78,11 +65,6 @@ public class EntityManager {
 		entities.addAll(addList);
 		removeList.clear();
 		addList.clear();
-		
-		if (count[ROCKS] == 0){
-		
-			
-		}
 		
 	}
 	
@@ -119,59 +101,15 @@ public class EntityManager {
 		removeList.add(other);
 	}
 	public void add(Entity other){
-		if (other instanceof Powerup){
-			if (count[POWERUPS] >= Powerup.MAX_POWERUPS)return;
-		}
 		other.setCam(getGame().cam);
 		addList.add(other);
-	}
-	
-	public void generateRocks(int round){
-		for (Iterator<Entity> i = entities.iterator(); i.hasNext(); ){
-			Entity e = i.next();
-			if (e instanceof Rock){
-				i.remove();
-			}
-		}
-		ArrayList<Rock> rocks = new ArrayList<Rock>();
-		Rock rock;
-		float x, y, angle, speed;
-		speed = 10f;
-		int number = round * 150; // default 150
-		int size = 10;
-		while (number > 0){
-			while (Math.pow(2, size) > number)size--;
-			number -= Math.pow(2, size);
-			
-			x = (float)Math.random()*SpaceRPG.WORLD_WIDTH;
-			y = (float)Math.random()*SpaceRPG.WORLD_HEIGHT;
-			
-			angle = (float)(Math.random()*360);
-			rock = new Rock(new Vector2f(x,y), new Vector2f(angle).scale(speed), size);
-			rock.setCam(getGame().cam);
-			rocks.add(rock);
-		}
-		entities.addAll( rocks );
-		
 	}
 
 	public GameContainer getContainer() {
 		return container;
 	}
 
-	public void setContainer(GameContainer container) {
-		this.container = container;
-	}
-
 	public SpaceRPG getGame() {
 		return game;
-	}
-
-	public void setGame(SpaceRPG game) {
-		this.game = game;
-	}
-
-	public int getKey(String name){
-		return getGame().keyBinds.getKey(name);
 	}
 }

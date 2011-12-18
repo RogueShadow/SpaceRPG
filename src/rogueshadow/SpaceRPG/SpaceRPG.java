@@ -60,8 +60,9 @@ public class SpaceRPG extends BasicGame{
 		manager.render(g);
 		engine.render(g);
 		
+		// world border :D
 		g.setColor(Color.red);
-		g.drawRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+		g.drawRect(0, 0, WORLD_WIDTH-1, WORLD_HEIGHT-1);
 		g.setColor(Color.magenta);
 		g.drawRect(16, 16, WORLD_WIDTH-32, WORLD_HEIGHT-32);
 		
