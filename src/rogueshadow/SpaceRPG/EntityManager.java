@@ -1,11 +1,11 @@
 package rogueshadow.SpaceRPG;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Vector2f;
+
+import rogueshadow.SpaceRPG.entities.Entity;
 
 public class EntityManager {
 	protected boolean paused = false;
@@ -51,8 +51,6 @@ public class EntityManager {
 				
 				CollisionInfo c = entity.collides(other);
 				
-				setClosestEntities(c);
-				
 				if (c.isCollided()){
 					entity.collided(this, other);
 					other.collided(this, entity);
@@ -66,26 +64,6 @@ public class EntityManager {
 		removeList.clear();
 		addList.clear();
 		
-	}
-	
-	private void setClosestEntities(CollisionInfo c) {
-		Rock rock;
-		Bullet bullet;
-		if (c.entity instanceof Rock && c.other instanceof Bullet){
-			bullet = (Bullet)c.other;
-			if (!(bullet.getHoming() > 0))return;
-			rock = (Rock)c.entity;
-		}else
-		if(c.entity instanceof Bullet && c.other instanceof Rock){
-			bullet = (Bullet)c.entity;
-			if (!(bullet.getHoming() > 0))return;
-			rock = (Rock)c.other;
-		}else return;
-		
-		if (c.distance < bullet.closest_dist){
-			bullet.closest = rock;
-			bullet.closest_dist = c.distance;
-		}
 	}
 
 	public void render(Graphics g){

@@ -1,10 +1,14 @@
 /**
  * 
  */
-package rogueshadow.SpaceRPG;
+package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
+
+import rogueshadow.SpaceRPG.Camera;
+import rogueshadow.SpaceRPG.CollisionInfo;
+import rogueshadow.SpaceRPG.EntityManager;
 
 /**
  * @author Adam

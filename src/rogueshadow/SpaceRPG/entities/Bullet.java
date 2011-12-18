@@ -1,8 +1,10 @@
-package rogueshadow.SpaceRPG;
+package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
+
+import rogueshadow.SpaceRPG.EntityManager;
 
 public class Bullet extends AbstractEntity implements Entity {
 	public final int DELAY = 0;

@@ -1,5 +1,6 @@
-package rogueshadow.SpaceRPG;
+package rogueshadow.utility;
 import java.util.ArrayList;
+
 
 public class KeyBind {
 	public  ArrayList<Bind> binds = new ArrayList<Bind>();

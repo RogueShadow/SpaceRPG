@@ -1,5 +1,7 @@
 package rogueshadow.SpaceRPG;
 
+import rogueshadow.SpaceRPG.entities.Entity;
+
 
 public class CollisionInfo {
 	public boolean collided;

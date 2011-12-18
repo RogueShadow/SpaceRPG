@@ -2,7 +2,6 @@ package rogueshadow.particles;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -42,19 +41,8 @@ public class ParticleEngine {
 	public void remove(Particle p){
 		removeList.add(p);
 	}
-	
-	public void addBox(float x, float y){
-		BoxParticle b = new BoxParticle(new Vector2f(x,y),new Vector2f(Math.random()*360).scale(16), 1000, 4);
-		b.setRotationSpeed(5f);
-		add(b);
-	}
-	public void explosion(float x, float y, int size){
-		for (int i = 0; i < 6*size; i ++){
-			BoxParticle b = new BoxParticle(new Vector2f(x,y),new Vector2f(Math.random()*360).scale((float)Math.random()*66*size), 2000*(size/2f), (float)Math.random()*28*(size/2f));
-			b.setRotationSpeed((float)-4 + (float)Math.random()*8);
-			b.setColor(new Color(184,134,11));
-			add(b);
-		}
+	public ArrayList<Particle> getParticles(){
+		return particles;
 	}
 	
 }

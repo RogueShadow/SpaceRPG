@@ -1,12 +1,11 @@
-package rogueshadow.SpaceRPG;
+package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.AbstractEntity;
-import rogueshadow.SpaceRPG.Entity;
+import rogueshadow.SpaceRPG.EntityManager;
 
 
 public class Ship extends AbstractEntity implements Entity {

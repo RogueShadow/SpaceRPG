@@ -1,4 +1,4 @@
-package rogueshadow.SpaceRPG;
+package rogueshadow.utility;
 
 import org.newdawn.slick.Input;
 

@@ -10,7 +10,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.entities.Ship;
+import rogueshadow.SpaceRPG.entities.Star;
+import rogueshadow.particles.PHelper;
 import rogueshadow.particles.ParticleEngine;
+import rogueshadow.utility.KeyBind;
 
 /**
  * @author Adam
@@ -27,7 +31,7 @@ public class SpaceRPG extends BasicGame{
 	public Ship ship;
 
 	EntityManager manager;
-	ParticleEngine engine;
+	PHelper engine;
 	KeyBind keyBinds;
 
 	Sound explosion;
@@ -101,7 +105,7 @@ public class SpaceRPG extends BasicGame{
 		shot = new Sound("res/shot2.wav");
 
 		input = container.getInput();
-		engine = new ParticleEngine();
+		engine = new PHelper();
 		manager = new EntityManager(container, this);
 		
 		ship = new Ship(new Vector2f(170,150));
@@ -112,6 +116,8 @@ public class SpaceRPG extends BasicGame{
 		cam.setFollowing(ship.getPosition());
 		
 		manager.add(ship);
+		
+		manager.add(new Star(new Vector2f(800,800)));
 		
 		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
 		//TODO Some kind of level file format, to handle loading various entities, NPCs, etc.
@@ -124,9 +130,12 @@ public class SpaceRPG extends BasicGame{
 		if (isKP("Pause"))manager.togglePaused();
 		manager.update(delta);
 		engine.update(delta);
-
+engine.addStarDust(ship.getPosition(), ship.getVelocity());
 		ship.resetControls();
-		if (isKD("Thrust"))ship.setEngineActive(true);
+		if (isKD("Thrust")){
+			ship.setEngineActive(true);
+			
+		}
 		if (isKD("Left"))ship.setLeftThrusterActive(true);
 		if (isKD("Right"))ship.setRightThrusterActive(true);
 		if (isKD("Brake"))ship.setSpaceBrake(true);
@@ -134,7 +143,7 @@ public class SpaceRPG extends BasicGame{
 		
 	}
 
-	public ParticleEngine getEngine() {
+	public PHelper getEngine() {
 		return engine;
 	}
 	
