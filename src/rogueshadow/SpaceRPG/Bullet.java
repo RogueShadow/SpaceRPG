@@ -1,4 +1,4 @@
-package rogueshadow.combat2;
+package rogueshadow.SpaceRPG;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -120,10 +120,7 @@ public class Bullet extends AbstractEntity implements Entity {
 				setDestroyed(true);
 				manager.remove(this);
 			}
-			manager.getGame().score += 1;
-			if (manager.getGame().score > manager.getGame().highscore){
-				manager.getGame().highscore = manager.getGame().score;
-			}
+
 			//manager.getGame().explosion.play(0.4f,0.7f);
 			manager.getGame().playBlast();
 			if (isVisible())manager.getGame().getEngine().explosion(getCenterX(), getCenterY(), 1);

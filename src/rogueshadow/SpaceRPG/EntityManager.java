@@ -1,4 +1,4 @@
-package rogueshadow.combat2;
+package rogueshadow.SpaceRPG;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,7 +16,7 @@ public class EntityManager {
 	
 	protected int count[] = {0,0,0,0};
 	protected GameContainer container;
-	protected Combat2 game;
+	protected SpaceRPG game;
 	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 	protected ArrayList<Entity> removeList = new ArrayList<Entity>();
 	protected ArrayList<Entity> addList = new ArrayList<Entity>();
@@ -28,13 +28,15 @@ public class EntityManager {
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
+	public void togglePaused(){
+		this.paused = !this.paused;
+	}
 	
 	public String debug = "";
 	
-	public EntityManager(GameContainer container, Combat2 game){
+	public EntityManager(GameContainer container, SpaceRPG game){
 		this.container = container;
 		this.game = game;
-		resetGame();
 	}
 	
 	public void update(int delta){
@@ -78,8 +80,7 @@ public class EntityManager {
 		addList.clear();
 		
 		if (count[ROCKS] == 0){
-			setPaused(true);
-			game.clearedRound();
+		
 			
 		}
 		
@@ -135,15 +136,15 @@ public class EntityManager {
 		ArrayList<Rock> rocks = new ArrayList<Rock>();
 		Rock rock;
 		float x, y, angle, speed;
-		speed = 100f;
-		int number = round * 150;
+		speed = 10f;
+		int number = round * 150; // default 150
 		int size = 10;
 		while (number > 0){
 			while (Math.pow(2, size) > number)size--;
 			number -= Math.pow(2, size);
 			
-			x = (float)Math.random()*Combat2.WORLD_WIDTH;
-			y = (float)Math.random()*Combat2.WORLD_HEIGHT;
+			x = (float)Math.random()*SpaceRPG.WORLD_WIDTH;
+			y = (float)Math.random()*SpaceRPG.WORLD_HEIGHT;
 			
 			angle = (float)(Math.random()*360);
 			rock = new Rock(new Vector2f(x,y), new Vector2f(angle).scale(speed), size);
@@ -151,6 +152,7 @@ public class EntityManager {
 			rocks.add(rock);
 		}
 		entities.addAll( rocks );
+		
 	}
 
 	public GameContainer getContainer() {
@@ -161,21 +163,15 @@ public class EntityManager {
 		this.container = container;
 	}
 
-	public Combat2 getGame() {
+	public SpaceRPG getGame() {
 		return game;
 	}
 
-	public void setGame(Combat2 game) {
+	public void setGame(SpaceRPG game) {
 		this.game = game;
 	}
 
-	public void resetGame() {
-		entities.clear();
-		removeList.clear();
-		addList.clear();
-		Ship ship = new Ship(new Vector2f(400,300));
-		add(ship);
-		getGame().ship = ship;
-		getGame().cam.setFollowing(ship.position);
+	public int getKey(String name){
+		return getGame().keyBinds.getKey(name);
 	}
 }

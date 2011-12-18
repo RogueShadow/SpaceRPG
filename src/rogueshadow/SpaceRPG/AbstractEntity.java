@@ -1,7 +1,7 @@
 /**
  * 
  */
-package rogueshadow.combat2;
+package rogueshadow.SpaceRPG;
 
 import org.newdawn.slick.geom.Vector2f;
 
@@ -11,8 +11,8 @@ import org.newdawn.slick.geom.Vector2f;
  *
  */
 public abstract class AbstractEntity implements Entity {
-	protected final int WIDTH = Combat2.WORLD_WIDTH;
-	protected final int HEIGHT = Combat2.WORLD_HEIGHT;
+	protected final int WIDTH = SpaceRPG.WORLD_WIDTH;
+	protected final int HEIGHT = SpaceRPG.WORLD_HEIGHT;
 	protected Vector2f position = new Vector2f(0,0);
 	protected Vector2f velocity = new Vector2f(0,0);
 	protected float size = 0;
@@ -27,8 +27,8 @@ public abstract class AbstractEntity implements Entity {
 		boolean visible = true;
 		if (getX() + getSize() < cam.getX())visible = false;
 		if (getY() + getSize() < cam.getY())visible = false;
-		if (getX() > cam.getX() + Combat2.WIDTH)visible = false;
-		if (getY() > cam.getY() + Combat2.HEIGHT)visible = false;
+		if (getX() > cam.getX() + SpaceRPG.WIDTH)visible = false;
+		if (getY() > cam.getY() + SpaceRPG.HEIGHT)visible = false;
 		
 		return visible;
 	}
@@ -73,7 +73,7 @@ public abstract class AbstractEntity implements Entity {
 		return position.getY()+getSize()/2f;
 	}
 	
-	public float getSize(){
+	public Float getSize(){
 		return size;
 	}
 

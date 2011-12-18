@@ -1,7 +1,7 @@
 /**
  * 
  */
-package rogueshadow.combat2;
+package rogueshadow.SpaceRPG;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -16,7 +16,7 @@ public interface Entity {
 	
 	public void render(Graphics g);
 	
-	public float getSize();
+	public Float getSize();
 	
 	public CollisionInfo collides(Entity other);
 	

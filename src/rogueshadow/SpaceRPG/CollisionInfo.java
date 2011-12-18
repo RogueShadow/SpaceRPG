@@ -1,4 +1,4 @@
-package rogueshadow.combat2;
+package rogueshadow.SpaceRPG;
 
 
 public class CollisionInfo {

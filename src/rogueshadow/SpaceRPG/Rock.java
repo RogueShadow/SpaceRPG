@@ -1,4 +1,4 @@
-package rogueshadow.combat2;
+package rogueshadow.SpaceRPG;
 
 
 import org.newdawn.slick.Color;
@@ -8,7 +8,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.combat2.AbstractEntity;
+import rogueshadow.SpaceRPG.AbstractEntity;
 
 public class Rock extends AbstractEntity implements Entity {
 	float maxVel = 50f;
@@ -16,7 +16,11 @@ public class Rock extends AbstractEntity implements Entity {
 	float thisCall = 0;
 	float sizeScaler = 15f;
 	int rockSize;
-	Image image;
+	public int getRockSize() {
+		return rockSize;
+	}
+
+
 	float rotate = 0.0f;
 	float rotateSpeed = 1.5f;
 	Polygon poly = new Polygon();
@@ -77,30 +81,16 @@ public class Rock extends AbstractEntity implements Entity {
 	public void collided(EntityManager manager, Entity other) {
 		if (isDestroyed())return;
 		if (other instanceof Rock){
-			Vector2f vec = new Vector2f(getCenterX()-other.getCenterX(),getCenterY()-other.getCenterY());
-			getVelocity().add(vec);
+			//Vector2f vec = new Vector2f(getCenterX()-other.getCenterX(),getCenterY()-other.getCenterY());
+			//getVelocity().add(vec);
 		}
 		if (other instanceof Ship){
-			if (!((Ship) other).isInvulnerable()){
-				Vector2f vec = new Vector2f(other.getCenterX()-getCenterX(),other.getCenterY()-getCenterY());
-				other.getVelocity().sub(vec.scale(2));
-			}
+
+
+
 		}else
 		if (other instanceof Bullet){
-			if (rockSize > 1){
-				Vector2f v = getVelocity();
-				v.setTheta(v.getTheta()+45);
-				manager.add(new Rock(this.getPosition().copy(),v.copy(), rockSize -1));
-				v.setTheta(v.getTheta()-90);
-				manager.add(new Rock(this.getPosition().copy(),v.copy(), rockSize -1));
-				manager.remove(this);
-			}else{
-				if (Math.random() > 0.85){
-					float angle = (float)Math.random()*360;
-					manager.add(new Powerup(getPosition().copy(),new Vector2f(angle).scale(150)));
-				}
-				manager.remove(this);
-			}
+
 			
 		}
 	}

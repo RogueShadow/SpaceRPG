@@ -52,7 +52,7 @@ public class ParticleEngine {
 		for (int i = 0; i < 6*size; i ++){
 			BoxParticle b = new BoxParticle(new Vector2f(x,y),new Vector2f(Math.random()*360).scale((float)Math.random()*66*size), 2000*(size/2f), (float)Math.random()*28*(size/2f));
 			b.setRotationSpeed((float)-4 + (float)Math.random()*8);
-			b.setColor(new Color(0,255,255));
+			b.setColor(new Color(184,134,11));
 			add(b);
 		}
 	}

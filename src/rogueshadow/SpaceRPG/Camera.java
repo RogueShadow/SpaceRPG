@@ -1,13 +1,13 @@
-package rogueshadow.combat2;
+package rogueshadow.SpaceRPG;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Camera {
-	public static final int WIDTH = Combat2.WIDTH;
-	public static final int HEIGHT = Combat2.HEIGHT;
-	public static final int WORLD_WIDTH = Combat2.WORLD_WIDTH;
-	public static final int WORLD_HEIGHT = Combat2.WORLD_HEIGHT;
+	public static final int WIDTH = SpaceRPG.WIDTH;
+	public static final int HEIGHT = SpaceRPG.HEIGHT;
+	public static final int WORLD_WIDTH = SpaceRPG.WORLD_WIDTH;
+	public static final int WORLD_HEIGHT = SpaceRPG.WORLD_HEIGHT;
 	public Vector2f following = new Vector2f(0,0);
 	public float rotation = 0;
 	public float scale = 1;

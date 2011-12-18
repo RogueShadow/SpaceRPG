@@ -1,4 +1,4 @@
-package rogueshadow.combat2;
+package rogueshadow.SpaceRPG;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -37,12 +37,12 @@ public class Powerup extends AbstractEntity implements Entity {
 	@Override
 	public void render(Graphics g) {
 		if (!isVisible())return;
-		g.pushTransform();
+		g.pushTransform(); 
 		g.translate(getX(), getY());
 		g.setColor(Color.magenta);
 		g.drawString(names[type],-30,-30);
 		g.rotate(0, 0, rotation);
-		g.fillRect(-10, -10, 20, 20);
+		g.drawRect(-10, -10, 20, 20);
 		g.popTransform();
 	}
 
