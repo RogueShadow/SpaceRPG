@@ -88,6 +88,8 @@ public class SpaceRPG extends BasicGame{
 		engine.renderDust(g);
 
 		g.setColor(Color.white);
+		
+		g.drawString(engine.getStarCount().toString(), 100, 100);
 
 		if (manager.isPaused()){
 			g.pushTransform();
@@ -129,6 +131,7 @@ public class SpaceRPG extends BasicGame{
 		ship = new Ship(new Vector2f(0,0));
 		ship.setThrusterStrength(10);
 		ship.setEngineStrength(10);
+		engine.initDust(ship);
 		
 		//load game entities from map file
 		cam = new Camera();
@@ -186,7 +189,7 @@ public class SpaceRPG extends BasicGame{
 		if (isKP("Pause"))manager.togglePaused();
 		manager.update(delta);
 		engine.update(delta);
-		engine.updateDust(delta, ship.getVelocity());
+		engine.updateDust(delta, ship);
 		ship.resetControls();
 		if (isKD("Thrust")){
 			ship.setEngineActive(true);

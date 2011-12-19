@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class BoxParticle extends AbstractParticle implements Particle {
 	float size;
+	public float scale;
 	Color color = new Color(155,155,155,255);
 
 	public BoxParticle(Vector2f position, Vector2f velocity, float life, float size) {

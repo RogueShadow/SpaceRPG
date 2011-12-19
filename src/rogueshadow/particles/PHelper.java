@@ -7,31 +7,58 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.SpaceRPG;
+import rogueshadow.SpaceRPG.entities.Ship;
 
 public class PHelper extends ParticleEngine {
-	int starDustCount = 300;
+	int updateDistance = 200;
+	float depth = 3f;
+	Vector2f lastPos = new Vector2f(0,0);
 	ArrayList<Particle> starDust = new ArrayList<Particle>();
 	ArrayList<Particle> removeList = new ArrayList<Particle>();
+	
+	
+	public void initDust(Ship s){
+		float x,y;
+		for (int i = 0; i < 50; i++){
+			x = (float)Math.random()*SpaceRPG.WIDTH;
+			y = (float)Math.random()*SpaceRPG.HEIGHT;
+			BoxParticle p = new BoxParticle(new Vector2f(x,y), new Vector2f(0,0),Integer.MAX_VALUE,(float)Math.random()*4);
+			p.setRotation((float)Math.random()*360);
+			p.scale = (float)(Math.random()*depth);
+			starDust.add(p);
+		}
+	}
+	
+	public Integer getStarCount(){
+		return starDust.size();
+	}
+	
 	public void renderDust(Graphics g){
 		for (Particle p: starDust)p.render(g);
 	}
-	public void updateDust(int delta, Vector2f velocity){
-		float x = 0;
-		float y = 0;
-		if (starDust.size() < starDustCount){
-			if (velocity.getX() > 0)x = SpaceRPG.WIDTH;
-			if (velocity.getY() > 0)y = SpaceRPG.HEIGHT;
+	public void updateDust(int delta, Ship s){
+		float dist = s.getPosition().distanceSquared(lastPos);
+		if (dist < updateDistance){
+			
+		}else{
+			lastPos = s.getPosition().copy();
+			float x = 0;
+			float y = 0;
+			
+			if (s.getVelocity().getX() > 0)x = SpaceRPG.WIDTH;
+			if (s.getVelocity().getY() > 0)y = SpaceRPG.HEIGHT;
 			
 			if (Math.random() < 0.5d)x = (float)Math.random()*SpaceRPG.WIDTH;
 			else y = (float)Math.random()*SpaceRPG.HEIGHT;
 			
 			BoxParticle p = new BoxParticle(new Vector2f(x,y), new Vector2f(0,0),Integer.MAX_VALUE,(float)Math.random()*4);
 			p.setRotation((float)Math.random()*360);
+			p.scale = (float)(Math.random()*depth);
 			starDust.add(p);
 		}
 		
 		for (Particle p: starDust){
-			p.setVelocity(new Vector2f(velocity.copy().negate()));
+			p.setVelocity(new Vector2f(s.getVelocity().copy().negate().scale((float)((BoxParticle)p).scale)));
 			p.update(new ParticleEngine(), delta);
 			if (((BoxParticle)p).getPosition().x < 0 || ((BoxParticle)p).getPosition().x > SpaceRPG.WIDTH ||
 			((BoxParticle)p).getPosition().y < 0 || (((BoxParticle)p).getPosition().y > SpaceRPG.HEIGHT))removeList.add(p);
