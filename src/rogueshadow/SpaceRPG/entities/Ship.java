@@ -73,7 +73,7 @@ public class Ship extends AbstractEntity implements Entity {
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.rotate(0, 0, getAngle()+90);
-		g.setColor(Color.gray);
+		g.setColor(Color.magenta);
 		g.drawLine(0, -20, -10, 10);
 		g.drawLine(0, -20, 10, 10);
 		g.drawLine(-10, 10, 10, 10);

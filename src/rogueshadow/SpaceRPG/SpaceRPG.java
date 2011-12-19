@@ -1,5 +1,13 @@
 package rogueshadow.SpaceRPG;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.text.html.parser.Entity;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -9,7 +17,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.ImageData;
 
+import rogueshadow.SpaceRPG.entities.Planet;
+import rogueshadow.SpaceRPG.entities.Rock;
 import rogueshadow.SpaceRPG.entities.Ship;
 import rogueshadow.SpaceRPG.entities.Star;
 import rogueshadow.particles.PHelper;
@@ -21,10 +32,12 @@ import rogueshadow.utility.KeyBind;
  *
  */
 public class SpaceRPG extends BasicGame{
-	public static final int WIDTH = 1920;
-	public static final int HEIGHT = 1080;
-	public static final int WORLD_WIDTH = 100000;
-	public static final int WORLD_HEIGHT = 100000;
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 720;
+	public static int WORLD_WIDTH = 1000000;
+	public static int WORLD_HEIGHT = 1000000;
+	
+	BufferedImage map;
 	
 	Input input;
 	public Camera cam;
@@ -51,7 +64,7 @@ public class SpaceRPG extends BasicGame{
 		AppGameContainer container = new AppGameContainer(new SpaceRPG("SpaceRPG Prototype!"), WIDTH,HEIGHT,false);
 		container.setTargetFrameRate(60);
 		container.setVSync(true);
-		container.setFullscreen(true);
+		//container.setFullscreen(true);
 		container.start();
 	}
 
@@ -103,25 +116,65 @@ public class SpaceRPG extends BasicGame{
 		//load sound
 		explosion = new Sound("res/blast2.wav");
 		shot = new Sound("res/shot2.wav");
+		
+
 
 		input = container.getInput();
 		engine = new PHelper();
 		manager = new EntityManager(container, this);
 		
-		ship = new Ship(new Vector2f(170,150));
+		
+		
+		ship = new Ship(new Vector2f(0,0));
 		ship.setThrusterStrength(10);
 		ship.setEngineStrength(10);
 		
+		//load game entities from map file
 		cam = new Camera();
-		cam.setFollowing(ship.getPosition());
-		
+		loadEntities("map", manager, ship);
+		cam.WORLD_HEIGHT = WORLD_HEIGHT;
+		cam.WORLD_WIDTH = WORLD_WIDTH;
 		manager.add(ship);
 		
-		manager.add(new Star(new Vector2f(800,800)));
+		
+		cam.setFollowing(ship.getPosition());
+		
 		
 		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
 		//TODO Some kind of level file format, to handle loading various entities, NPCs, etc.
 		
+	}
+
+
+	private void loadEntities(String world, EntityManager manager, Ship ship) {
+		try {
+			map = ImageIO.read(SpaceRPG.class.getResource("/res/" + world + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		int scale = 64;
+		int w = map.getWidth();
+		int h = map.getHeight();
+		WORLD_WIDTH = w*scale;
+		WORLD_HEIGHT = h*scale;
+		int x = 0;
+		int y = 0;
+		int[] pixels = new int[w*h];
+		map.getRGB(0, 0, w, h, pixels, 0, w);
+		int color = 0;
+		for (x = 0; x < w; x++){
+			for (y = 0; y < h; y++){
+				color = pixels[x + y * w] & 0xffffff;
+				
+				if (color == 0xffff00)manager.add(new Star(new Vector2f(x*scale,y*scale)) );
+				if (color == 0xff00ff)ship.setPosition(new Vector2f(x*scale,y*scale));
+				if (color == 0x825d07)manager.add(new Rock(new Vector2f(x*scale,y*scale), new Vector2f(0,0), 2));
+				if (color == 0x008e00)manager.add(new Planet(new Vector2f(x*scale,y*scale)));
+				
+				
+			}
+		}
 	}
 
 	@Override

@@ -62,7 +62,6 @@ public class Rock extends AbstractEntity implements Entity {
 		g.pushTransform();
 		g.setColor(Color.cyan);
 		g.translate(getX(), getY());
-		g.drawString(Integer.toString(rockSize), 0, 0);
 		g.rotate(0,0, rotate);
 		
 		g.draw(poly);

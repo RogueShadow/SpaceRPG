@@ -9,8 +9,8 @@ import org.newdawn.slick.geom.Vector2f;
 public class Camera {
 	public static final int WIDTH = SpaceRPG.WIDTH;
 	public static final int HEIGHT = SpaceRPG.HEIGHT;
-	public static final int WORLD_WIDTH = SpaceRPG.WORLD_WIDTH;
-	public static final int WORLD_HEIGHT = SpaceRPG.WORLD_HEIGHT;
+	public static int WORLD_WIDTH = SpaceRPG.WORLD_WIDTH;
+	public static int WORLD_HEIGHT = SpaceRPG.WORLD_HEIGHT;
 	public Vector2f following = new Vector2f(0,0);
 	public float rotation = 0;
 	public float scale = 1;
