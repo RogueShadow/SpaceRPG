@@ -10,7 +10,6 @@ public abstract class AbstractParticle implements Particle {
 	public float maxLife = 1;
 	public float rotation = 0;
 	public float rotationSpeed = 0;
-	public boolean immortal = false;
 	
 	public AbstractParticle(Vector2f position, Vector2f velocity, float life){
 		this.position = position;
@@ -19,7 +18,7 @@ public abstract class AbstractParticle implements Particle {
 	}
 	
 	public void update(ParticleEngine engine, int delta){
-		if (!isImmortal())life += delta;
+		life += delta;
 		if (life < maxLife){
 			rotation += rotationSpeed;
 			velocity.add(gravity.copy().scale(delta/1000f));
@@ -75,14 +74,6 @@ public abstract class AbstractParticle implements Particle {
 
 	public void setRotationSpeed(float rotationSpeed) {
 		this.rotationSpeed = rotationSpeed;
-	}
-
-	public boolean isImmortal() {
-		return immortal;
-	}
-
-	public void setImmortal(boolean immortal) {
-		this.immortal = immortal;
 	}
 
 }

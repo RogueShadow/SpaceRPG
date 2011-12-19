@@ -84,7 +84,8 @@ public class SpaceRPG extends BasicGame{
 		g.drawRect(16, 16, WORLD_WIDTH-32, WORLD_HEIGHT-32);
 		
 		cam.translateOut(g);
-		
+
+		engine.renderDust(g);
 
 		g.setColor(Color.white);
 
@@ -147,6 +148,8 @@ public class SpaceRPG extends BasicGame{
 
 
 	private void loadEntities(String world, EntityManager manager, Ship ship) {
+		//TODO make a level class, and level loading. figure out how to include the metadata, such as planet names,
+		//quest info, and the like. :D
 		try {
 			map = ImageIO.read(SpaceRPG.class.getResource("/res/" + world + ".png"));
 		} catch (IOException e) {
@@ -171,7 +174,7 @@ public class SpaceRPG extends BasicGame{
 				if (color == 0xff00ff)ship.setPosition(new Vector2f(x*scale,y*scale));
 				if (color == 0x825d07)manager.add(new Rock(new Vector2f(x*scale,y*scale), new Vector2f(0,0), 2));
 				if (color == 0x008e00)manager.add(new Planet(new Vector2f(x*scale,y*scale)));
-				
+				if (color == 0xff0000)manager.add(new Ship(new Vector2f(x*scale,y*scale)));
 				
 			}
 		}
@@ -183,7 +186,7 @@ public class SpaceRPG extends BasicGame{
 		if (isKP("Pause"))manager.togglePaused();
 		manager.update(delta);
 		engine.update(delta);
-engine.addStarDust(ship.getPosition(), ship.getVelocity());
+		engine.updateDust(delta, ship.getVelocity());
 		ship.resetControls();
 		if (isKD("Thrust")){
 			ship.setEngineActive(true);
