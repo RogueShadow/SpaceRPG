@@ -41,23 +41,24 @@ public class EntityManager {
 			Entity e = (Entity) entities.get(i);
 			e.update(this, delta);
 		}
-		for (int i = 0; i < entities.size(); i++){
-			
-			Entity entity = (Entity) entities.get(i);
-			
-			for (int j = i+1; j < entities.size(); j++){
-				
-				Entity other = (Entity) entities.get(j);
-				
-				CollisionInfo c = entity.collides(other);
-				
-				if (c.isCollided()){
-					entity.collided(this, other);
-					other.collided(this, entity);
-				}
-				
-			}
-		}
+		
+//		for (int i = 0; i < entities.size(); i++){
+//			
+//			Entity entity = (Entity) entities.get(i);
+//			
+//			for (int j = i+1; j < entities.size(); j++){
+//				
+//				Entity other = (Entity) entities.get(j);
+//				
+//				CollisionInfo c = entity.collides(other);
+//				
+//				if (c.isCollided()){
+//					entity.collided(this, other);
+//					other.collided(this, entity);
+//				}
+//				
+//			}
+//		}
 		
 		entities.removeAll(removeList);
 		entities.addAll(addList);
