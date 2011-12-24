@@ -4,9 +4,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.EntityManager;
+import rogueshadow.SpaceRPG.Level;
+import rogueshadow.SpaceRPG.Sounds;
+import rogueshadow.SpaceRPG.SpaceRPG;
 
-public class Bullet extends AbstractEntity implements Entity {
+public class Bullet extends AbstractEntity {
 	public final int DELAY = 0;
 	public final int LIFE = 1;
 	public final int PIERCE = 2;
@@ -21,8 +23,8 @@ public class Bullet extends AbstractEntity implements Entity {
 
 
 
-	public Bullet(Vector2f position, Vector2f velocity, float currentValue[]) {
-		super(position, velocity);
+	public Bullet(Level level, Vector2f position, Vector2f velocity, float currentValue[]) {
+		super(level, position, velocity);
 		setLife((int)currentValue[LIFE]);
 		setPierce((int)currentValue[PIERCE]);
 		setHoming(currentValue[HOMING]);
@@ -66,13 +68,13 @@ public class Bullet extends AbstractEntity implements Entity {
 	float closest_dist = 100000;
 	
 	@Override
-	public void update(EntityManager manager, int delta) {
+	public void update(int delta) {
 		if (isDestroyed())return;
 		life -= delta;
 		rotate += 10;
 		if (life <= 0){
-			manager.getGame().getEngine().explosion(getX(), getY(), 1);
-			manager.remove(this);
+			SpaceRPG.getEngine().explosion(getX(), getY(), 1);
+			getLevel().remove(this);
 		}
 		if (getHoming() > 0 && closest != null){
 			Vector2f targetVector = new Vector2f(getCenterX()-closest.getCenterX(),getCenterY()-closest.getCenterY());
@@ -99,7 +101,6 @@ public class Bullet extends AbstractEntity implements Entity {
 
 	@Override
 	public void render(Graphics g) {
-		if (!isVisible())return;
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.rotate(0, 0, rotate);
@@ -113,19 +114,19 @@ public class Bullet extends AbstractEntity implements Entity {
 	}
 
 	@Override
-	public void collided(EntityManager manager, Entity other) {
+	public void collided(Entity other) {
 		if (isDestroyed())return;
 		if (other instanceof Rock){
 			if (getPierce() >= 1){
 				setPierce(getPierce() - 1);
 			}else{
 				setDestroyed(true);
-				manager.remove(this);
+				getLevel().remove(this);
 			}
 
 			//manager.getGame().explosion.play(0.4f,0.7f);
-			manager.getGame().playBlast();
-			if (isVisible())manager.getGame().getEngine().explosion(getCenterX(), getCenterY(), 1);
+			Sounds.Play("Shoot");
+			SpaceRPG.getEngine().explosion(getCenterX(), getCenterY(), 1);
 		}
 		
 	}

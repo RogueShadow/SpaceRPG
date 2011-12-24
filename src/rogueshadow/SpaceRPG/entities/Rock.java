@@ -3,12 +3,10 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.EntityManager;
+import rogueshadow.SpaceRPG.Level;
 
 public class Rock extends AbstractEntity implements Entity {
 	float maxVel = 50f;
@@ -41,8 +39,8 @@ public class Rock extends AbstractEntity implements Entity {
 		poly.setCenterY(0);
 	}
 	
-	public Rock(Vector2f position, Vector2f velocity, int size) {
-		super(position, velocity);
+	public Rock(Level lvl, Vector2f position, Vector2f velocity, int size) {
+		super(lvl,position, velocity);
 		setSize(size*sizeScaler);
 		rockSize = size;
 		rotateSpeed = -1.5f + (float)Math.random()*3f;
@@ -50,7 +48,7 @@ public class Rock extends AbstractEntity implements Entity {
 	}
 
 	@Override
-	public void update(EntityManager manager, int delta) {
+	public void update(int delta) {
 		if (isDestroyed())return;
 		super.update(delta);
 		rotate += rotateSpeed;
@@ -58,7 +56,6 @@ public class Rock extends AbstractEntity implements Entity {
 
 	@Override
 	public void render(Graphics g) {
-		if (!isVisible())return;
 		g.pushTransform();
 		g.setColor(Color.cyan);
 		g.translate(getX(), getY());
@@ -71,7 +68,7 @@ public class Rock extends AbstractEntity implements Entity {
 	
 
 	@Override
-	public void collided(EntityManager manager, Entity other) {
+	public void collided(Entity other) {
 		if (isDestroyed())return;
 
 	}

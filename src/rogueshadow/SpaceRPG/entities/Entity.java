@@ -8,7 +8,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Camera;
 import rogueshadow.SpaceRPG.CollisionInfo;
-import rogueshadow.SpaceRPG.EntityManager;
 
 /**
  * @author Adam
@@ -16,7 +15,7 @@ import rogueshadow.SpaceRPG.EntityManager;
  */
 public interface Entity {
 
-	public void update(EntityManager manager, int delta);
+	public void update(int delta);
 	
 	public void render(Graphics g);
 	
@@ -24,7 +23,7 @@ public interface Entity {
 	
 	public CollisionInfo collides(Entity other);
 	
-	public void collided(EntityManager manager, Entity other);
+	public void collided(Entity other);
 	
 	public float getX();
 	
@@ -39,8 +38,6 @@ public interface Entity {
 	public Vector2f getVelocity();
 	
 	public boolean isDestroyed();
-	
-	public void setCam(Camera cam);
 	
 	public void setDestroyed(boolean destroyed);
 	

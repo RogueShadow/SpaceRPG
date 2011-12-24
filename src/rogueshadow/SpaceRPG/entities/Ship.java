@@ -1,11 +1,11 @@
 package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.EntityManager;
+import rogueshadow.SpaceRPG.Level;
+import rogueshadow.SpaceRPG.SpaceRPG;
 
 
 public class Ship extends AbstractEntity implements Entity {
@@ -34,8 +34,9 @@ public class Ship extends AbstractEntity implements Entity {
 	
 	float angle = 0;
 	
-	public Ship(Vector2f position) {
-		super(position, new Vector2f(0,0));
+	public Ship(Level level, Vector2f position) {
+		super(level, position, new Vector2f(0,0));
+		setSize(10);
 	}
 	public void resetControls(){
 		setEngineActive(false);
@@ -47,12 +48,12 @@ public class Ship extends AbstractEntity implements Entity {
 	}
 	
 	@Override
-	public void update(EntityManager manager, int delta) {
+	public void update(int delta) {
 		
 		if (isEngineActive()){
 			getVelocity().add(new Vector2f((getAngle())).scale(delta*0.05f*(getEngineStrength()+1)));
 			Vector2f pos = getPosition().copy().add(new Vector2f(getAngle()).scale(-15));
-			manager.getGame().getEngine().addBox(pos.getX(), pos.getY());
+			SpaceRPG.getEngine().addBox(pos.getX(), pos.getY());
 		}
 		if (isLeftThrusterActive()){
 			setAngle(getAngle() - (delta*0.05f*(1 + getThrusterStrength())));
@@ -80,14 +81,6 @@ public class Ship extends AbstractEntity implements Entity {
 		g.popTransform();
 	}
 
-	@Override
-	public void collided(EntityManager manager, Entity other) {
-
-		if (other instanceof Rock){
-
-		}
-		
-	}
 	public boolean isEngineActive() {
 		return engineActive;
 	}
@@ -269,6 +262,11 @@ public class Ship extends AbstractEntity implements Entity {
 
 	public void setThrusterStrength(int thrusterStrength) {
 		this.thrusterStrength = thrusterStrength;
+	}
+	@Override
+	public void collided(Entity other) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

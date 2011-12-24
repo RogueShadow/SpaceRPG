@@ -9,18 +9,14 @@ import org.newdawn.slick.geom.Vector2f;
 public class Camera {
 	public static final int WIDTH = SpaceRPG.WIDTH;
 	public static final int HEIGHT = SpaceRPG.HEIGHT;
-	public static int WORLD_WIDTH = SpaceRPG.WORLD_WIDTH;
-	public static int WORLD_HEIGHT = SpaceRPG.WORLD_HEIGHT;
+	public  Integer WORLD_WIDTH;
+	public  Integer WORLD_HEIGHT;
 	public Vector2f following = new Vector2f(0,0);
 	public float rotation = 0;
 	public float scale = 1;
 	
-	public Camera(Vector2f following){
-		super();
-		this.following = following;
-	}
 	public Camera(){
-		this(new Vector2f(0,0));
+		super();
 	}
 	public void translateIn(Graphics g){
 		g.pushTransform();
@@ -35,23 +31,23 @@ public class Camera {
 
 	public float getX() {
 		float x = following.copy().getX() - ((WIDTH/2f)/scale);
-		if (x < 0){
-			x = 0;
-		}else
-		if (x > ((WORLD_WIDTH - (WIDTH/scale)))){
-			x = ((WORLD_WIDTH - (WIDTH/scale)));
-		}
+//		if (x < 0){
+//			x = 0;
+//		}else
+//		if (x > ((WORLD_WIDTH - (WIDTH/scale)))){
+//			x = ((WORLD_WIDTH - (WIDTH/scale)));
+//		}
 		return x;
 	}
 	public float getY() {
 		float y = following.copy().getY() - ((HEIGHT/2f)/scale);
-		if (y < 0){
-			y = 0;
-		}else
-		if (y > ((WORLD_HEIGHT - (HEIGHT/scale)))){
-			y = ((WORLD_HEIGHT - (HEIGHT/scale)));
-			
-		}
+//		if (y < 0){
+//			y = 0;
+//		}else
+//		if (y > ((WORLD_HEIGHT - (HEIGHT/scale)))){
+//			y = ((WORLD_HEIGHT - (HEIGHT/scale)));
+//			
+//		}
 		return y;
 	}
 	public Vector2f getFollowing() {

@@ -4,18 +4,18 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.EntityManager;
+import rogueshadow.SpaceRPG.Level;
 
 public class Planet extends AbstractEntity implements Entity {
 	String name;
 
-	public Planet(Vector2f position) {
-		super(position, new Vector2f(0,0));
+	public Planet(Level level, Vector2f position) {
+		super(level, position, new Vector2f(0,0));
 		setSize(50);
 	}
 
 	@Override
-	public void update(EntityManager manager, int delta) {
+	public void update(int delta) {
 		// TODO Auto-generated method stub
 
 	}
@@ -28,9 +28,9 @@ public class Planet extends AbstractEntity implements Entity {
 	}
 
 	@Override
-	public void collided(EntityManager manager, Entity other) {
+	public void collided(Entity other) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

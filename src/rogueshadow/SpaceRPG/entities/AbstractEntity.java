@@ -7,6 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Camera;
 import rogueshadow.SpaceRPG.CollisionInfo;
+import rogueshadow.SpaceRPG.Level;
 import rogueshadow.SpaceRPG.SpaceRPG;
 
 
@@ -15,26 +16,20 @@ import rogueshadow.SpaceRPG.SpaceRPG;
  *
  */
 public abstract class AbstractEntity implements Entity {
-	protected final int WIDTH = SpaceRPG.WORLD_WIDTH;
-	protected final int HEIGHT = SpaceRPG.WORLD_HEIGHT;
+	protected Integer WIDTH = SpaceRPG.WORLD_WIDTH;
+	protected Integer HEIGHT = SpaceRPG.WORLD_HEIGHT;
 	protected Vector2f position = new Vector2f(0,0);
 	protected Vector2f velocity = new Vector2f(0,0);
 	protected float size = 0;
 	protected boolean destroyed = false;
-	protected Camera cam = new Camera();
+	protected Level level;
 	
 	public boolean isDestroyed() {
 		return destroyed;
 	}
 
-	public boolean isVisible(){
-		boolean visible = true;
-		if (getX() + getSize() < cam.getX())visible = false;
-		if (getY() + getSize() < cam.getY())visible = false;
-		if (getX() > cam.getX() + SpaceRPG.WIDTH)visible = false;
-		if (getY() > cam.getY() + SpaceRPG.HEIGHT)visible = false;
-		
-		return visible;
+	public Level getLevel(){
+		return level;
 	}
 	
 	public void setDestroyed(boolean destroyed) {
@@ -54,11 +49,11 @@ public abstract class AbstractEntity implements Entity {
 	}
 	
 	public void update(int delta){
-		position.add(velocity.copy().scale((delta/1000f)));
-		if (position.getX() < -size/2)position.x = WIDTH + size/2;
-		if (position.getX() > WIDTH + size/2)position.x = -size/2;
-		if (position.getY() < -size/2)position.y = HEIGHT +size/2;
-		if (position.getY() > HEIGHT + size/2)position.y = -size/2;
+		getPosition().add(getVelocity().copy().scale((delta/1000f)));
+		if (getX() < -getSize()/2)getPosition().x = WIDTH + getSize()/2;
+		if (getX() > WIDTH + getSize()/2)getPosition().x = -getSize()/2;
+		if (getY() < -getSize()/2)getPosition().y = HEIGHT +getSize()/2;
+		if (getY() > HEIGHT + getSize()/2)getPosition().y = -getSize()/2;
 		
 	}
 	
@@ -97,18 +92,15 @@ public abstract class AbstractEntity implements Entity {
 		this.velocity = velocity;
 	}
 
-	public AbstractEntity(Vector2f position, Vector2f velocity) {
+	public AbstractEntity(Level level, Vector2f position, Vector2f velocity) {
 		super();
+		this.level = level;
 		this.position = position;
 		this.velocity = velocity;
 		this.size = 0;
 	}
 	public void setSize(float size){
 		this.size = size;
-	}
-
-	public void setCam(Camera cam) {
-		this.cam = cam;
 	}
 	
 }
