@@ -23,9 +23,26 @@ public abstract class AbstractEntity implements Entity {
 	protected float size = 0;
 	protected boolean destroyed = false;
 	protected Level level;
+	protected boolean active = true;
+	protected boolean persistent = false;
+	
+	public void setPersistent(boolean persistent){
+		persistent = false;
+	}
+	public boolean isPersistent(){
+		return persistent;
+	}
 	
 	public boolean isDestroyed() {
 		return destroyed;
+	}
+	
+	public boolean isActive()	{
+		return active;
+	}
+	
+	public void setActive(boolean value){
+		active = value;
 	}
 
 	public Level getLevel(){

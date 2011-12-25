@@ -40,5 +40,13 @@ public interface Entity {
 	public boolean isDestroyed();
 	
 	public void setDestroyed(boolean destroyed);
+
+	public boolean isActive();
+	
+	public void setActive(boolean active);
+
+	public boolean isPersistent();
+	
+	public void setPersistent(boolean persistent);
 	
 }

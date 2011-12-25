@@ -87,7 +87,8 @@ public class SpaceRPG extends BasicGame{
 		g.setColor(Color.white);
 		
 		g.drawString("starDustCount: " + engine.getStarCount().toString(), 100, 100);
-
+		g.drawString("Ship x/y : " + coor(lvl.getPlayer().getPosition().getX()) + " / " + coor(lvl.getPlayer().getY()), 100, 130);
+		
 		if (isPaused()){
 			g.pushTransform();
 			g.setColor(Color.yellow);
@@ -95,6 +96,10 @@ public class SpaceRPG extends BasicGame{
 			g.drawString("(p)PAUSED", 70, 70);
 			g.popTransform();
 		}
+	}
+
+	public String coor(float x){
+		return Integer.toString(Math.round((x/256f)));
 	}
 
 	private boolean isPaused() {

@@ -33,10 +33,8 @@ public class Level {
 		playerShip = ship;
 	}
 	
-	public boolean isVisible(Entity entity){
-		
-		
-		return true;
+	public boolean isVisible(Entity entity){	
+		return getCamera().isVisible(entity.getCenterX(), entity.getCenterY(), entity.getSize());
 	}
 	
 	public Level(){
@@ -54,7 +52,7 @@ public class Level {
 
 		for (int i = 0; i < entities.size(); i++ ){
 			Entity e = (Entity) entities.get(i);
-			e.update(delta);
+			if (e.isActive())e.update(delta);
 		}
 		
 		entities.removeAll(removeList);
@@ -67,7 +65,18 @@ public class Level {
 	public void render(Graphics g){
 		for (int i = 0; i < entities.size(); i++ ){
 			Entity e = (Entity) entities.get(i);
-			if (isVisible(e))e.render(g);
+			if (isVisible(e)){
+				e.setActive(true);
+				e.render(g);
+			}else{
+				if (!e.isPersistent()){
+					if (e.getPosition().distanceSquared(this.getPlayer().getPosition()) > 2000){
+						e.setActive(false);
+					}else{
+						e.setActive(true);
+					}
+				}
+			}
 		}
 		
 	}

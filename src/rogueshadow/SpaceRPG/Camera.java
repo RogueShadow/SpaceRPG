@@ -68,5 +68,13 @@ public class Camera {
 	public void setScale(float scale) {
 		this.scale = scale;
 	}
+	public boolean isVisible(float centerX, float centerY, float size) {
+		float x = centerX - getX();
+		float y = centerY - getY();
+		if (Math.abs(x) < WIDTH + size && Math.abs(y) < HEIGHT + size){
+			return true;
+		}
+		return false;
+	}
 	
 }

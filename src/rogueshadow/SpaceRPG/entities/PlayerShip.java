@@ -11,6 +11,12 @@ public class PlayerShip extends Ship {
 		super(level, position);
 
 	}
-
+	
+	public boolean isActive(){
+		return true;
+	}
+	public boolean isPersistent(){
+		return true;
+	}
 
 }
