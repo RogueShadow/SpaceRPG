@@ -23,7 +23,7 @@ public class Level {
 	protected int worldHeight = 100000;
 	protected Camera cam = new Camera();
 	protected PlayerShip playerShip;
-	protected ArrayList<Entity> entities = new ArrayList<Entity>();
+	public ArrayList<Entity> entities = new ArrayList<Entity>();
 	protected ArrayList<Entity> removeList = new ArrayList<Entity>();
 	protected ArrayList<Entity> addList = new ArrayList<Entity>();
 	
@@ -49,7 +49,6 @@ public class Level {
 	}
 	
 	public void update(int delta){
-
 		for (int i = 0; i < entities.size(); i++ ){
 			Entity e = (Entity) entities.get(i);
 			if (e.isActive())e.update(delta);

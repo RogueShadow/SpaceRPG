@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Level;
+import rogueshadow.SpaceRPG.Sounds;
 import rogueshadow.SpaceRPG.SpaceRPG;
 
 
@@ -38,6 +39,12 @@ public class Ship extends AbstractEntity implements Entity {
 		super(level, position, new Vector2f(0,0));
 		setSize(10);
 	}
+	
+	public void ShootPrimaryWeapon(){
+		getLevel().add(new Bullet(getLevel(),getPosition().copy(),new Vector2f(this.getAngle()).scale(570).add(getVelocity())));
+		SpaceRPG.snd.shot.play();
+	}
+	
 	public void resetControls(){
 		setEngineActive(false);
 		setLeftThrusterActive(false);

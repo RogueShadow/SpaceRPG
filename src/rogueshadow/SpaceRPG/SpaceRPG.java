@@ -36,8 +36,10 @@ public class SpaceRPG extends BasicGame{
 	
 	public static AppGameContainer con;
 	
+	public static Sounds snd;
 	
 	Input input;
+	
 
 	Level lvl = new Level();
 	public static PHelper engine;
@@ -87,7 +89,8 @@ public class SpaceRPG extends BasicGame{
 		g.setColor(Color.white);
 		
 		g.drawString("starDustCount: " + engine.getStarCount().toString(), 100, 100);
-		g.drawString("Ship x/y : " + coor(lvl.getPlayer().getPosition().getX()) + " / " + coor(lvl.getPlayer().getY()), 100, 130);
+		g.drawString("Ship x/y : " + coor(lvl.getPlayer().getPosition().getX()) + " / " + coor(lvl.getPlayer().getY()), 100, 120);
+		g.drawString("Entities: " + lvl.entities.size(), 100, 140);
 		
 		if (isPaused()){
 			g.pushTransform();
@@ -123,13 +126,15 @@ public class SpaceRPG extends BasicGame{
 		keyBinds.bind("Cheat", Input.KEY_X);
 		keyBinds.bind("Brake", Input.KEY_S);
 
-
+		
+		snd = new Sounds();
+		
 		input = container.getInput();
 		engine = new PHelper();
-		lvl.loadLevel("map")	;
+		lvl.loadLevel("map2");
 		
 		
-		lvl.getPlayer().setThrusterStrength(10);
+		lvl.getPlayer().setThrusterStrength(1);
 		lvl.getPlayer().setEngineStrength(10);
 		
 		engine.initDust(lvl.getPlayer());
@@ -150,10 +155,12 @@ public class SpaceRPG extends BasicGame{
 		lvl.getPlayer().resetControls();
 		if (isKD("Thrust")){
 			lvl.getPlayer().setEngineActive(true);
+
 		}
 		if (isKD("Left"))lvl.getPlayer().setLeftThrusterActive(true);
 		if (isKD("Right"))lvl.getPlayer().setRightThrusterActive(true);
 		if (isKD("Brake"))lvl.getPlayer().setSpaceBrake(true);
+		if (isKP("Shoot"))lvl.getPlayer().ShootPrimaryWeapon();
 		
 		if (isKD("Exit"))container.exit();
 		

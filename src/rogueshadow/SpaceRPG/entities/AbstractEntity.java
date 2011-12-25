@@ -82,11 +82,11 @@ public abstract class AbstractEntity implements Entity {
 		return position.getY();
 	}
 	public float getCenterX(){
-		return position.getX()+getSize()/2f;
+		return position.getX()+(getSize()/2f);
 	}
 	
 	public float getCenterY(){
-		return position.getY()+getSize()/2f;
+		return position.getY()+(getSize()/2f);
 	}
 	
 	public Float getSize(){
