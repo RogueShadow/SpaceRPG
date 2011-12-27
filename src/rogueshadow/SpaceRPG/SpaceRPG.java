@@ -131,7 +131,7 @@ public class SpaceRPG extends BasicGame{
 		
 		input = container.getInput();
 		engine = new PHelper();
-		lvl.loadLevel("map2");
+		lvl.loadLevel("map");
 		
 		
 		lvl.getPlayer().setThrusterStrength(1);

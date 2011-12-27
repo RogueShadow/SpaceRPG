@@ -43,7 +43,7 @@ public class Rock extends AbstractEntity implements Entity {
 		super(lvl,position, velocity);
 		setSize(size*sizeScaler);
 		rockSize = size;
-		rotateSpeed = -1.5f + (float)Math.random()*3f;
+		rotateSpeed = -0.5f + (float)Math.random()*1f;
 		generatePolygon();
 	}
 
@@ -70,6 +70,11 @@ public class Rock extends AbstractEntity implements Entity {
 	@Override
 	public void collided(Entity other) {
 		if (isDestroyed())return;
+		if (other instanceof Bullet){
+			getLevel().remove(this);
+			other.getVelocity().negateLocal();
+		}
+
 
 	}
 	

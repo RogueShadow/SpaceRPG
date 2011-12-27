@@ -5,8 +5,6 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.Camera;
-import rogueshadow.SpaceRPG.CollisionInfo;
 import rogueshadow.SpaceRPG.Level;
 import rogueshadow.SpaceRPG.SpaceRPG;
 
@@ -51,18 +49,6 @@ public abstract class AbstractEntity implements Entity {
 	
 	public void setDestroyed(boolean destroyed) {
 		this.destroyed = destroyed;
-	}
-
-	public CollisionInfo collides(Entity other){
-		float distance = getPosition().distanceSquared(other.getPosition());
-		float range = getSize()/2f + other.getSize()/2f;
-		
-		range *= range;
-		if (distance < range){
-			return new CollisionInfo(this, other, true, distance);
-		}else{
-			return new CollisionInfo(this, other, false, distance);
-		}
 	}
 	
 	public void update(int delta){

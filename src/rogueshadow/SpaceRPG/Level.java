@@ -10,6 +10,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.entities.Bullet;
 import rogueshadow.SpaceRPG.entities.Entity;
 import rogueshadow.SpaceRPG.entities.Planet;
 import rogueshadow.SpaceRPG.entities.PlayerShip;
@@ -21,6 +22,7 @@ public class Level {
 	protected boolean paused = false;
 	protected int worldWidth = 100000;
 	protected int worldHeight = 100000;
+	protected int maximumUpdateDistance = 2000;
 	protected Camera cam = new Camera();
 	protected PlayerShip playerShip;
 	public ArrayList<Entity> entities = new ArrayList<Entity>();
@@ -52,6 +54,9 @@ public class Level {
 		for (int i = 0; i < entities.size(); i++ ){
 			Entity e = (Entity) entities.get(i);
 			if (e.isActive())e.update(delta);
+			if (e instanceof Bullet){
+				checkBulletCollisions((Bullet) e);
+			}
 		}
 		
 		entities.removeAll(removeList);
@@ -59,6 +64,25 @@ public class Level {
 		removeList.clear();
 		addList.clear();
 		
+	}
+	
+	public void checkBulletCollisions(Bullet b){
+		int distance = 500;
+		float checkedDist = 0;
+		for (Entity e: entities){
+			if (!((e instanceof Bullet) || (e instanceof PlayerShip))){
+				checkedDist = e.getPosition().distance(b.getPosition());
+				if (checkedDist < distance){
+					float radius = e.getSize()/2;
+					radius += b.getSize()/2;
+					if (checkedDist < radius){
+						e.collided(b);
+						b.collided(e);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	public void render(Graphics g){
@@ -69,7 +93,7 @@ public class Level {
 				e.render(g);
 			}else{
 				if (!e.isPersistent()){
-					if (e.getPosition().distanceSquared(this.getPlayer().getPosition()) > 2000){
+					if (e.getPosition().distanceSquared(this.getPlayer().getPosition()) > maximumUpdateDistance){
 						e.setActive(false);
 					}else{
 						e.setActive(true);

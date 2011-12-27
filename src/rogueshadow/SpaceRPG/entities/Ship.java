@@ -41,7 +41,9 @@ public class Ship extends AbstractEntity implements Entity {
 	}
 	
 	public void ShootPrimaryWeapon(){
-		getLevel().add(new Bullet(getLevel(),getPosition().copy(),new Vector2f(this.getAngle()).scale(570).add(getVelocity())));
+		Vector2f pos = getPosition().copy();
+		pos.add(new Vector2f(getAngle()).scale(20));
+		getLevel().add(new Bullet(getLevel(),pos,new Vector2f(this.getAngle()).scale(570).add(getVelocity())));
 		SpaceRPG.snd.shot.play();
 	}
 	
