@@ -43,8 +43,8 @@ public class Ship extends AbstractEntity implements Entity {
 	public void ShootPrimaryWeapon(){
 		Vector2f pos = getPosition().copy();
 		pos.add(new Vector2f(getAngle()).scale(20));
-		getLevel().add(new Bullet(getLevel(),pos,new Vector2f(this.getAngle()).scale(570).add(getVelocity())));
-		SpaceRPG.snd.shot.play();
+		getLevel().add(new Bullet(getLevel(), this, pos,new Vector2f(this.getAngle()).scale(570).add(getVelocity())));
+		Sounds.shot.play();
 	}
 	
 	public void resetControls(){
@@ -274,7 +274,11 @@ public class Ship extends AbstractEntity implements Entity {
 	}
 	@Override
 	public void collided(Entity other) {
-		// TODO Auto-generated method stub
+		if (other instanceof Bullet){
+			//TODO remove test code from here.
+			setAngle(((Bullet)other).owner.angle+180);
+			setEngineActive(true);
+		}
 		
 	}
 

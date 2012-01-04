@@ -1,10 +1,5 @@
 package rogueshadow.SpaceRPG;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -12,14 +7,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.entities.Planet;
-import rogueshadow.SpaceRPG.entities.PlayerShip;
-import rogueshadow.SpaceRPG.entities.Rock;
-import rogueshadow.SpaceRPG.entities.Ship;
-import rogueshadow.SpaceRPG.entities.Star;
 import rogueshadow.particles.PHelper;
 import rogueshadow.utility.KeyBind;
 
@@ -41,8 +30,10 @@ public class SpaceRPG extends BasicGame{
 	Input input;
 	
 
-	Level lvl = new Level();
+	public static Level lvl = new Level();
 	public static PHelper engine;
+	
+	public Minimap map = new Minimap(5, 500,200,200);
 	
 	public Vector2f camPos = new Vector2f(0,0);
 	
@@ -83,31 +74,19 @@ public class SpaceRPG extends BasicGame{
 		g.drawRect(bwidth/2, bwidth/2, WORLD_WIDTH-bwidth, WORLD_HEIGHT-bwidth);
 		
 		lvl.getCamera().translateOut(g);
-
+		
 		engine.renderDust(g);
-
+		map.render(g);
+		
 		g.setColor(Color.white);
 		
-		g.drawString("starDustCount: " + engine.getStarCount().toString(), 100, 100);
 		g.drawString("Ship x/y : " + coor(lvl.getPlayer().getPosition().getX()) + " / " + coor(lvl.getPlayer().getY()), 100, 120);
 		g.drawString("Entities: " + lvl.entities.size(), 100, 140);
-		
-		if (isPaused()){
-			g.pushTransform();
-			g.setColor(Color.yellow);
-			g.scale(2, 2);
-			g.drawString("(p)PAUSED", 70, 70);
-			g.popTransform();
-		}
+
 	}
 
-	public String coor(float x){
-		return Integer.toString(Math.round((x/256f)));
-	}
-
-	private boolean isPaused() {
-		// TODO Auto-generated method stub
-		return false;
+	public static Integer coor(float x){
+		return (Math.round((x/256f)));
 	}
 
 	@Override
@@ -115,7 +94,7 @@ public class SpaceRPG extends BasicGame{
 		
 		// Initialize key binding class
 		keyBinds = new KeyBind();
-		// set key binds, .bind(name, abbreviation, int key code) or .bind(name, int key code)
+		// set key binds, .bind(full_name, friendly name, int key code) or .bind(name, int key code)
 		keyBinds.bind("Thrust",Input.KEY_W);
 		keyBinds.bind("Left",Input.KEY_A);
 		keyBinds.bind("Right",Input.KEY_D);
@@ -138,10 +117,11 @@ public class SpaceRPG extends BasicGame{
 		lvl.getPlayer().setEngineStrength(10);
 		
 		engine.initDust(lvl.getPlayer());
+		map.setTracking(lvl.getPlayer().getPosition());
 		
-		//lvl.getCamera().setFollowing(camPos);
 		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
 		//TODO Some kind of level file format, to handle loading various entities, NPCs, etc.
+
 		
 	}
 
@@ -187,6 +167,10 @@ public class SpaceRPG extends BasicGame{
 
 	public GameContainer getContainer() {
 		return con;
+	}
+	
+	public static Level getLevel(){
+		return lvl;
 	}
 
 }

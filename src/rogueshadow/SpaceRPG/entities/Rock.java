@@ -10,20 +10,15 @@ import rogueshadow.SpaceRPG.Level;
 
 public class Rock extends AbstractEntity implements Entity {
 	float maxVel = 50f;
-	float lastCall = 0;
-	float thisCall = 0;
 	float sizeScaler = 15f;
 	int rockSize;
-	public int getRockSize() {
-		return rockSize;
-	}
-
-
 	float rotate = 0.0f;
 	float rotateSpeed = 1.5f;
 	Polygon poly = new Polygon();
 
-	
+	public int getRockSize() {
+		return rockSize;
+	}
 	protected void generatePolygon(){
 		this.poly = new Polygon();
 		int size = (int)(getSize()/2.5f);
@@ -71,6 +66,7 @@ public class Rock extends AbstractEntity implements Entity {
 	public void collided(Entity other) {
 		if (isDestroyed())return;
 		if (other instanceof Bullet){
+			//TODO remove test code from here.
 			getLevel().remove(this);
 			other.getVelocity().negateLocal();
 		}
