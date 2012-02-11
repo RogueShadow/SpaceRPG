@@ -10,6 +10,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.entities.PlayerShip;
 import rogueshadow.particles.PHelper;
 import rogueshadow.utility.KeyBind;
 
@@ -116,6 +117,7 @@ public class SpaceRPG extends BasicGame{
 		
 		lvl.getPlayer().setThrusterStrength(1);
 		lvl.getPlayer().setEngineStrength(10);
+		
 		
 		engine.initDust(lvl.getPlayer());
 		map.setTracking(lvl.getPlayer().getPosition());
