@@ -6,7 +6,7 @@ package rogueshadow.SpaceRPG.entities;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Level;
-import rogueshadow.SpaceRPG.SpaceRPG;
+import rogueshadow.SpaceRPG.Engine;
 
 
 /**
@@ -14,8 +14,8 @@ import rogueshadow.SpaceRPG.SpaceRPG;
  *
  */
 public abstract class AbstractEntity implements Entity {
-	protected Integer WIDTH = SpaceRPG.WORLD_WIDTH;
-	protected Integer HEIGHT = SpaceRPG.WORLD_HEIGHT;
+	protected Integer WIDTH = Engine.WORLD_WIDTH;
+	protected Integer HEIGHT = Engine.WORLD_HEIGHT;
 	protected Vector2f position = new Vector2f(0,0);
 	protected Vector2f velocity = new Vector2f(0,0);
 	protected float size = 0;

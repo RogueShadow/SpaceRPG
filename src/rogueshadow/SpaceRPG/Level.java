@@ -19,11 +19,12 @@ import rogueshadow.SpaceRPG.entities.Star;
 
 public class Level {
 	protected boolean paused = false;
-	protected int worldWidth = 100000;
-	protected int worldHeight = 100000;
+	protected int worldWidth;
+	protected int worldHeight;
 	protected int maximumUpdateDistance = 2000;
 	protected Camera cam = new Camera();
 	protected PlayerShip playerShip;
+	
 	public ArrayList<Entity> entities = new ArrayList<Entity>();
 	protected ArrayList<Entity> removeList = new ArrayList<Entity>();
 	protected ArrayList<Entity> addList = new ArrayList<Entity>();
@@ -40,13 +41,6 @@ public class Level {
 	
 	public Level(){
 		super();
-	}
-	
-	public int getWidth(){
-		return worldWidth;
-	}
-	public int getHeight(){
-		return worldHeight;
 	}
 	
 	public void update(int delta){
@@ -125,16 +119,17 @@ public class Level {
 		//quest info, and the like. :D
 	
 		try {
-			BufferedImage map = ImageIO.read(SpaceRPG.class.getResource("/res/" + world + ".png"));
+			BufferedImage map = ImageIO.read(Engine.class.getResource("/res/" + world + ".png"));
 			int w = map.getWidth();
 			int h = map.getHeight();
-			
-			getCamera().WORLD_WIDTH = w;
-			getCamera().WORLD_HEIGHT = h;
 			
 			int scale = 64;
 			worldWidth = w*scale;
 			worldHeight = h*scale;
+			
+			Engine.WORLD_WIDTH = worldWidth;
+			Engine.WORLD_HEIGHT = worldHeight;
+			
 			int x = 0;
 			int y = 0;
 			int[] pixels = new int[w*h];

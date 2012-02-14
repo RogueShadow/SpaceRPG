@@ -6,7 +6,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.SpaceRPG;
+import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.entities.Ship;
 
 public class PHelper extends ParticleEngine {
@@ -20,8 +20,8 @@ public class PHelper extends ParticleEngine {
 	public void initDust(Ship s){
 		float x,y;
 		for (int i = 0; i < 50; i++){
-			x = (float)Math.random()*SpaceRPG.WIDTH;
-			y = (float)Math.random()*SpaceRPG.HEIGHT;
+			x = (float)Math.random()*Engine.WIDTH;
+			y = (float)Math.random()*Engine.HEIGHT;
 			BoxParticle p = new BoxParticle(new Vector2f(x,y), new Vector2f(0,0),Integer.MAX_VALUE,(float)Math.random()*4);
 			p.setRotation((float)Math.random()*360);
 			p.scale = (float)(Math.random()*depth);
@@ -45,11 +45,11 @@ public class PHelper extends ParticleEngine {
 			float x = 0;
 			float y = 0;
 			
-			if (s.getVelocity().getX() > 0)x = SpaceRPG.WIDTH;
-			if (s.getVelocity().getY() > 0)y = SpaceRPG.HEIGHT;
+			if (s.getVelocity().getX() > 0)x = Engine.WIDTH;
+			if (s.getVelocity().getY() > 0)y = Engine.HEIGHT;
 			
-			if (Math.random() < 0.5d)x = (float)Math.random()*SpaceRPG.WIDTH;
-			else y = (float)Math.random()*SpaceRPG.HEIGHT;
+			if (Math.random() < 0.5d)x = (float)Math.random()*Engine.WIDTH;
+			else y = (float)Math.random()*Engine.HEIGHT;
 			
 			BoxParticle p = new BoxParticle(new Vector2f(x,y), new Vector2f(0,0),Integer.MAX_VALUE,(float)Math.random()*4);
 			p.setRotation((float)Math.random()*360);
@@ -60,8 +60,8 @@ public class PHelper extends ParticleEngine {
 		for (Particle p: starDust){
 			p.setVelocity(new Vector2f(s.getVelocity().copy().negate().scale((float)((BoxParticle)p).scale)));
 			p.update(new ParticleEngine(), delta);
-			if (((BoxParticle)p).getPosition().x < 0 || ((BoxParticle)p).getPosition().x > SpaceRPG.WIDTH ||
-			((BoxParticle)p).getPosition().y < 0 || (((BoxParticle)p).getPosition().y > SpaceRPG.HEIGHT))removeList.add(p);
+			if (((BoxParticle)p).getPosition().x < 0 || ((BoxParticle)p).getPosition().x > Engine.WIDTH ||
+			((BoxParticle)p).getPosition().y < 0 || (((BoxParticle)p).getPosition().y > Engine.HEIGHT))removeList.add(p);
 		}
 		
 		starDust.removeAll(removeList);

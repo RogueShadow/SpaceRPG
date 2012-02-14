@@ -6,7 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Level;
 import rogueshadow.SpaceRPG.Sounds;
-import rogueshadow.SpaceRPG.SpaceRPG;
+import rogueshadow.SpaceRPG.Engine;
 
 
 public class Ship extends AbstractEntity implements Entity {
@@ -62,7 +62,7 @@ public class Ship extends AbstractEntity implements Entity {
 		if (isEngineActive()){
 			getVelocity().add(new Vector2f((getAngle())).scale(delta*0.05f*(getEngineStrength()+1)));
 			Vector2f pos = getPosition().copy().add(new Vector2f(getAngle()).scale(-15));
-			SpaceRPG.getEngine().addBox(pos.getX(), pos.getY());
+			Engine.getEngine().addBox(pos.getX(), pos.getY());
 		}
 		if (isLeftThrusterActive()){
 			setAngle(getAngle() - (delta*0.05f*(1 + getThrusterStrength())));

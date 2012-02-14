@@ -7,16 +7,17 @@ import org.newdawn.slick.geom.Vector2f;
 //TODO When the world is smaller than the game window make it centered on the screen. (if that will ever happen also o.O)
 
 public class Camera {
-	public static final int WIDTH = SpaceRPG.WIDTH;
-	public static final int HEIGHT = SpaceRPG.HEIGHT;
-	public  Integer WORLD_WIDTH;
-	public  Integer WORLD_HEIGHT;
+	public static int WIDTH;
+	public static int HEIGHT;
 	public Vector2f following = new Vector2f(0,0);
 	public float rotation = 0;
 	public float scale = 1;
 	
 	public Camera(){
 		super();
+		WIDTH = Engine.WIDTH;
+		HEIGHT = Engine.HEIGHT;
+		
 	}
 	public void translateIn(Graphics g){
 		g.pushTransform();
@@ -31,23 +32,10 @@ public class Camera {
 
 	public float getX() {
 		float x = following.copy().getX() - ((WIDTH/2f)/scale);
-//		if (x < 0){
-//			x = 0;
-//		}else
-//		if (x > ((WORLD_WIDTH - (WIDTH/scale)))){
-//			x = ((WORLD_WIDTH - (WIDTH/scale)));
-//		}
 		return x;
 	}
 	public float getY() {
 		float y = following.copy().getY() - ((HEIGHT/2f)/scale);
-//		if (y < 0){
-//			y = 0;
-//		}else
-//		if (y > ((WORLD_HEIGHT - (HEIGHT/scale)))){
-//			y = ((WORLD_HEIGHT - (HEIGHT/scale)));
-//			
-//		}
 		return y;
 	}
 	public Vector2f getFollowing() {

@@ -41,7 +41,7 @@ public class Minimap {
 		g.setColor(Color.cyan);
 		g.drawRect(3, 3, getWidth() -6, getHeight()-6);
 		
-		for (Entity e: SpaceRPG.getLevel().entities){
+		for (Entity e: Engine.getLevel().entities){
 			if (e instanceof PlayerShip){
 				g.setColor(Color.yellow);
 			}else g.setColor(Color.gray);
