@@ -8,6 +8,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.entities.PlayerShip;
 import rogueshadow.particles.PHelper;
 import rogueshadow.utility.KeyBind;
 
@@ -32,46 +33,15 @@ public class Engine implements Game {
 	Input input;
 	
 
-	public static Level lvl;
-	public static PHelper engine;
+	public static World world;
+	public static PHelper particles;
 	
-	public Minimap map;
+	public static Minimap map;
 	
-	public Vector2f camPos;
+	public static Vector2f camPos;
+	public static PlayerShip playerShip;
 	
 	KeyBind keyBinds;
-
-
-
-	public void render(GameContainer container, Graphics g)
-			throws SlickException {
-
-		lvl.getCamera().translateIn(g);
-		lvl.render(g);
-		engine.render(g);
-		
-		// world border
-		int bwidth = 128;
-		g.setColor(Color.red);
-		g.drawRect(0, 0, WORLD_WIDTH-1, WORLD_HEIGHT-1);
-		g.setColor(Color.magenta);
-		g.drawRect(bwidth/2, bwidth/2, WORLD_WIDTH-bwidth, WORLD_HEIGHT-bwidth);
-		
-		lvl.getCamera().translateOut(g);
-		
-		engine.renderDust(g);
-		map.render(g);
-		
-		g.setColor(Color.white);
-		
-		g.drawString("Ship x/y : " + coor(lvl.getPlayer().getPosition().getX()) + " / " + coor(lvl.getPlayer().getY()), 100, 120);
-		g.drawString("Entities: " + lvl.entities.size(), 100, 140);
-
-	}
-
-	public static Integer coor(float x){
-		return (Math.round((x/256f)));
-	}
 
 	public void init(GameContainer container) throws SlickException {
 		
@@ -80,7 +50,7 @@ public class Engine implements Game {
 		WIDTH = container.getWidth();
 		HEIGHT = container.getHeight();
 		
-		lvl = new Level();
+		world = new World();
 		
 		map = new Minimap(5, 500,200,200);
 		camPos = new Vector2f(0,0);
@@ -103,16 +73,15 @@ public class Engine implements Game {
 		snd = new Sounds();
 		
 		input = container.getInput();
-		engine = new PHelper();
-		LevelLoader.loadLevel(lvl,"map");
+		particles = new PHelper();
+		LevelLoader.loadLevel(world,"map");
 		
 		
-		lvl.getPlayer().setThrusterStrength(1);
-		lvl.getPlayer().setEngineStrength(10);
+		getPlayer().setTopSpeedLvl(10);
 		
 		
-		engine.initDust(lvl.getPlayer());
-		map.setTracking(lvl.getPlayer().getPosition());
+		particles.initDust(getPlayer());
+		map.setTracking(getPlayer().getPosition());
 		
 		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
 		//TODO Some kind of level file format, to handle loading various entities, NPCs, etc.
@@ -120,27 +89,70 @@ public class Engine implements Game {
 		
 	}
 
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
+
+		getWorld().getCamera().translateIn(g);
+		getWorld().render(g);
+		particles.render(g);
+		
+		// world border
+		int bwidth = 128;
+		g.setColor(Color.red);
+		g.drawRect(0, 0, WORLD_WIDTH-1, WORLD_HEIGHT-1);
+		g.setColor(Color.magenta);
+		g.drawRect(bwidth/2, bwidth/2, WORLD_WIDTH-bwidth, WORLD_HEIGHT-bwidth);
+		
+		getWorld().getCamera().translateOut(g);
+		
+		particles.renderDust(g);
+		map.render(g);
+		
+		g.setColor(Color.white);
+		
+		g.drawString("Ship x/y : " + coor(getPlayer().getPosition().getX()) + " / " + coor(getPlayer().getY()), 100, 120);
+		g.drawString("Entities: " + world.objects.size(), 100, 140);
+
+	}
+
+	public static PlayerShip getPlayer() {
+		return playerShip;
+	}
+
+	public static void setPlayer(PlayerShip ship) {
+		playerShip = ship;
+	}
+
+	public static Integer coor(float x){
+		return (Math.round((x/256f)));
+	}
+
+
+
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		lvl.update(delta);
-		engine.update(delta);
-		engine.updateDust(delta, lvl.getPlayer());
-		lvl.getPlayer().resetControls();
+		getWorld().update(delta);
+		particles.update(delta);
+		particles.updateDust(delta, getPlayer());
+		getPlayer().resetControls();
 		if (isKD("Thrust")){
-			lvl.getPlayer().setEngineActive(true);
+			getPlayer().setEngineActive(true);
 
 		}
-		if (isKD("Left"))lvl.getPlayer().setLeftThrusterActive(true);
-		if (isKD("Right"))lvl.getPlayer().setRightThrusterActive(true);
-		if (isKD("Brake"))lvl.getPlayer().setSpaceBrake(true);
-		if (isKP("Shoot"))lvl.getPlayer().ShootPrimaryWeapon();
+		if (isKD("Left"))getPlayer().setLeftThrusterActive(true);
+		if (isKD("Right"))getPlayer().setRightThrusterActive(true);
+		if (isKD("Brake"))getPlayer().setSpaceBrake(true);
+		if (isKP("Shoot"))getPlayer().ShootPrimaryWeapon();
 		
-		if (isKD("Exit"))container.exit();
+		if (isKD("Exit")){
+			Log.debug("Engine", "User exited, (pressed ESC)");
+			container.exit();
+		}
 		
 	}
 
 	public static PHelper getEngine() {
-		return engine;
+		return particles;
 	}
 	
 	/**
@@ -158,8 +170,8 @@ public class Engine implements Game {
 		return input.isKeyPressed(keyBinds.getKey(key));
 	}
 	
-	public static Level getLevel(){
-		return lvl;
+	public static World getWorld(){
+		return world;
 	}
 
 	@Override

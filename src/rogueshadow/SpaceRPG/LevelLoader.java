@@ -2,27 +2,23 @@ package rogueshadow.SpaceRPG;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-
-import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.entities.Planet;
 import rogueshadow.SpaceRPG.entities.PlayerShip;
 import rogueshadow.SpaceRPG.entities.Rock;
 import rogueshadow.SpaceRPG.entities.Ship;
 import rogueshadow.SpaceRPG.entities.Star;
-import rogueshadow.SpaceRPG.entities.Entity;
 
 public class LevelLoader {
 	
 
 		//figure out how to include the metadata, such as planet names,
 		//quest info, and the like. :D
-	public static void loadLevel(Level lvl, String world) {
+	public static void loadLevel(World world, String filename) {
 		try {
-			BufferedImage map = ImageIO.read(Engine.class.getResource("/res/" + world + ".png"));
+			BufferedImage map = ImageIO.read(Engine.class.getResource("/res/" + filename + ".png"));
 			int w = map.getWidth();
 			int h = map.getHeight();
 			
@@ -41,26 +37,26 @@ public class LevelLoader {
 					color = pixels[x + y * w] & 0xffffff;
 					
 					if (color == 0xffff00){
-						lvl.add((Entity)new Star(lvl, new Vector2f(x*scale,y*scale)) );
+						world.add(new Star(x*scale,y*scale, 200));
 					}else
 					if (color == 0xff00ff){
-						PlayerShip s = new PlayerShip(lvl, new Vector2f(x*scale,y*scale));
-						lvl.setPlayer(s);
-						lvl.getCamera().setFollowing(lvl.getPlayer().getPosition());
-						lvl.add(lvl.getPlayer());
+						Engine.setPlayer(new PlayerShip(x*scale,y*scale));
+						world.getCamera().setFollowing(Engine.getPlayer().getPosition());
+						world.add(Engine.getPlayer());
 					}else
 					if (color == 0x825d07){
-						lvl.add(new Rock(lvl,new Vector2f(x*scale,y*scale), new Vector2f(0,0), 2));
+						world.add(new Rock(x*scale,y*scale, 2));
 					}else
 					if (color == 0x008e00){
-						lvl.add(new Planet(lvl, new Vector2f(x*scale,y*scale)));
+						world.add(new Planet(x*scale,y*scale));
 					}else
 					if (color == 0xff0000){
-						lvl.add(new Ship(lvl, new Vector2f(x*scale,y*scale)));
+						world.add(new Ship(x*scale,y*scale));
 					}
 					
 				}
 			}
+			Log.debug("LevelLoader", "Loaded level objects from image.");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

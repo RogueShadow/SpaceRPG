@@ -4,7 +4,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.entities.Entity;
 import rogueshadow.SpaceRPG.entities.PlayerShip;
 
 public class Minimap {
@@ -41,12 +40,12 @@ public class Minimap {
 		g.setColor(Color.cyan);
 		g.drawRect(3, 3, getWidth() -6, getHeight()-6);
 		
-		for (Entity e: Engine.getLevel().entities){
+		for (Renderable e: Engine.getWorld().renderObjs){
 			if (e instanceof PlayerShip){
 				g.setColor(Color.yellow);
 			}else g.setColor(Color.gray);
-			x = (((e.getX())*0.01f) - pos.x*0.01f)*getZoom() + w;
-			y = (((e.getY())*0.01f) - pos.y*0.01f)*getZoom() + h;
+			x = (((e.getCenterX())*0.01f) - pos.x*0.01f)*getZoom() + w;
+			y = (((e.getCenterY())*0.01f) - pos.y*0.01f)*getZoom() + h;
 			if (x < 0 || x > getWidth() || y < 0 || y > getHeight())continue;
 				g.drawRect(x, y, 1, 1);
 		}

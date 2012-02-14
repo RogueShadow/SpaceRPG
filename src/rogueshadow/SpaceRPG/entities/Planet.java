@@ -2,35 +2,35 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.Level;
+import rogueshadow.SpaceRPG.Renderable;
+import rogueshadow.SpaceRPG.WorldObject;
 
-public class Planet extends AbstractEntity implements Entity {
+public class Planet extends WorldObject implements Renderable {
 	String name;
+	float size;
 
-	public Planet(Level level, Vector2f position) {
-		super(level, position, new Vector2f(0,0));
-		setSize(50);
+	public Planet(float x, float y) {
+		super(x,y);
+		this.size = 50;
 	}
 
-	@Override
-	public void update(int delta) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		g.setColor(Color.blue);
 		g.drawOval(getCenterX(), getCenterY(), getSize(), getSize());
 	}
 
-	@Override
-	public void collided(Entity other) {
-		// TODO Auto-generated method stub
-		
+	public float getCenterX() {
+		return getX() + getSize()/2f;
+	}
+
+	public float getCenterY() {
+		return getX() + getSize()/2f;
+	}
+
+	public float getSize() {
+		return size;
 	}
 
 }

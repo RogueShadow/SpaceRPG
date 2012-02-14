@@ -56,10 +56,10 @@ public class Camera {
 	public void setScale(float scale) {
 		this.scale = scale;
 	}
-	public boolean isVisible(float centerX, float centerY, float size) {
-		float x = centerX - getX();
-		float y = centerY - getY();
-		if (Math.abs(x) < WIDTH + size && Math.abs(y) < HEIGHT + size){
+	public boolean isVisible(Renderable obj) {
+		float x = obj.getCenterX() - getX();
+		float y = obj.getCenterY() - getY();
+		if (Math.abs(x) < WIDTH + obj.getSize() && Math.abs(y) < HEIGHT + obj.getSize()){
 			return true;
 		}
 		return false;
