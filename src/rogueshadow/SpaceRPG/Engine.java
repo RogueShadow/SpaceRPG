@@ -104,7 +104,7 @@ public class Engine implements Game {
 		
 		input = container.getInput();
 		engine = new PHelper();
-		lvl.loadLevel("map");
+		LevelLoader.loadLevel(lvl,"map");
 		
 		
 		lvl.getPlayer().setThrusterStrength(1);
