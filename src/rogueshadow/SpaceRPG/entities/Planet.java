@@ -3,8 +3,8 @@ package rogueshadow.SpaceRPG.entities;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import rogueshadow.SpaceRPG.Renderable;
-import rogueshadow.SpaceRPG.WorldObject;
+import rogueshadow.SpaceRPG.interfaces.Renderable;
+
 
 public class Planet extends WorldObject implements Renderable {
 	String name;

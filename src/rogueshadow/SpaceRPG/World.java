@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
 
+import rogueshadow.SpaceRPG.entities.Bullet;
+import rogueshadow.SpaceRPG.entities.WorldObject;
+import rogueshadow.SpaceRPG.interfaces.Collidable;
+import rogueshadow.SpaceRPG.interfaces.Renderable;
+import rogueshadow.SpaceRPG.interfaces.Updatable;
+
 
 public class World {
 	ArrayList<WorldObject> objects = new ArrayList<WorldObject>();
@@ -11,6 +17,7 @@ public class World {
 	ArrayList<Updatable> updateObjs = new ArrayList<Updatable>();
 	ArrayList<WorldObject> addlist = new ArrayList<WorldObject>();
 	ArrayList<WorldObject> removelist = new ArrayList<WorldObject>();
+	ArrayList<Collidable> bulletObjs = new ArrayList<Collidable>();
 	
 	Camera camera = new Camera();
 
@@ -21,10 +28,27 @@ public class World {
 	
 	public void update(int delta){
 		for (Updatable obj: updateObjs){
-			if (obj.isActive())obj.update(delta);
+			if (obj.isActive()){
+				obj.update(delta);
+			}
 		}
+
+		for (Collidable b: bulletObjs){
+			for (WorldObject c: objects){
+				if (!(c instanceof Collidable))continue;
+				if (b == c)continue;
+				if (c.getPosition().distanceSquared(((WorldObject)b).getPosition()) > 1000)continue;
+				if (b.intersects((Collidable)c)){
+					b.collided((Collidable)c);
+					((Collidable)c).collided(b);
+				}
+				
+			}
+		}
+		
 		updateLists();
 	}
+	
 	
 	public void render(Graphics g){
 		for (Renderable obj: renderObjs){
@@ -47,7 +71,10 @@ public class World {
 				updateObjs.add((Updatable) obj);
 			}
 			if (obj instanceof Renderable){
-				renderObjs.add((Renderable)obj);
+				renderObjs.add((Renderable) obj);
+			}
+			if (obj instanceof Bullet){
+				bulletObjs.add((Collidable) obj);
 			}
 		}
 		objects.addAll(addlist);
@@ -58,6 +85,9 @@ public class World {
 			}
 			if (obj instanceof Renderable){
 				renderObjs.remove((Renderable)obj);
+			}
+			if (obj instanceof Bullet){
+				bulletObjs.remove((Collidable) obj);
 			}
 		}
 		objects.removeAll(removelist);

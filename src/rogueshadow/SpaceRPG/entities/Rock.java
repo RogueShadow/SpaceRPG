@@ -3,13 +3,17 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.Renderable;
-import rogueshadow.SpaceRPG.Updatable;
-import rogueshadow.SpaceRPG.WorldObject;
+import rogueshadow.SpaceRPG.Engine;
+import rogueshadow.SpaceRPG.interfaces.Collidable;
+import rogueshadow.SpaceRPG.interfaces.Renderable;
+import rogueshadow.SpaceRPG.interfaces.Updatable;
 
-public class Rock extends WorldObject implements Updatable, Renderable {
+
+public class Rock extends MovableObject implements Updatable, Renderable, Collidable {
 	float maxVel = 50f;
 	float sizeScaler = 15f;
 	int rockSize;
@@ -85,6 +89,29 @@ public class Rock extends WorldObject implements Updatable, Renderable {
 	public boolean isAlwaysUpdated() {
 		return false;
 	}
+	
+	public void collided(Collidable c) {
+		// TODO Auto-generated method stub
+		if (c instanceof Bullet){
+			Vector2f a = ((Bullet) c).getVelocity();
+			getVelocity().add(a.copy().scale(0.1f));
+			((Bullet) c).getWorld().remove((WorldObject)c);
+			Engine.getEngine().explosion(((Bullet) c).getX(), ((Bullet) c).getY(), 2);
+			
+		}
+	}
+	
+	public boolean intersects(Collidable c) {
+		Circle a = getCollisionShape();
+		Circle b = c.getCollisionShape();
+		return a.intersects(b);
+	}
+
+	
+	public Circle getCollisionShape() {
+		return new Circle(getCenterX(), getCenterY(), getShape().getBoundingCircleRadius());
+	}
+
 	
 
 }

@@ -2,13 +2,15 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.MovableObject;
-import rogueshadow.SpaceRPG.Renderable;
+import rogueshadow.SpaceRPG.interfaces.Collidable;
+import rogueshadow.SpaceRPG.interfaces.Renderable;
 
-public class Bullet extends MovableObject implements Renderable {
+
+public class Bullet extends MovableObject implements Renderable, Collidable{
 	protected int rotation = 0;
 	protected int life = 2000;
 	public Object parent = null;
@@ -38,7 +40,7 @@ public class Bullet extends MovableObject implements Renderable {
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.rotate(0, 0, rotation); 
-		g.setColor(Color.green);
+		g.setColor(new Color(0xFF0000));
 		g.draw(getShape());
 		g.popTransform();
 	}
@@ -55,6 +57,26 @@ public class Bullet extends MovableObject implements Renderable {
 
 	public float getSize() {
 		return size;
+	}
+
+	
+	public void collided(Collidable c) {
+		// TODO Auto-generated method stub
+		System.err.println("Collision!");
+
+		
+	}
+
+	
+	public boolean intersects(Collidable c) {
+		Circle a = getCollisionShape();
+		Circle b = c.getCollisionShape();
+		return a.intersects(b);
+	}
+
+	
+	public Circle getCollisionShape() {
+		return new Circle(getCenterX(), getCenterY(), getShape().getBoundingCircleRadius());
 	}
 
 }

@@ -4,7 +4,12 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.entities.Bullet;
+import rogueshadow.SpaceRPG.entities.Planet;
 import rogueshadow.SpaceRPG.entities.PlayerShip;
+import rogueshadow.SpaceRPG.entities.Ship;
+import rogueshadow.SpaceRPG.entities.Star;
+import rogueshadow.SpaceRPG.interfaces.Renderable;
 
 public class Minimap {
 	float zoom = 3f;
@@ -35,15 +40,27 @@ public class Minimap {
 		g.translate(getX(), getY());
 		g.setColor(Color.black);
 		g.fillRect(0,0, getWidth(), getHeight());	
-		g.setColor(Color.blue);
-		g.drawRect(0,0, getWidth(), getHeight());
 		g.setColor(Color.cyan);
-		g.drawRect(3, 3, getWidth() -6, getHeight()-6);
+		g.drawRect(0,0, getWidth(), getHeight());
 		
 		for (Renderable e: Engine.getWorld().renderObjs){
 			if (e instanceof PlayerShip){
+				g.setColor(Color.green);
+			}else
+			if (e instanceof Planet){
+				g.setColor(Color.blue);
+			}else
+			if (e instanceof Star){
 				g.setColor(Color.yellow);
-			}else g.setColor(Color.gray);
+			}else
+			if (e instanceof Bullet){
+				g.setColor(Color.red);
+			}else
+			if (e instanceof Ship){
+				g.setColor(Color.orange);
+			}else{
+				g.setColor(Color.gray);
+			}
 			x = (((e.getCenterX())*0.01f) - pos.x*0.01f)*getZoom() + w;
 			y = (((e.getCenterY())*0.01f) - pos.y*0.01f)*getZoom() + h;
 			if (x < 0 || x > getWidth() || y < 0 || y > getHeight())continue;

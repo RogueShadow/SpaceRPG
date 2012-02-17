@@ -6,9 +6,8 @@ import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
-import rogueshadow.SpaceRPG.MovableObject;
-import rogueshadow.SpaceRPG.Renderable;
 import rogueshadow.SpaceRPG.Sounds;
+import rogueshadow.SpaceRPG.interfaces.Renderable;
 
 
 public class Ship extends MovableObject implements Renderable {
@@ -152,7 +151,7 @@ public class Ship extends MovableObject implements Renderable {
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.rotate(0, 0, getAngle()+90);
-		g.setColor(Color.magenta);
+		g.setColor(new Color(0x808080));
 		g.draw(getShape());
 		g.popTransform();
 	}

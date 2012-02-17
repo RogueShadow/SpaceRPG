@@ -51,7 +51,7 @@ public class Engine implements Game {
 		
 		world = new World();
 		
-		map = new Minimap(5, 500,200,200);
+		map = new Minimap(WIDTH-201, 1,200,200);
 		camPos = new Vector2f(0,0);
 		
 		
@@ -78,7 +78,7 @@ public class Engine implements Game {
 		particles.initDust(getPlayer());
 		map.setTracking(getPlayer().getPosition());
 		
-		getPlayer().setEngineStrength(100);
+		getPlayer().setEngineStrength(1007);
 		getPlayer().setThrusterStrength(10);
 		
 		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
@@ -94,12 +94,13 @@ public class Engine implements Game {
 		getWorld().render(g);
 		particles.render(g);
 		
-		// world border
-		int bwidth = 128;
-		g.setColor(Color.red);
-		g.drawRect(0, 0, WORLD_WIDTH-1, WORLD_HEIGHT-1);
-		g.setColor(Color.magenta);
-		g.drawRect(bwidth/2, bwidth/2, WORLD_WIDTH-bwidth, WORLD_HEIGHT-bwidth);
+		
+//		// world border
+//		int bwidth = 128;
+//		g.setColor(Color.red);
+//		g.drawRect(0, 0, WORLD_WIDTH-1, WORLD_HEIGHT-1);
+//		g.setColor(Color.magenta);
+//		g.drawRect(bwidth/2, bwidth/2, WORLD_WIDTH-bwidth, WORLD_HEIGHT-bwidth);
 		
 		getWorld().getCamera().translateOut(g);
 		
@@ -108,7 +109,8 @@ public class Engine implements Game {
 		
 		g.setColor(Color.white);
 		
-		g.drawString("Ship x/y : " + coor(getPlayer().getPosition().getX()) + " / " + coor(getPlayer().getY()), 100, 120);
+		int[] c = gameToWorld(getPlayer().getX(),getPlayer().getY());
+		g.drawString("Ship x/y : " + c[0] + " / " + c[1], 100, 120);
 		g.drawString("Entities: " + world.objects.size(), 100, 140);
 
 	}
@@ -122,7 +124,14 @@ public class Engine implements Game {
 	}
 
 	public static Integer coor(float x){
-		return (Math.round((x/256f)));
+		float y = x/256;
+		return (Math.round(y));
+	}
+	public static int[] gameToWorld(float x, float  y){
+		float xx = (x - (Engine.WORLD_WIDTH/2f))/256f;
+		float yy = (y - (Engine.WORLD_HEIGHT/2f))/256f;
+		xx = Math.round(xx); yy = Math.round(yy);
+		return new int[] {(int)xx,(int)yy};
 	}
 
 
@@ -140,7 +149,7 @@ public class Engine implements Game {
 		if (isKD("Left"))getPlayer().setLeftThrusterActive(true);
 		if (isKD("Right"))getPlayer().setRightThrusterActive(true);
 		if (isKD("Brake"))getPlayer().setSpaceBrake(true);
-		if (isKD("Shoot"))getPlayer().ShootPrimaryWeapon();
+		if (isKP("Shoot"))getPlayer().ShootPrimaryWeapon();
 		
 		if (isKD("Exit")){
 			Log.debug("Engine", "User exited, (pressed ESC)");
