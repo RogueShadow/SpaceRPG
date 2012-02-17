@@ -37,7 +37,6 @@ public class Engine implements Game {
 	public static PHelper particles;
 	
 	public static Minimap map;
-	
 	public static Vector2f camPos;
 	public static PlayerShip playerShip;
 	
@@ -76,12 +75,11 @@ public class Engine implements Game {
 		particles = new PHelper();
 		LevelLoader.loadLevel(world,"map");
 		
-		
-		getPlayer().setTopSpeedLvl(10);
-		
-		
 		particles.initDust(getPlayer());
 		map.setTracking(getPlayer().getPosition());
+		
+		getPlayer().setEngineStrength(100);
+		getPlayer().setThrusterStrength(10);
 		
 		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
 		//TODO Some kind of level file format, to handle loading various entities, NPCs, etc.
@@ -142,7 +140,7 @@ public class Engine implements Game {
 		if (isKD("Left"))getPlayer().setLeftThrusterActive(true);
 		if (isKD("Right"))getPlayer().setRightThrusterActive(true);
 		if (isKD("Brake"))getPlayer().setSpaceBrake(true);
-		if (isKP("Shoot"))getPlayer().ShootPrimaryWeapon();
+		if (isKD("Shoot"))getPlayer().ShootPrimaryWeapon();
 		
 		if (isKD("Exit")){
 			Log.debug("Engine", "User exited, (pressed ESC)");

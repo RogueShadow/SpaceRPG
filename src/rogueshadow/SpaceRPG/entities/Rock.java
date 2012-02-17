@@ -4,6 +4,7 @@ package rogueshadow.SpaceRPG.entities;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
+
 import rogueshadow.SpaceRPG.Renderable;
 import rogueshadow.SpaceRPG.Updatable;
 import rogueshadow.SpaceRPG.WorldObject;
@@ -15,13 +16,12 @@ public class Rock extends WorldObject implements Updatable, Renderable {
 	float rotate = 0.0f;
 	float rotateSpeed = 1.5f;
 	float size;
-	Polygon poly = new Polygon();
 
 	public int getRockSize() {
 		return rockSize;
 	}
 	protected void generatePolygon(){
-		this.poly = new Polygon();
+		Polygon poly = new Polygon();
 		int size = (int)(getSize()/2.5f);
 		int distortion = (int)(size*0.8);
 		int points = 16;
@@ -33,6 +33,7 @@ public class Rock extends WorldObject implements Updatable, Renderable {
 		}
 		poly.setCenterX(0);
 		poly.setCenterY(0);
+		setShape(poly);
 	}
 	
 	public Rock(float x, float y, int size) {
@@ -52,11 +53,11 @@ public class Rock extends WorldObject implements Updatable, Renderable {
 
 	public void render(Graphics g) {
 		g.pushTransform();
-		g.setColor(Color.cyan);
+		g.setColor(new Color(0x8B4513));
 		g.translate(getX(), getY());
 		g.rotate(0,0, rotate);
 		
-		g.draw(poly);
+		g.draw(getShape());
 
 		g.popTransform();
 	}

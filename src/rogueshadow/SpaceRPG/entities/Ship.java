@@ -2,20 +2,18 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
+import rogueshadow.SpaceRPG.MovableObject;
 import rogueshadow.SpaceRPG.Renderable;
 import rogueshadow.SpaceRPG.Sounds;
-import rogueshadow.SpaceRPG.Updatable;
-import rogueshadow.SpaceRPG.WorldObject;
 
 
-public class Ship extends WorldObject implements Renderable, Updatable {
+public class Ship extends MovableObject implements Renderable {
 	
 	float size;
-	Vector2f velocity;
-	Vector2f position;
 
 	int maxShield = 0;
 
@@ -48,9 +46,8 @@ public class Ship extends WorldObject implements Renderable, Updatable {
 
 	public Ship(float x, float y) {
 		super(x,y);
+		generateShape();
 		size = 10f;
-		position = new Vector2f(x,y);
-		velocity = new Vector2f(0,0);
 	}
 
 	public float getAngle() {
@@ -76,10 +73,6 @@ public class Ship extends WorldObject implements Renderable, Updatable {
 	
 	public String getName() {
 		return name;
-	}
-	
-	public Vector2f getPosition() {
-		return position;
 	}
 	
 	public int getShipType() {
@@ -130,25 +123,6 @@ public class Ship extends WorldObject implements Renderable, Updatable {
 	}
 
 
-	public Vector2f getVelocity() {
-		return velocity;
-	}
-
-
-	@Override
-	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public boolean isAlwaysUpdated() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
 	public boolean isEngineActive() {
 		return engineActive;
 	}
@@ -179,9 +153,7 @@ public class Ship extends WorldObject implements Renderable, Updatable {
 		g.translate(getX(), getY());
 		g.rotate(0, 0, getAngle()+90);
 		g.setColor(Color.magenta);
-		g.drawLine(0, -20, -10, 10);
-		g.drawLine(0, -20, 10, 10);
-		g.drawLine(-10, 10, 10, 10);
+		g.draw(getShape());
 		g.popTransform();
 	}
 
@@ -192,6 +164,17 @@ public class Ship extends WorldObject implements Renderable, Updatable {
 		setSpaceBrake(false);
 		setPrimaryWeaponActive(false);
 		setSecondaryWeaponActive(false);
+	}
+
+	private void generateShape() {
+		Polygon p = new Polygon();
+		p.addPoint(0, -20);
+		p.addPoint(10,10);
+		p.addPoint(-10, 10);
+		p.setClosed(true);
+		p.setCenterX(0);
+		p.setCenterY(0);
+		setShape(p);
 	}
 
 	public void setAngle(float angle) {
@@ -228,10 +211,6 @@ public class Ship extends WorldObject implements Renderable, Updatable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setPosition(Vector2f position) {
-		this.position = position;
 	}
 
 	public void setPrimaryWeaponActive(boolean primaryWeaponActive) {
@@ -292,14 +271,10 @@ public class Ship extends WorldObject implements Renderable, Updatable {
 		this.typeShield = typeShield;
 	}
 
-	public void setVelocity(Vector2f velocity) {
-		this.velocity = velocity;
-	}
-
 	public void ShootPrimaryWeapon(){
 		Vector2f pos = getPosition().copy();
-		pos.add(new Vector2f(getAngle()).scale(20));
-		getWorld().add(new Bullet(pos.x, pos.y,new Vector2f(this.getAngle()).scale(570).add(getVelocity())));
+		pos.add(new Vector2f(getAngle()).scale(25));
+		getWorld().add(new Bullet(pos.x, pos.y,new Vector2f(this.getAngle()).scale(570).add(getVelocity()),this));
 		Sounds.shot.play();
 	}
 
@@ -325,9 +300,7 @@ public class Ship extends WorldObject implements Renderable, Updatable {
 			getVelocity().scale(0.95f);
 		}
 		
-		getPosition().add(getVelocity().copy().scale(delta/1000f));
-		x = position.x;
-		y = position.y;
+		super.update(delta);
 		
 	}
 

@@ -32,7 +32,6 @@ public class World {
 		}
 	}
 
-
 	public void add(WorldObject obj){
 		obj.setWorld(this);
 		addlist.add(obj);
@@ -62,6 +61,7 @@ public class World {
 			}
 		}
 		objects.removeAll(removelist);
+		
 		addlist.clear();
 		removelist.clear();
 	}

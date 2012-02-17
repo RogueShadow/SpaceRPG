@@ -2,6 +2,7 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
 
 import rogueshadow.SpaceRPG.Renderable;
 import rogueshadow.SpaceRPG.WorldObject;
@@ -13,6 +14,7 @@ public class Star extends WorldObject implements Renderable {
 	public Star(float x, float y, float size) {
 		super(x, y);
 		setSize(size);
+		setShape(new Circle(0, 0, size/2f));
 		// TODO Auto-generated constructor stub
 	}
 
@@ -20,7 +22,10 @@ public class Star extends WorldObject implements Renderable {
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		g.setColor(Color.yellow);
-		g.drawOval(getCenterX(), getCenterY(), getSize(), getSize());
+		g.pushTransform();
+		g.translate(getCenterX(), getCenterY());
+		g.draw(getShape());
+		g.popTransform();
 	}
 
 	public float getCenterY() {

@@ -2,37 +2,30 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.MovableObject;
 import rogueshadow.SpaceRPG.Renderable;
-import rogueshadow.SpaceRPG.Updatable;
-import rogueshadow.SpaceRPG.WorldObject;
 
-public class Bullet extends WorldObject implements Updatable, Renderable {
+public class Bullet extends MovableObject implements Renderable {
 	protected int rotation = 0;
 	protected int life = 2000;
-	Vector2f velocity;
-	public Vector2f getVelocity() {
-		return velocity;
-	}
-
-	public void setVelocity(Vector2f velocity) {
-		this.velocity = velocity;
-	}
-
+	public Object parent = null;
 	protected Ship owner;
 	float size;
 
-	public Bullet(float x, float y, Vector2f velocity) {
+	public Bullet(float x, float y, Vector2f velocity, Object parent) {
 		super(x,y);
 		setVelocity(velocity);
+		setShape(new Rectangle(-4,-4,8,8));
+		this.parent = parent;
 		size = 4;
 
 	}
 
 	public void update(int delta){
-		x += getVelocity().copy().scale(delta/1000f).x;
-		y += getVelocity().copy().scale(delta/1000f).y;
+		super.update(delta);
 		rotation = (rotation + 3)%180;
 		life -= delta;
 		if (life < 0){
@@ -43,9 +36,10 @@ public class Bullet extends WorldObject implements Updatable, Renderable {
 	@Override
 	public void render(Graphics g) {
 		g.pushTransform();
-		g.rotate(getCenterX(), getCenterY(), rotation);
+		g.translate(getX(), getY());
+		g.rotate(0, 0, rotation); 
 		g.setColor(Color.green);
-		g.drawRect(getX(),getY(),getSize(),getSize());
+		g.draw(getShape());
 		g.popTransform();
 	}
 
@@ -61,16 +55,6 @@ public class Bullet extends WorldObject implements Updatable, Renderable {
 
 	public float getSize() {
 		return size;
-	}
-
-	public boolean isAlwaysUpdated() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return true;
 	}
 
 }

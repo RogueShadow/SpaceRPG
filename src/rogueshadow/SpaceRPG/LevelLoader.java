@@ -29,6 +29,7 @@ public class LevelLoader {
 			
 			int x = 0;
 			int y = 0;
+			int[] counts = {0,0,0,0,0};
 			int[] pixels = new int[w*h];
 			map.getRGB(0, 0, w, h, pixels, 0, w);
 			int color = 0;
@@ -38,6 +39,7 @@ public class LevelLoader {
 					
 					if (color == 0xffff00){
 						world.add(new Star(x*scale,y*scale, 200));
+						counts[0]++;
 					}else
 					if (color == 0xff00ff){
 						Engine.setPlayer(new PlayerShip(x*scale,y*scale));
@@ -46,19 +48,24 @@ public class LevelLoader {
 					}else
 					if (color == 0x825d07){
 						world.add(new Rock(x*scale,y*scale, 2));
+						counts[1]++;
 					}else
 					if (color == 0x008e00){
 						world.add(new Planet(x*scale,y*scale));
+						counts[2]++;
 					}else
 					if (color == 0xff0000){
 						world.add(new Ship(x*scale,y*scale));
+						counts[3]++;
 					}
 					
 				}
 			}
 			Log.debug("LevelLoader", "Loaded level objects from image.");
+			Log.info("LevelLoader", "Stars: " + counts[0] + " Rocks: " + counts[1] + " Planets: "+ counts[2] + " Ships: "+ counts[3]);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			Log.error("LevelLoader", "Could not load the file: " + filename + ".png");
 			e.printStackTrace();
 		}
 	}
