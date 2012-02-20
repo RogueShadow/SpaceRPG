@@ -50,7 +50,11 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 		g.rotate(0, 0, rotation); 
 		g.setColor(new Color(0xFF0000));
 		g.draw(getShape());
+
 		g.popTransform();
+		g.setColor(Color.green);	
+		g.draw(getRect());
+
 	}
 
 
@@ -84,7 +88,7 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 	@Override
 	public Rectangle getRect() {
 		float w = Math.max(getShape().getWidth(), getShape().getHeight());
-		return new Rectangle(getCenterX(),getCenterY(),w,w);
+		return new Rectangle(getX()-w/2,getY()-w/2,w,w);
 	}
 	@Override
 	public void setMoved(boolean value) {

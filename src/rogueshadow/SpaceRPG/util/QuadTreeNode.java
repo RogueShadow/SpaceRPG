@@ -2,6 +2,7 @@ package rogueshadow.SpaceRPG.util;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -26,7 +27,6 @@ public class QuadTreeNode {
 			this.depth = 1;
 		}else{
 			this.depth = this.parent.depth + 1;
-			System.err.println("Depth: " + depth);
 		}
 	}
 	
@@ -52,8 +52,55 @@ public class QuadTreeNode {
 			tr.remove(c);
 			bl.remove(c);
 			br.remove(c);
+			
+			int sum = 0;
+			sum += tl.count() + tr.count() + bl.count() + br.count();
+			if (sum < QuadTree.maxElementsPerNode){
+				elements.addAll(tl.getAll());
+				elements.addAll(tr.getAll());
+				elements.addAll(bl.getAll());
+				elements.addAll(br.getAll());
+				tl = null;
+				tr = null;
+				bl = null;
+				br = null;
+				leaf = true;
+			}
+			
+			
 		}else{
 			elements.remove(c);
+		}
+	}
+	
+	public ArrayList<Collidable> get(Rectangle rect){
+		ArrayList<Collidable> list = new ArrayList<Collidable>();
+		if (leaf){
+			if (getRect().intersects(rect))list.addAll(elements);
+		}else{
+			if (tl.intersects(rect))list.addAll(tl.get(rect));
+			if (tr.intersects(rect))list.addAll(tr.get(rect));
+			if (bl.intersects(rect))list.addAll(bl.get(rect));
+			if (br.intersects(rect))list.addAll(br.get(rect));
+		}
+		return list;
+	}
+	
+	public boolean intersects(Rectangle rect){
+		return getRect().intersects(rect);
+	}
+	
+	public ArrayList<Collidable> getAll(){
+		ArrayList<Collidable> list = new ArrayList<Collidable>();
+		if (leaf){
+			list.addAll(elements);
+			return list;
+		}else{
+			list.addAll(tl.getAll());
+			list.addAll(tr.getAll());
+			list.addAll(bl.getAll());
+			list.addAll(br.getAll());
+			return list;
 		}
 	}
 
@@ -74,7 +121,7 @@ public class QuadTreeNode {
 	public void add(Collidable c){
 		if (leaf){
 			elements.add(c);
-			if (elements.size() > QuadTree.maxElementsPerNode && getRect().getWidth() > 5){
+			if (elements.size() > QuadTree.maxElementsPerNode && getRect().getWidth() > QuadTree.minWidth){
 				split();
 				for (Collidable e: elements)pushDown(e);
 			    elements.clear();
@@ -85,6 +132,7 @@ public class QuadTreeNode {
 	}
 	
 	public void render(Graphics g){
+		g.setColor(Color.green);
 		g.draw(getRect());
 		if (!leaf){
 			tl.render(g);
@@ -114,6 +162,12 @@ public class QuadTreeNode {
 		}
 		if (i == 0){
 			System.err.println("Element fell through cracks in tree.");
+			pushUp(c);
+		}
+	}
+	public void pushUp(Collidable c){
+		if (getParent() != null){
+			getParent().add(c);
 		}
 	}
 	

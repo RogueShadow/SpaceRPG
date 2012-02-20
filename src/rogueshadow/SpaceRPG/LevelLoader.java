@@ -17,6 +17,8 @@ public class LevelLoader {
 		//figure out how to include the metadata, such as planet names,
 		//quest info, and the like. :D
 	public static void loadLevel(World world, String filename) {
+		long[] time = {0,0};
+		time[0] = System.nanoTime();
 		try {
 			BufferedImage map = ImageIO.read(Engine.class.getResource("/res/" + filename + ".png"));
 			int w = map.getWidth();
@@ -63,7 +65,9 @@ public class LevelLoader {
 					
 				}
 			}
-			Log.debug("LevelLoader", "Loaded level objects from image.");
+			time[1] = System.nanoTime() - time[0];
+			time[1] /= 1000000;
+			Log.debug("LevelLoader", "Loaded level objects from image in " + time[1] + "ms.");
 			Log.info("LevelLoader", "Stars: " + counts[0] + " Rocks: " + counts[1] + " Planets: "+ counts[2] + " Ships: "+ counts[3]);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -82,8 +82,8 @@ public class Engine implements Game {
 		particles.initDust(getPlayer());
 		map.setTracking(getPlayer().getPosition());
 		
-		getPlayer().setEngineStrength(1007);
-		getPlayer().setThrusterStrength(10);
+		getPlayer().setEngineStrength(200);
+		getPlayer().setThrusterStrength(7);
 		
 		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
 		//TODO Some kind of level file format, to handle loading various entities, NPCs, etc.
@@ -98,14 +98,9 @@ public class Engine implements Game {
 		getWorld().getCamera().translateIn(g);
 		getWorld().render(g);
 		particles.render(g);
+		//getWorld().tree.render(g);
 		
-		
-//		// world border
-//		int bwidth = 128;
-//		g.setColor(Color.red);
-//		g.drawRect(0, 0, WORLD_WIDTH-1, WORLD_HEIGHT-1);
-//		g.setColor(Color.magenta);
-//		g.drawRect(bwidth/2, bwidth/2, WORLD_WIDTH-bwidth, WORLD_HEIGHT-bwidth);
+
 		
 		getWorld().getCamera().translateOut(g);
 		
@@ -117,12 +112,9 @@ public class Engine implements Game {
 		int[] c = gameToWorld(getPlayer().getX(),getPlayer().getY());
 		g.drawString("Ship x/y : " + c[0] + " / " + c[1], 100, 120);
 		g.drawString("Entities: " + world.objects.size(), 100, 140);
-		//g.drawString("QuadTreeCount: " + getWorld().tree.count() , 100, 220);
+		g.drawString("QuadTreeCount: " + getWorld().tree.count() , 100, 220);
 		
-		g.pushTransform();
-		g.scale(0.01f, 0.01f);
-		getWorld().tree.render(g);
-		g.popTransform();
+
 		
 		timers[3] = System.nanoTime() - timers[2];
 		
@@ -166,7 +158,7 @@ public class Engine implements Game {
 		if (isKD("Left"))getPlayer().setLeftThrusterActive(true);
 		if (isKD("Right"))getPlayer().setRightThrusterActive(true);
 		if (isKD("Brake"))getPlayer().setSpaceBrake(true);
-		if (isKP("Shoot"))getPlayer().ShootPrimaryWeapon();
+		if (isKD("Shoot"))getPlayer().ShootPrimaryWeapon();
 		if (isKP("TreeCount"))System.err.println(getWorld().tree.count());
 		if (isKD("Exit")){
 			Log.debug("Engine", "User exited, (pressed ESC)");

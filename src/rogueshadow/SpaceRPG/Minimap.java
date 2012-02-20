@@ -66,8 +66,7 @@ public class Minimap {
 			if (x < 0 || x > getWidth() || y < 0 || y > getHeight())continue;
 				g.drawRect(x, y, 1, 1);
 		}
-		
-		
+
 		g.popTransform();
 
 	}

@@ -33,12 +33,22 @@ public class World {
 	}
 	
 	public void update(int delta){
+		ArrayList<Collidable> checks = new ArrayList<Collidable>();
 		for (Updatable obj: updateObjs){
 			if (obj.isActive()){
 				obj.update(delta);
 			}
 		}
-		
+		for (Collidable c: bulletObjs){
+			checks.addAll(tree.get(c.getRect()));
+			for (Collidable e: checks){
+				if (c.getRect().intersects(e.getRect())){
+					c.collided(e);
+					e.collided(c);
+				}
+			}
+			checks.clear();
+		}
 		
 		
 		
@@ -72,7 +82,7 @@ public class World {
 			if (obj instanceof Bullet){
 				bulletObjs.add((Collidable) obj);
 			}
-			if (obj instanceof Collidable){
+			if (obj instanceof Collidable && !(obj instanceof Bullet)){
 				tree.add((Collidable) obj);
 			}
 		}

@@ -67,8 +67,10 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 		g.rotate(0,0, rotate);
 		
 		g.draw(getShape());
-
+		g.setColor(Color.green);
 		g.popTransform();
+		g.draw(getRect());
+		
 	}
 	
 
@@ -102,6 +104,7 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 			getVelocity().add(a.copy().scale(0.1f));
 			((Bullet) c).getWorld().remove((WorldObject)c);
 			Engine.getEngine().explosion(((Bullet) c).getX(), ((Bullet) c).getY(), 2);
+			getWorld().remove(this);
 			
 		}
 	}
@@ -117,7 +120,7 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 	@Override
 	public Rectangle getRect() {
 		float w = Math.max(getShape().getWidth(), getShape().getHeight());
-		return new Rectangle(getCenterX(),getCenterY(),w,w);
+		return new Rectangle(getX()-w/2,getY()-w/2,w,w);
 	}
 	@Override
 	public void setMoved(boolean value) {
