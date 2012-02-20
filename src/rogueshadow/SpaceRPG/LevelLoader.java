@@ -27,7 +27,7 @@ public class LevelLoader {
 			Engine.WORLD_WIDTH = w*scale;
 			Engine.WORLD_HEIGHT = h*scale;
 			
-			world.init();
+			world.init();// initialize anything that needs a world size before loading objects into world.
 			
 			int x = 0;
 			int y = 0;
