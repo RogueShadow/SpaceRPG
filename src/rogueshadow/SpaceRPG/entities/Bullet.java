@@ -2,7 +2,6 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -16,6 +15,14 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 	public Object parent = null;
 	protected Ship owner;
 	float size;
+	private boolean hasMoved = false;
+
+	public void moved() {
+		this.hasMoved = true;
+	}
+	public void reset(){
+		this.hasMoved = false;
+	}
 
 	public Bullet(float x, float y, Vector2f velocity, Object parent) {
 		super(x,y);
@@ -28,6 +35,7 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 
 	public void update(int delta){
 		super.update(delta);
+		if (getVelocity().lengthSquared() != 0)moved();
 		rotation = (rotation + 3)%180;
 		life -= delta;
 		if (life < 0){
@@ -62,21 +70,25 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 	
 	public void collided(Collidable c) {
 		// TODO Auto-generated method stub
-		System.err.println("Collision!");
-
+		
 		
 	}
-
-	
 	public boolean intersects(Collidable c) {
-		Circle a = getCollisionShape();
-		Circle b = c.getCollisionShape();
-		return a.intersects(b);
+		return getRect().intersects(c.getRect());
 	}
 
-	
-	public Circle getCollisionShape() {
-		return new Circle(getCenterX(), getCenterY(), getShape().getBoundingCircleRadius());
+	@Override
+	public boolean hasMoved() {
+		return hasMoved ;
+	}
+	@Override
+	public Rectangle getRect() {
+		float w = Math.max(getShape().getWidth(), getShape().getHeight());
+		return new Rectangle(getCenterX(),getCenterY(),w,w);
+	}
+	@Override
+	public void setMoved(boolean value) {
+		hasMoved = value;
 	}
 
 }

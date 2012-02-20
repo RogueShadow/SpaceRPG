@@ -3,12 +3,14 @@ package rogueshadow.SpaceRPG;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Rectangle;
 
 import rogueshadow.SpaceRPG.entities.Bullet;
 import rogueshadow.SpaceRPG.entities.WorldObject;
 import rogueshadow.SpaceRPG.interfaces.Collidable;
 import rogueshadow.SpaceRPG.interfaces.Renderable;
 import rogueshadow.SpaceRPG.interfaces.Updatable;
+import rogueshadow.SpaceRPG.util.QuadTree;
 
 
 public class World {
@@ -18,12 +20,16 @@ public class World {
 	ArrayList<WorldObject> addlist = new ArrayList<WorldObject>();
 	ArrayList<WorldObject> removelist = new ArrayList<WorldObject>();
 	ArrayList<Collidable> bulletObjs = new ArrayList<Collidable>();
+	QuadTree tree = null;
 	
 	Camera camera = new Camera();
 
 	public World() {
 		super();
-		// TODO Auto-generated constructor stub
+	}
+	
+	public void init(){
+		tree = new QuadTree(new Rectangle(0,0,Engine.WORLD_WIDTH,Engine.WORLD_HEIGHT));
 	}
 	
 	public void update(int delta){
@@ -32,19 +38,9 @@ public class World {
 				obj.update(delta);
 			}
 		}
-
-		for (Collidable b: bulletObjs){
-			for (WorldObject c: objects){
-				if (!(c instanceof Collidable))continue;
-				if (b == c)continue;
-				if (c.getPosition().distanceSquared(((WorldObject)b).getPosition()) > 1000)continue;
-				if (b.intersects((Collidable)c)){
-					b.collided((Collidable)c);
-					((Collidable)c).collided(b);
-				}
-				
-			}
-		}
+		
+		
+		
 		
 		updateLists();
 	}
@@ -76,6 +72,9 @@ public class World {
 			if (obj instanceof Bullet){
 				bulletObjs.add((Collidable) obj);
 			}
+			if (obj instanceof Collidable){
+				tree.add((Collidable) obj);
+			}
 		}
 		objects.addAll(addlist);
 		
@@ -88,6 +87,9 @@ public class World {
 			}
 			if (obj instanceof Bullet){
 				bulletObjs.remove((Collidable) obj);
+			}
+			if (obj instanceof Collidable){
+				tree.remove((Collidable) obj);
 			}
 		}
 		objects.removeAll(removelist);

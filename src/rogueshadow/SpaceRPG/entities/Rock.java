@@ -3,8 +3,8 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
@@ -20,6 +20,11 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 	float rotate = 0.0f;
 	float rotateSpeed = 1.5f;
 	float size;
+	public boolean hasMoved;
+	
+	public void moved(){
+		this.hasMoved = true;
+	}
 
 	public int getRockSize() {
 		return rockSize;
@@ -102,16 +107,22 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 	}
 	
 	public boolean intersects(Collidable c) {
-		Circle a = getCollisionShape();
-		Circle b = c.getCollisionShape();
-		return a.intersects(b);
+		return getRect().intersects(c.getRect());
 	}
 
-	
-	public Circle getCollisionShape() {
-		return new Circle(getCenterX(), getCenterY(), getShape().getBoundingCircleRadius());
+	@Override
+	public boolean hasMoved() {
+		return hasMoved ;
 	}
-
+	@Override
+	public Rectangle getRect() {
+		float w = Math.max(getShape().getWidth(), getShape().getHeight());
+		return new Rectangle(getCenterX(),getCenterY(),w,w);
+	}
+	@Override
+	public void setMoved(boolean value) {
+		hasMoved = value;
+	}
 	
 
 }

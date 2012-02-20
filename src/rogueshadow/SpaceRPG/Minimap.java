@@ -12,7 +12,7 @@ import rogueshadow.SpaceRPG.entities.Star;
 import rogueshadow.SpaceRPG.interfaces.Renderable;
 
 public class Minimap {
-	float zoom = 3f;
+	float zoom = 1f;
 	float x = 0;
 	float y = 0;
 	float width = 0;

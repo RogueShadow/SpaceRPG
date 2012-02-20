@@ -1,9 +1,10 @@
 package rogueshadow.SpaceRPG.interfaces;
 
-import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Rectangle;
 
 public interface Collidable {
 	public void collided(Collidable c);
-	public boolean intersects(Collidable c);
-	public Circle getCollisionShape();
+	public Rectangle getRect();
+	public boolean hasMoved();
+	public void setMoved(boolean value);
 }

@@ -27,6 +27,8 @@ public class LevelLoader {
 			Engine.WORLD_WIDTH = w*scale;
 			Engine.WORLD_HEIGHT = h*scale;
 			
+			world.init();
+			
 			int x = 0;
 			int y = 0;
 			int[] counts = {0,0,0,0,0};
