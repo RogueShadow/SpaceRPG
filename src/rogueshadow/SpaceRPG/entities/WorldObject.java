@@ -4,8 +4,10 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.World;
+import rogueshadow.SpaceRPG.interfaces.NodeElement;
+import rogueshadow.SpaceRPG.util.BB;
 
-public class WorldObject {
+public class WorldObject implements NodeElement {
 	public World world;
 	public Shape shape;
 	Vector2f position;
@@ -48,4 +50,10 @@ public class WorldObject {
 	public void setPosition(Vector2f position){
 		this.position = position;;
 	}
+	@Override
+	public BB getBB() {
+		return new BB(getX(), getY(),1,1);
+	}
+
+
 }

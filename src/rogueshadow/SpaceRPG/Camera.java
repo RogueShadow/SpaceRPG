@@ -3,7 +3,8 @@ package rogueshadow.SpaceRPG;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.interfaces.Renderable;
+import rogueshadow.SpaceRPG.entities.WorldObject;
+import rogueshadow.SpaceRPG.util.BB;
 
 //TODO When rotating the world is positions weird, needs fix (if using rotation will ever be needed)
 //TODO When the world is smaller than the game window make it centered on the screen. (if that will ever happen also o.O)
@@ -42,13 +43,11 @@ public class Camera {
 	public void setFollowing(Vector2f following) {
 		this.following = following;
 	}
-	public boolean isVisible(Renderable obj) {
-		float x = obj.getCenterX() - getX();
-		float y = obj.getCenterY() - getY();
-		if (Math.abs(x) < WIDTH + obj.getSize() && Math.abs(y) < HEIGHT + obj.getSize()){
-			return true;
-		}
-		return false;
+	public boolean isVisible(WorldObject obj) {
+		return getBB().intersects(obj.getBB());
+	}
+	public BB getBB() {
+		return new BB(getX(), getY(), WIDTH, HEIGHT);
 	}
 	
 }

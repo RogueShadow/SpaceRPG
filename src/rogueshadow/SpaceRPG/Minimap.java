@@ -9,7 +9,8 @@ import rogueshadow.SpaceRPG.entities.Planet;
 import rogueshadow.SpaceRPG.entities.PlayerShip;
 import rogueshadow.SpaceRPG.entities.Ship;
 import rogueshadow.SpaceRPG.entities.Star;
-import rogueshadow.SpaceRPG.interfaces.Renderable;
+import rogueshadow.SpaceRPG.entities.WorldObject;
+import rogueshadow.SpaceRPG.util.BB;
 
 public class Minimap {
 	float zoom = 1f;
@@ -22,7 +23,7 @@ public class Minimap {
 	public void setTracking(Vector2f pos){
 		this.pos = pos;
 	}
-	
+	//TODO reimplement the minimap using quadtree.
 	public Minimap(float x,float y, float width, float height){
 		super();
 		this.x = x;
@@ -43,7 +44,7 @@ public class Minimap {
 		g.setColor(Color.cyan);
 		g.drawRect(0,0, getWidth(), getHeight());
 		
-		for (Renderable e: Engine.getWorld().renderObjs){
+		for (WorldObject e: Engine.getWorld().staticTree.get(new BB(0,0,Engine.WORLD_WIDTH,Engine.WORLD_HEIGHT))){
 			if (e instanceof PlayerShip){
 				g.setColor(Color.green);
 			}else
@@ -61,8 +62,32 @@ public class Minimap {
 			}else{
 				g.setColor(Color.gray);
 			}
-			x = (((e.getCenterX())*0.01f) - pos.x*0.01f)*getZoom() + w;
-			y = (((e.getCenterY())*0.01f) - pos.y*0.01f)*getZoom() + h;
+			x = (((e.getX())*0.01f) - pos.x*0.01f)*getZoom() + w;
+			y = (((e.getY())*0.01f) - pos.y*0.01f)*getZoom() + h;
+			if (x < 0 || x > getWidth() || y < 0 || y > getHeight())continue;
+				g.drawRect(x, y, 1, 1);
+		}
+
+		for (WorldObject e: Engine.getWorld().updatelist){
+			if (e instanceof PlayerShip){
+				g.setColor(Color.green);
+			}else
+			if (e instanceof Planet){
+				g.setColor(Color.blue);
+			}else
+			if (e instanceof Star){
+				g.setColor(Color.yellow);
+			}else
+			if (e instanceof Bullet){
+				g.setColor(Color.red);
+			}else
+			if (e instanceof Ship){
+				g.setColor(Color.orange);
+			}else{
+				g.setColor(Color.gray);
+			}
+			x = (((e.getX())*0.01f) - pos.x*0.01f)*getZoom() + w;
+			y = (((e.getY())*0.01f) - pos.y*0.01f)*getZoom() + h;
 			if (x < 0 || x > getWidth() || y < 0 || y > getHeight())continue;
 				g.drawRect(x, y, 1, 1);
 		}

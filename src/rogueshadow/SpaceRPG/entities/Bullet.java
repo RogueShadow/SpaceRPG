@@ -7,22 +7,16 @@ import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.interfaces.Collidable;
 import rogueshadow.SpaceRPG.interfaces.Renderable;
+import rogueshadow.SpaceRPG.util.BB;
 
 
 public class Bullet extends MovableObject implements Renderable, Collidable{
 	protected int rotation = 0;
-	protected int life = 2000;
+	protected int life = 2000000;
 	public Object parent = null;
 	protected Ship owner;
 	float size;
-	private boolean hasMoved = false;
 
-	public void moved() {
-		this.hasMoved = true;
-	}
-	public void reset(){
-		this.hasMoved = false;
-	}
 
 	public Bullet(float x, float y, Vector2f velocity, Object parent) {
 		super(x,y);
@@ -35,7 +29,6 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 
 	public void update(int delta){
 		super.update(delta);
-		if (getVelocity().lengthSquared() != 0)moved();
 		rotation = (rotation + 3)%180;
 		life -= delta;
 		if (life < 0){
@@ -52,8 +45,6 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 		g.draw(getShape());
 
 		g.popTransform();
-		g.setColor(Color.green);	
-		g.draw(getRect());
 
 	}
 
@@ -78,21 +69,20 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 		
 	}
 	public boolean intersects(Collidable c) {
-		return getRect().intersects(c.getRect());
+		return getBB().intersects(c.getBB());
 	}
 
 	@Override
-	public boolean hasMoved() {
-		return hasMoved ;
-	}
-	@Override
-	public Rectangle getRect() {
+	public BB getBB() {
 		float w = Math.max(getShape().getWidth(), getShape().getHeight());
-		return new Rectangle(getX()-w/2,getY()-w/2,w,w);
+		return new BB(getX()-w/2,getY()-w/2,w,w);
 	}
+	
 	@Override
-	public void setMoved(boolean value) {
-		hasMoved = value;
+	public boolean isAlwaysUpdated(){
+		return true;
 	}
+
+
 
 }

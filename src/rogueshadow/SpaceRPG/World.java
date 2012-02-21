@@ -3,24 +3,24 @@ package rogueshadow.SpaceRPG;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Rectangle;
 
 import rogueshadow.SpaceRPG.entities.Bullet;
+import rogueshadow.SpaceRPG.entities.Ship;
 import rogueshadow.SpaceRPG.entities.WorldObject;
 import rogueshadow.SpaceRPG.interfaces.Collidable;
+import rogueshadow.SpaceRPG.interfaces.NodeElement;
 import rogueshadow.SpaceRPG.interfaces.Renderable;
 import rogueshadow.SpaceRPG.interfaces.Updatable;
+import rogueshadow.SpaceRPG.util.BB;
 import rogueshadow.SpaceRPG.util.QuadTree;
 
 
 public class World {
-	ArrayList<WorldObject> objects = new ArrayList<WorldObject>();
-	ArrayList<Renderable> renderObjs = new ArrayList<Renderable>();
-	ArrayList<Updatable> updateObjs = new ArrayList<Updatable>();
+	ArrayList<WorldObject> updatelist = new ArrayList<WorldObject>();
 	ArrayList<WorldObject> addlist = new ArrayList<WorldObject>();
 	ArrayList<WorldObject> removelist = new ArrayList<WorldObject>();
-	ArrayList<Collidable> bulletObjs = new ArrayList<Collidable>();
-	QuadTree tree = null;
+	ArrayList<WorldObject> visiblelist = new ArrayList<WorldObject>();
+	QuadTree<WorldObject> staticTree = null;
 	
 	Camera camera = new Camera();
 
@@ -29,36 +29,58 @@ public class World {
 	}
 	
 	public void init(){
-		tree = new QuadTree(new Rectangle(0,0,Engine.WORLD_WIDTH,Engine.WORLD_HEIGHT));
+		staticTree = new QuadTree<WorldObject>(new BB(0,0,Engine.WORLD_WIDTH,Engine.WORLD_HEIGHT));
+
 	}
 	
 	public void update(int delta){
-		ArrayList<Collidable> checks = new ArrayList<Collidable>();
-		for (Updatable obj: updateObjs){
-			if (obj.isActive()){
-				obj.update(delta);
-			}
+		visiblelist.clear();
+		visiblelist = staticTree.get(getCamera().getBB());
+
+		for (WorldObject u: updatelist){
+			((Updatable)u).update(delta);
+			if (new BB(0,0,Engine.WORLD_WIDTH,Engine.WORLD_HEIGHT).intersects(u.getBB())){}else{remove(u);}//TODO do something about the Player if he crosses the line, or just forget it and remove the line
 		}
-		for (Collidable c: bulletObjs){
-			checks.addAll(tree.get(c.getRect()));
-			for (Collidable e: checks){
-				if (c.getRect().intersects(e.getRect())){
-					c.collided(e);
-					e.collided(c);
-				}
-			}
-			checks.clear();
+		for (WorldObject r: visiblelist){
+			if (r instanceof Updatable)((Updatable) r).update(delta);
 		}
 		
-		
-		
+		collision();
+
 		updateLists();
+	}
+	
+	public void collision(){
+		ArrayList<WorldObject> checks = new ArrayList<WorldObject>();		
+		for (WorldObject c: updatelist){
+			if (c instanceof Bullet){
+				Collidable b = (Collidable) c;
+				checks.addAll(staticTree.get(b.getBB()));
+				for (WorldObject e: checks){
+					if (e instanceof Collidable){
+						if (b.getBB().intersects(e.getBB())){
+							b.collided((Collidable)e);
+							((Collidable)e).collided(b);
+						}
+					}
+				}
+				checks.clear();
+			}
+		}
+
 	}
 	
 	
 	public void render(Graphics g){
-		for (Renderable obj: renderObjs){
-			if (getCamera().isVisible(obj))obj.render(g);
+		for (NodeElement r: visiblelist){
+			if (r instanceof Renderable)((Renderable) r).render(g);
+		}
+		for (WorldObject u: updatelist){
+			if (u instanceof Renderable){
+				if (getCamera().isVisible(u)){
+					((Renderable) u).render(g);
+				}
+			}
 		}
 	}
 
@@ -73,36 +95,20 @@ public class World {
 	
 	public void updateLists(){
 		for (WorldObject obj: addlist){
-			if (obj instanceof Updatable){
-				updateObjs.add((Updatable) obj);
-			}
-			if (obj instanceof Renderable){
-				renderObjs.add((Renderable) obj);
-			}
-			if (obj instanceof Bullet){
-				bulletObjs.add((Collidable) obj);
-			}
-			if (obj instanceof Collidable && !(obj instanceof Bullet)){
-				tree.add((Collidable) obj);
+			if (obj instanceof Ship || obj instanceof Bullet){
+				updatelist.add(obj);
+			}else{
+				staticTree.add(obj);
 			}
 		}
-		objects.addAll(addlist);
 		
 		for (WorldObject obj: removelist){
-			if (obj instanceof Updatable){
-				updateObjs.remove((Updatable) obj);
-			}
-			if (obj instanceof Renderable){
-				renderObjs.remove((Renderable)obj);
-			}
-			if (obj instanceof Bullet){
-				bulletObjs.remove((Collidable) obj);
-			}
-			if (obj instanceof Collidable){
-				tree.remove((Collidable) obj);
+			if (obj instanceof Ship || obj instanceof Bullet){
+				updatelist.remove(obj);
+			}else{
+				staticTree.remove(obj);
 			}
 		}
-		objects.removeAll(removelist);
 		
 		addlist.clear();
 		removelist.clear();

@@ -9,7 +9,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.entities.PlayerShip;
-import rogueshadow.SpaceRPG.util.QuadTree;
 import rogueshadow.particles.PHelper;
 import rogueshadow.utility.KeyBind;
 
@@ -30,7 +29,6 @@ public class Engine implements Game {
 	public static String name;
 	
 	public static Sounds snd;
-	public static QuadTree tree;
 	
 	Input input;
 	
@@ -43,6 +41,7 @@ public class Engine implements Game {
 	public static PlayerShip playerShip;
 	
 	public static long[] timers = {0,0,0,0};
+	public static boolean toggleQT = false;
 	
 	KeyBind keyBinds;
 
@@ -72,6 +71,7 @@ public class Engine implements Game {
 		keyBinds.bind("Cheat", Input.KEY_X);
 		keyBinds.bind("Brake", Input.KEY_S);
 		keyBinds.bind("TreeCount", Input.KEY_C);
+		keyBinds.bind("qt",Input.KEY_Q);
 		
 		snd = new Sounds();
 		
@@ -98,7 +98,7 @@ public class Engine implements Game {
 		getWorld().getCamera().translateIn(g);
 		getWorld().render(g);
 		particles.render(g);
-		//getWorld().tree.render(g);
+		if (toggleQT)getWorld().staticTree.render(g);
 		
 
 		
@@ -111,8 +111,8 @@ public class Engine implements Game {
 		
 		int[] c = gameToWorld(getPlayer().getX(),getPlayer().getY());
 		g.drawString("Ship x/y : " + c[0] + " / " + c[1], 100, 120);
-		g.drawString("Entities: " + world.objects.size(), 100, 140);
-		g.drawString("QuadTreeCount: " + getWorld().tree.count() , 100, 220);
+		g.drawString("ConstantMovingObjects: " + world.updatelist.size(), 100, 140);
+		g.drawString("QuadTreeCount: " + getWorld().staticTree.count() , 100, 220);
 		
 
 		
@@ -159,7 +159,7 @@ public class Engine implements Game {
 		if (isKD("Right"))getPlayer().setRightThrusterActive(true);
 		if (isKD("Brake"))getPlayer().setSpaceBrake(true);
 		if (isKD("Shoot"))getPlayer().ShootPrimaryWeapon();
-		if (isKP("TreeCount"))System.err.println(getWorld().tree.count());
+		if (isKP("qt"))toggleQT = !toggleQT;
 		if (isKD("Exit")){
 			Log.debug("Engine", "User exited, (pressed ESC)");
 			container.exit();

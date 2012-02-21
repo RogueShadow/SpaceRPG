@@ -4,13 +4,13 @@ package rogueshadow.SpaceRPG.entities;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.interfaces.Collidable;
 import rogueshadow.SpaceRPG.interfaces.Renderable;
 import rogueshadow.SpaceRPG.interfaces.Updatable;
+import rogueshadow.SpaceRPG.util.BB;
 
 
 public class Rock extends MovableObject implements Updatable, Renderable, Collidable {
@@ -67,9 +67,7 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 		g.rotate(0,0, rotate);
 		
 		g.draw(getShape());
-		g.setColor(Color.green);
 		g.popTransform();
-		g.draw(getRect());
 		
 	}
 	
@@ -110,22 +108,16 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 	}
 	
 	public boolean intersects(Collidable c) {
-		return getRect().intersects(c.getRect());
+		return getBB().intersects(c.getBB());
 	}
 
+
 	@Override
-	public boolean hasMoved() {
-		return hasMoved ;
-	}
-	@Override
-	public Rectangle getRect() {
+	public BB getBB() {
 		float w = Math.max(getShape().getWidth(), getShape().getHeight());
-		return new Rectangle(getX()-w/2,getY()-w/2,w,w);
+		return new BB(getX()-w/2,getY()-w/2,w,w);
 	}
-	@Override
-	public void setMoved(boolean value) {
-		hasMoved = value;
-	}
+
 	
 
 }
