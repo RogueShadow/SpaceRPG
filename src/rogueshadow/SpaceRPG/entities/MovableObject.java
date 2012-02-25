@@ -32,6 +32,7 @@ public class MovableObject extends WorldObject implements Updatable {
 	@Override
 	public void update(int delta) {
 		getPosition().add(getVelocity().copy().scale(delta/1000f));
+		checkPosition();
 	}
 	
 

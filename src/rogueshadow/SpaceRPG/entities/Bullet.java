@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.interfaces.Collidable;
 import rogueshadow.SpaceRPG.interfaces.Renderable;
 import rogueshadow.SpaceRPG.util.BB;
@@ -45,7 +46,9 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 		g.draw(getShape());
 
 		g.popTransform();
-
+		if (leaf != null && Engine.toggleQT){
+			leaf.render(g);
+		}
 	}
 
 

@@ -68,7 +68,9 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 		
 		g.draw(getShape());
 		g.popTransform();
-		
+		if (leaf != null && Engine.toggleQT){
+			leaf.render(g);
+		}
 	}
 	
 

@@ -11,10 +11,10 @@ public class BB {
 	}
 	
 	public boolean intersects(BB bb){
-		if (min.x > bb.max.x || max.x < bb.min.x){
+		if (min.x >= bb.max.x || max.x <= bb.min.x){
 			return false;
 		}
-		if (min.y > bb.max.y || max.y < bb.min.y){
+		if (min.y >= bb.max.y || max.y <= bb.min.y){
 			return false;
 		}
 		return true;

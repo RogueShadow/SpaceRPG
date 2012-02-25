@@ -154,6 +154,9 @@ public class Ship extends MovableObject implements Renderable {
 		g.setColor(new Color(0x808080));
 		g.draw(getShape());
 		g.popTransform();
+		if (leaf != null && Engine.toggleQT){
+			leaf.render(g);
+		}
 	}
 
 	public void resetControls(){

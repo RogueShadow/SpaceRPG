@@ -23,7 +23,7 @@ public class Minimap {
 	public void setTracking(Vector2f pos){
 		this.pos = pos;
 	}
-	//TODO reimplement the minimap using quadtree.
+	
 	public Minimap(float x,float y, float width, float height){
 		super();
 		this.x = x;

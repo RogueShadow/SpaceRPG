@@ -98,14 +98,14 @@ public class Engine implements Game {
 		getWorld().getCamera().translateIn(g);
 		getWorld().render(g);
 		particles.render(g);
-		if (toggleQT)getWorld().staticTree.render(g);
+
 		
 
 		
 		getWorld().getCamera().translateOut(g);
 		
 		particles.renderDust(g);
-		map.render(g);
+		//map.render(g);
 		
 		g.setColor(Color.white);
 		
@@ -190,7 +190,7 @@ public class Engine implements Game {
 	public static World getWorld(){
 		return world;
 	}
-
+	
 	@Override
 	public boolean closeRequested() {
 		// TODO Auto-generated method stub

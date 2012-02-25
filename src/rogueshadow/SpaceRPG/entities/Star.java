@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
 
+import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.interfaces.Renderable;
 
 
@@ -26,6 +27,9 @@ public class Star extends WorldObject implements Renderable {
 		g.translate(getCenterX(), getCenterY());
 		g.draw(getShape());
 		g.popTransform();
+		if (leaf != null && Engine.toggleQT){
+			leaf.render(g);
+		}
 	}
 
 	public float getCenterY() {

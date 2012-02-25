@@ -20,7 +20,8 @@ public class World {
 	ArrayList<WorldObject> addlist = new ArrayList<WorldObject>();
 	ArrayList<WorldObject> removelist = new ArrayList<WorldObject>();
 	ArrayList<WorldObject> visiblelist = new ArrayList<WorldObject>();
-	QuadTree<WorldObject> staticTree = null;
+	QuadTree staticTree = null;
+	public long timer = 0;
 	
 	Camera camera = new Camera();
 
@@ -29,21 +30,28 @@ public class World {
 	}
 	
 	public void init(){
-		staticTree = new QuadTree<WorldObject>(new BB(0,0,Engine.WORLD_WIDTH,Engine.WORLD_HEIGHT));
+		staticTree = new QuadTree(new BB(0,0,Engine.WORLD_WIDTH,Engine.WORLD_HEIGHT));
 
 	}
 	
 	public void update(int delta){
+		timer += delta;
+		if (timer > 1000){
+			staticTree.unSplitAll();
+			timer = 0;
+		}
 		visiblelist.clear();
-		visiblelist = staticTree.get(getCamera().getBB());
+		visiblelist.addAll( staticTree.get(getCamera().getBB()));
 
 		for (WorldObject u: updatelist){
 			((Updatable)u).update(delta);
 			if (new BB(0,0,Engine.WORLD_WIDTH,Engine.WORLD_HEIGHT).intersects(u.getBB())){}else{remove(u);}//TODO do something about the Player if he crosses the line, or just forget it and remove the line
 		}
 		for (WorldObject r: visiblelist){
-			if (r instanceof Updatable)((Updatable) r).update(delta);
+			if (r instanceof Updatable && !(r instanceof Bullet) && !(r instanceof Ship)) ((Updatable) r).update(delta);
 		}
+		
+		//staticTree.unSplitAll();
 		
 		collision();
 
@@ -51,11 +59,11 @@ public class World {
 	}
 	
 	public void collision(){
-		ArrayList<WorldObject> checks = new ArrayList<WorldObject>();		
+		ArrayList<WorldObject> checks = new ArrayList<WorldObject>();;		
 		for (WorldObject c: updatelist){
 			if (c instanceof Bullet){
 				Collidable b = (Collidable) c;
-				checks.addAll(staticTree.get(b.getBB()));
+				checks.addAll( staticTree.get(b.getBB()) );
 				for (WorldObject e: checks){
 					if (e instanceof Collidable){
 						if (b.getBB().intersects(e.getBB())){
@@ -97,6 +105,7 @@ public class World {
 		for (WorldObject obj: addlist){
 			if (obj instanceof Ship || obj instanceof Bullet){
 				updatelist.add(obj);
+				staticTree.add(obj);
 			}else{
 				staticTree.add(obj);
 			}
@@ -105,6 +114,7 @@ public class World {
 		for (WorldObject obj: removelist){
 			if (obj instanceof Ship || obj instanceof Bullet){
 				updatelist.remove(obj);
+				staticTree.remove(obj);
 			}else{
 				staticTree.remove(obj);
 			}
