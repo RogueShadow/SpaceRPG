@@ -1,5 +1,10 @@
 package rogueshadow.SpaceRPG;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
@@ -46,6 +51,13 @@ public class Engine implements Game {
 	KeyBind keyBinds;
 
 	public void init(GameContainer container) throws SlickException {
+		
+		try {
+			Log.setPrintStream(new PrintStream((new File("Log.txt"))));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		name = "SpaceRPG Prototype";
 		

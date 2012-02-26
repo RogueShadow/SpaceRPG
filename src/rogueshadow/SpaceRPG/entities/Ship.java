@@ -43,6 +43,12 @@ public class Ship extends MovableObject implements Renderable {
 	
 	float angle = 0;
 
+	private int shotTimer;
+
+	private int shotTime = 100;
+
+	private boolean canShoot;
+
 	public Ship(float x, float y) {
 		super(x,y);
 		generateShape();
@@ -274,6 +280,8 @@ public class Ship extends MovableObject implements Renderable {
 	}
 
 	public void ShootPrimaryWeapon(){
+		if (!canShoot)return;
+		shotTimer = 0;
 		Vector2f pos = getPosition().copy();
 		pos.add(new Vector2f(getAngle()).scale(25));
 		getWorld().add(new Bullet(pos.x, pos.y,new Vector2f(this.getAngle()).scale(570).add(getVelocity()),this));
@@ -282,6 +290,15 @@ public class Ship extends MovableObject implements Renderable {
 
 	@Override
 	public void update(int delta) {
+		
+		
+		if (shotTimer > shotTime){
+			canShoot = true;
+		}else{
+			canShoot = false;
+			shotTimer += delta;
+		}
+		
 		
 		if (isEngineActive()){
 

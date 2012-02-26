@@ -37,7 +37,7 @@ public class World {
 	public void update(int delta){
 		timer += delta;
 		if (timer > 1000){
-			staticTree.unSplitAll();
+			//staticTree.unSplitAll();
 			timer = 0;
 		}
 		visiblelist.clear();
@@ -58,25 +58,29 @@ public class World {
 		updateLists();
 	}
 	
-	public void collision(){
-		ArrayList<WorldObject> checks = new ArrayList<WorldObject>();;		
-		for (WorldObject c: updatelist){
-			if (c instanceof Bullet){
-				Collidable b = (Collidable) c;
-				checks.addAll( staticTree.get(b.getBB()) );
-				for (WorldObject e: checks){
-					if (e instanceof Collidable){
-						if (b.getBB().intersects(e.getBB())){
-							b.collided((Collidable)e);
-							((Collidable)e).collided(b);
-						}
-					}
-				}
-				checks.clear();
-			}
-		}
+private void collision() {
 
 	}
+
+//	public void collision(){
+//		ArrayList<WorldObject> checks = new ArrayList<WorldObject>();;		
+//		for (WorldObject c: updatelist){
+//			if (c instanceof Bullet){
+//				Collidable b = (Collidable) c;
+//				checks.addAll( staticTree.get(b.getBB()) );
+//				for (WorldObject e: checks){
+//					if (e instanceof Collidable){
+//						if (b.getBB().intersects(e.getBB())){
+//							b.collided((Collidable)e);
+//							((Collidable)e).collided(b);
+//						}
+//					}
+//				}
+//				checks.clear();
+//			}
+//		}
+//
+//	}
 	
 	
 	public void render(Graphics g){

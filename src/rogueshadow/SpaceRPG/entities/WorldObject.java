@@ -56,13 +56,11 @@ public class WorldObject implements NodeElement {
 		checkPosition();
 	}
 	public void checkPosition(){
-		if (leaf != null){
-			if (!getPosition().equals(lastPos)){
-				lastPos = new Vector2f(getPosition());
-				leaf.hasMoved(this);
-			}
-		}else{
-			//System.err.println(this.toString() + ": does not reference a leaf!");
+		if (leaf == null){rogueshadow.SpaceRPG.Log.error(this.getClass().getName(), "has no parent leaf."); return ;};
+		
+		if (!getPosition().equals(lastPos)){
+			lastPos = new Vector2f(getPosition());
+			leaf.hasMoved(this);
 		}
 	}
 	public void setPosition(Vector2f position){
@@ -73,15 +71,9 @@ public class WorldObject implements NodeElement {
 	public BB getBB() {
 		return new BB(getX(), getY(),1,1);
 	}
-	
 
 	@Override
 	public void setLeaf(Node leaf){
-		if (leaf != null){
-		leaf.m(this, "set new parent leaf.");
-		}else{
-			System.err.println(this.toString() + ": has no parent leaf.");
-		}
 		this.leaf = leaf;
 	}
 
