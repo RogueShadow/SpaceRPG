@@ -2,10 +2,8 @@ package rogueshadow.SpaceRPG.entities;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.interfaces.Updatable;
 
-
-public class MovableObject extends WorldObject implements Updatable {
+public class MovableObject extends WorldObject  {
 	private Vector2f velocity;
 
 
@@ -23,23 +21,11 @@ public class MovableObject extends WorldObject implements Updatable {
 		this.velocity = velocity;
 	}
 
-	@Override
-	public boolean isAlwaysUpdated() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public void update(int delta) {
 		getPosition().add(getVelocity().copy().scale(delta/1000f));
-		checkPosition();
 	}
-	
 
-	@Override
-	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return true;
-	}
 
 }

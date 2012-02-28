@@ -2,7 +2,6 @@ package rogueshadow.SpaceRPG;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import org.newdawn.slick.Color;
@@ -117,14 +116,14 @@ public class Engine implements Game {
 		getWorld().getCamera().translateOut(g);
 		
 		particles.renderDust(g);
-		//map.render(g);
+		map.render(g);
 		
 		g.setColor(Color.white);
 		
 		int[] c = gameToWorld(getPlayer().getX(),getPlayer().getY());
 		g.drawString("Ship x/y : " + c[0] + " / " + c[1], 100, 120);
 		g.drawString("ConstantMovingObjects: " + world.updatelist.size(), 100, 140);
-		g.drawString("QuadTreeCount: " + getWorld().staticTree.count() , 100, 220);
+		if (toggleQT)g.drawString("QuadTreeCount: " + getWorld().dataStructure.count() , 100, 220);
 		
 
 		

@@ -1,35 +1,40 @@
 package rogueshadow.SpaceRPG.entities;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.World;
-import rogueshadow.SpaceRPG.interfaces.NodeElement;
 import rogueshadow.SpaceRPG.util.BB;
-import rogueshadow.SpaceRPG.util.QuadTree;
-import rogueshadow.SpaceRPG.util.QuadTree.Node;
+import rogueshadow.SpaceRPG.util.GridObject;
+import rogueshadow.SpaceRPG.util.Point;
 
-public class WorldObject implements NodeElement {
+public class WorldObject extends GridObject  {
 	public World world;
 	public Shape shape;
-	private Vector2f lastPos = null;
-	public QuadTree.Node leaf = null;
 	Vector2f position = null;
 	
 	public WorldObject(float x, float y) {
 		super();
 		this.world = null;
 		this.position = new Vector2f(x,y);
-		lastPos = new Vector2f(position);
 	}
 	public World getWorld() {
 		return world;
+	}
+	public void update(int delta){
+	}
+	public boolean isAlwaysUpdated() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	public void setWorld(World world) {
 		this.world = world;
 	}
 	public void setShape(Shape shape){
 		this.shape = shape;
+	}
+	public void render(Graphics g){
 	}
 	public Shape getShape() {
 		return this.shape;
@@ -39,42 +44,33 @@ public class WorldObject implements NodeElement {
 	}
 	public void setX(float x) {
 		getPosition().x = x;
-		checkPosition();
 	}
 	public float getY() {
 		return getPosition().y;
 	}
 	public void setY(float y) {
 		getPosition().y = y;
-		checkPosition();
 	}
 	public Vector2f getPosition(){
 		return this.position;
 	}
 	public void setPosition(float x, float y){
 		setPosition(new Vector2f(x,y));
-		checkPosition();
-	}
-	public void checkPosition(){
-		if (leaf == null){rogueshadow.SpaceRPG.Log.error(this.getClass().getName(), "has no parent leaf."); return ;};
-		
-		if (!getPosition().equals(lastPos)){
-			lastPos = new Vector2f(getPosition());
-			leaf.hasMoved(this);
-		}
 	}
 	public void setPosition(Vector2f position){
 		this.position = position;
-		checkPosition();
 	}
-	@Override
+	
 	public BB getBB() {
-		return new BB(getX(), getY(),1,1);
+		return new BB(getX(), getY(), 1,1);
 	}
-
+	public void collided(WorldObject obj) {
+		// TODO Auto-generated method stub
+		
+	}
 	@Override
-	public void setLeaf(Node leaf){
-		this.leaf = leaf;
+	public Point getPoint() {
+		return new Point(getPosition().x,getPosition().y);
 	}
 
 

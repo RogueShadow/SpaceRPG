@@ -10,7 +10,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
 import rogueshadow.SpaceRPG.entities.WorldObject;
-import rogueshadow.SpaceRPG.interfaces.ISpatialPartition;
 import rogueshadow.SpaceRPG.interfaces.NodeElement;
 
 public class QuadTree implements ISpatialPartition {
@@ -25,10 +24,7 @@ public class QuadTree implements ISpatialPartition {
 		public BB box;
 		
 		public Node(){
-			super();
-			this.parent = null;
-			this.box = null;
-			this.leaf = true;
+			this(null,null);
 		}
 		
 		public Node(BB box) {
@@ -47,8 +43,9 @@ public class QuadTree implements ISpatialPartition {
 					split(c);
 					pushDown(c);
 				}else{
-					elements.add(c);
 					c.setLeaf(this);
+					elements.add(c);
+					
 				}
 			}else{
 				pushDown(c);
@@ -72,7 +69,8 @@ public class QuadTree implements ISpatialPartition {
 		public ArrayList<NodeElement> get(BB box){
 			ArrayList<NodeElement> list = new ArrayList<NodeElement>();
 			if (leaf){
-				if (getBB().intersects(box))list.addAll(elements);
+				list.addAll(elements);
+				return list;
 			}else{
 				if (tl.intersects(box))list.addAll(tl.get(box));
 				if (tr.intersects(box))list.addAll(tr.get(box));
@@ -138,6 +136,21 @@ public class QuadTree implements ISpatialPartition {
 		}
 		
 		public boolean intersects(NodeElement e){
+			if (getBB() == null){
+				System.err.println("Node has a null box");
+				System.err.println("Is node a leaf? yes?: " + leaf);
+				if (getParent() == null){
+					System.err.println("Node Parent is null.");
+				}else{
+					if (getParent().getBB() == null){
+						System.err.println("Parent has a null box..");
+					}
+				}
+				
+			}
+			if (e.getBB() == null){
+				System.err.println("Node Element has the null box");
+			}
 			return getBB().intersects(e.getBB());
 		}
 		
@@ -174,7 +187,7 @@ public class QuadTree implements ISpatialPartition {
 		public void remove(NodeElement c){
 			if (leaf){
 				elements.remove(c);
-				getParent().unSplit();
+				if (getParent() != null)getParent().unSplit();
 			}else{
 				tl.remove(c);
 				tr.remove(c);
@@ -185,6 +198,10 @@ public class QuadTree implements ISpatialPartition {
 		
 		public void render(Graphics g){
 			if (leaf){
+				if (box == null){
+					System.err.println("Tried to render a Node without a box? Not right ..");
+					return;
+				}
 				g.setColor(Color.green);
 				float x = getBB().min.x;
 				float y = getBB().min.y;
@@ -204,13 +221,11 @@ public class QuadTree implements ISpatialPartition {
 
 		public Node setBB(float x,float y,float w,float h){
 			this.box = new BB(x,y,w,h);
+			if (this.box == null)System.err.println("Box created a null box.");
+			
 			return this;
 		}
-		
-		private Node setLeaf(boolean b) {
-			this.leaf = b;
-			return this;
-		}
+   
 		public Node setParent(Node n){
 			this.parent = n;
 			return this;
@@ -226,11 +241,15 @@ public class QuadTree implements ISpatialPartition {
 			float y = box.min.y;
 			float w = box.getWidth()/2f;
 			float h = box.getHeight()/2f;
+			if (box == null)System.err.println("The box is null, not good!");
+			if ( w == 0 || h == 0){
+				System.err.println("Something is wrong with the new box.");
+			}
 			getNodes(this);
-			tl.setParent(this).setBB(x, y, w, h).setLeaf(true);
-			tr.setParent(this).setBB(x+w, y, w, h).setLeaf(true);
-			bl.setParent(this).setBB(x, y+h, w, h).setLeaf(true);
-			br.setParent(this).setBB(x+w, y+h, w, h).setLeaf(true);
+			tl.setBB(x, y, w, h);
+			tr.setBB(x+w, y, w, h);
+			bl.setBB(x, y+h, w, h);
+			br.setBB(x+w, y+h, w, h);
 			
 			Iterator<NodeElement> i = elements.iterator();
 			while (i.hasNext()){
@@ -250,10 +269,23 @@ public class QuadTree implements ISpatialPartition {
 				elements.addAll(tr.getAll());
 				elements.addAll(bl.getAll());
 				elements.addAll(br.getAll());
-				releaseNodes(this);
 				for (NodeElement e: elements)e.setLeaf(this);
+				tl.elements.clear();
+				tr.elements.clear();
+				bl.elements.clear();
+				br.elements.clear();
+				releaseNodes(this);	
 				leaf = true;
 			}
+		}
+
+		public void searchRemove(NodeElement e) {
+			Node n = this;
+			while (n.intersects(e)){
+				if (n.getParent() != null)n = n.getParent();
+				if (n.getBB() == null)break;
+			}
+			n.remove(e);            
 		}		
 	}
 	
@@ -285,6 +317,15 @@ public class QuadTree implements ISpatialPartition {
 	
 	public void freeNode(Node n){
 		if (nodePoolSize < poolMaxSize){
+			n.tl = null; n.tr = null; n.br = null; n.bl = null;
+			n.parent = null;
+			n.leaf = true;
+			if (!n.elements.isEmpty()){
+				System.err.println("Why isn't the node being freed empty?");
+				for (NodeElement e: n.elements)e.setLeaf(null);
+			}
+			n.elements.clear();
+			n.box = null;
 			n.tl = nodePool;
 			nodePool = n;
 			nodePoolSize++;		
@@ -295,7 +336,7 @@ public class QuadTree implements ISpatialPartition {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> Collection<? extends WorldObject> get(BB box) {
+	public <T> Collection<? extends NodeElement> get(BB box) {
 		return (Collection<? extends WorldObject>) ((ArrayList<T>)root.get(box));
 	}
 	

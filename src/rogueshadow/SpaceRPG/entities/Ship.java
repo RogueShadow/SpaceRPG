@@ -7,10 +7,10 @@ import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.Sounds;
-import rogueshadow.SpaceRPG.interfaces.Renderable;
+import rogueshadow.SpaceRPG.util.BB;
 
 
-public class Ship extends MovableObject implements Renderable {
+public class Ship extends MovableObject {
 	
 	float size;
 
@@ -45,7 +45,7 @@ public class Ship extends MovableObject implements Renderable {
 
 	private int shotTimer;
 
-	private int shotTime = 100;
+	private int shotTime = 1;
 
 	private boolean canShoot;
 
@@ -160,9 +160,8 @@ public class Ship extends MovableObject implements Renderable {
 		g.setColor(new Color(0x808080));
 		g.draw(getShape());
 		g.popTransform();
-		if (leaf != null && Engine.toggleQT){
-			leaf.render(g);
-		}
+		getBB().render(g);
+		super.render(g);
 	}
 
 	public void resetControls(){
@@ -183,6 +182,7 @@ public class Ship extends MovableObject implements Renderable {
 		p.setCenterX(0);
 		p.setCenterY(0);
 		setShape(p);
+		
 	}
 
 	public void setAngle(float angle) {
@@ -322,16 +322,11 @@ public class Ship extends MovableObject implements Renderable {
 		super.update(delta);
 		
 	}
-
+	
 	@Override
-	public float getCenterX() {
-		return getX()+getSize()/2f;
+	public BB getBB(){
+		float w = Math.max(getShape().getWidth(), getShape().getHeight());
+		return new BB(getX() - w/2f, getY() - w/2f,w,w);
 	}
-
-	@Override
-	public float getCenterY() {
-		return getY()+getSize()/2f;
-	}
-
 
 }

@@ -5,13 +5,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.Engine;
-import rogueshadow.SpaceRPG.interfaces.Collidable;
-import rogueshadow.SpaceRPG.interfaces.Renderable;
 import rogueshadow.SpaceRPG.util.BB;
 
 
-public class Bullet extends MovableObject implements Renderable, Collidable{
+public class Bullet extends MovableObject {
 	protected int rotation = 0;
 	protected int life = 2000000;
 	public Object parent = null;
@@ -23,6 +20,8 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 		super(x,y);
 		setVelocity(velocity);
 		setShape(new Rectangle(-4,-4,8,8));
+		getShape().setCenterX(0);
+		getShape().setCenterY(0);
 		this.parent = parent;
 		size = 4;
 
@@ -46,9 +45,7 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 		g.draw(getShape());
 
 		g.popTransform();
-		if (leaf != null && Engine.toggleQT){
-			leaf.render(g);
-		}
+
 	}
 
 
@@ -66,12 +63,12 @@ public class Bullet extends MovableObject implements Renderable, Collidable{
 	}
 
 	
-	public void collided(Collidable c) {
+	public void collided(WorldObject c) {
 		// TODO Auto-generated method stub
 		
 		
 	}
-	public boolean intersects(Collidable c) {
+	public boolean intersects(WorldObject c) {
 		return getBB().intersects(c.getBB());
 	}
 

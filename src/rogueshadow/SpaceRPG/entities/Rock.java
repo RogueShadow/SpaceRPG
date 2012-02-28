@@ -7,13 +7,10 @@ import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
-import rogueshadow.SpaceRPG.interfaces.Collidable;
-import rogueshadow.SpaceRPG.interfaces.Renderable;
-import rogueshadow.SpaceRPG.interfaces.Updatable;
 import rogueshadow.SpaceRPG.util.BB;
 
 
-public class Rock extends MovableObject implements Updatable, Renderable, Collidable {
+public class Rock extends MovableObject {
 	float maxVel = 50f;
 	float sizeScaler = 15f;
 	int rockSize;
@@ -68,9 +65,7 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 		
 		g.draw(getShape());
 		g.popTransform();
-		if (leaf != null && Engine.toggleQT){
-			leaf.render(g);
-		}
+
 	}
 	
 
@@ -97,7 +92,7 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 		return false;
 	}
 	
-	public void collided(Collidable c) {
+	public void collided(WorldObject c) {
 		// TODO Auto-generated method stub
 		if (c instanceof Bullet){
 			Vector2f a = ((Bullet) c).getVelocity();
@@ -109,7 +104,7 @@ public class Rock extends MovableObject implements Updatable, Renderable, Collid
 		}
 	}
 	
-	public boolean intersects(Collidable c) {
+	public boolean intersects(WorldObject c) {
 		return getBB().intersects(c.getBB());
 	}
 

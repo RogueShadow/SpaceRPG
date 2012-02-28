@@ -11,11 +11,6 @@ public class PlayerShip extends Ship implements Serializable {
 	}
 	
 	@Override
-	public boolean isActive(){
-		return true;
-	}
-	
-	@Override
 	public boolean isAlwaysUpdated(){
 		return true;
 	}

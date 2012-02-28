@@ -3,11 +3,8 @@ package rogueshadow.SpaceRPG.entities;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import rogueshadow.SpaceRPG.Engine;
-import rogueshadow.SpaceRPG.interfaces.Renderable;
 
-
-public class Planet extends WorldObject implements Renderable {
+public class Planet extends WorldObject {
 	String name;
 	float size;
 
@@ -20,9 +17,7 @@ public class Planet extends WorldObject implements Renderable {
 		// TODO Auto-generated method stub
 		g.setColor(Color.blue);
 		g.drawOval(getCenterX(), getCenterY(), getSize(), getSize());
-		if (leaf != null && Engine.toggleQT){
-			leaf.render(g);
-		}
+
 	}
 
 	public float getCenterX() {
