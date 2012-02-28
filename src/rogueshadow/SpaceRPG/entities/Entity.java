@@ -1,0 +1,47 @@
+/**
+ * 
+ */
+package rogueshadow.SpaceRPG.entities;
+
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Vector2f;
+
+/**
+ * @author Adam
+ *
+ */
+public interface Entity {
+
+	public void update(int delta);
+	
+	public void render(Graphics g);
+	
+	public Float getSize();
+	
+	public void collided(Entity other);
+	
+	public float getX();
+	
+	public float getY();
+	
+	public float getCenterX();
+	
+	public float getCenterY();
+	
+	public Vector2f getPosition();
+	
+	public Vector2f getVelocity();
+	
+	public boolean isDestroyed();
+	
+	public void setDestroyed(boolean destroyed);
+
+	public boolean isActive();
+	
+	public void setActive(boolean active);
+
+	public boolean isPersistent();
+	
+	public void setPersistent(boolean persistent);
+	
+}

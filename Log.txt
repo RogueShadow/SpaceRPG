@@ -1,0 +1,6 @@
+Debug (LevelLoader):
+Loaded level objects from image in 809ms.
+Info (LevelLoader):
+Stars: 0 Rocks: 7129 Planets: 4 Ships: 13
+Debug (Engine):
+User exited, (pressed ESC)
