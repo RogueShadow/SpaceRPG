@@ -15,8 +15,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.entities.Art;
 import rogueshadow.SpaceRPG.entities.PlayerShip;
-import rogueshadow.SpaceRPG.util.BB;
 import rogueshadow.particles.PHelper;
+import rogueshadow.utility.BB;
 import rogueshadow.utility.KeyBind;
 
 /**

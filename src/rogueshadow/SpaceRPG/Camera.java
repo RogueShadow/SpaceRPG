@@ -4,7 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.entities.WorldObject;
-import rogueshadow.SpaceRPG.util.BB;
+import rogueshadow.utility.BB;
 
 //TODO When rotating the world is positions weird, needs fix (if using rotation will ever be needed)
 //TODO When the world is smaller than the game window make it centered on the screen. (if that will ever happen also o.O)

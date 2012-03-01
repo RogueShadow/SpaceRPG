@@ -5,7 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.util.BB;
+import rogueshadow.utility.BB;
 
 
 public class Bullet extends MovableObject {

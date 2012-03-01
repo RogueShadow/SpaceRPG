@@ -6,8 +6,8 @@ import org.newdawn.slick.geom.Vector2f;
     
 import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.World;
-import rogueshadow.SpaceRPG.util.BB;
-import rogueshadow.SpaceRPG.util.Point;
+import rogueshadow.utility.BB;
+import rogueshadow.utility.Point;
 
 public class WorldObject {
 	public World world;

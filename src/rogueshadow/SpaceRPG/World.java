@@ -7,7 +7,7 @@ import org.newdawn.slick.Graphics;
 import rogueshadow.SpaceRPG.entities.Bullet;
 import rogueshadow.SpaceRPG.entities.WorldObject;
 import rogueshadow.SpaceRPG.util.Grid;
-import rogueshadow.SpaceRPG.util.Point;
+import rogueshadow.utility.Point;
 
 
 public class World {

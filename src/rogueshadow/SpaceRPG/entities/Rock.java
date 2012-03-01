@@ -6,7 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
 
 import rogueshadow.SpaceRPG.Engine;
-import rogueshadow.SpaceRPG.util.BB;
+import rogueshadow.utility.BB;
 
 
 public class Rock extends MovableObject {

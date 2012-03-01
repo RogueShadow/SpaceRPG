@@ -1,13 +1,12 @@
 package rogueshadow.SpaceRPG.entities;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.Sounds;
-import rogueshadow.SpaceRPG.util.BB;
+import rogueshadow.utility.BB;
 
 
 public class Ship extends MovableObject {
@@ -302,13 +301,16 @@ public class Ship extends MovableObject {
 
 			getVelocity().add(new Vector2f((getAngle())).scale(delta*0.05f*(getEngineStrength()+1)));
 			
-			if (getVelocity().lengthSquared() > (getTopSpeedLvl()*10000)+10000){
-				setVelocity(new Vector2f(getVelocity().getNormal().scale(1000)));
-			}
+		
 			
 			Vector2f pos = getPosition().copy().add(new Vector2f(getAngle()).scale(-15));
-			pos.add(getVelocity());
+	
 			Engine.getEngine().addBox(pos.getX(), pos.getY());
+			
+			if (getVelocity().lengthSquared() > (getTopSpeedLvl()*10000)+10000){
+				//setVelocity(new Vector2f(getVelocity().getNormal().scale(1000)));
+			}
+			
 		}
 		if (isLeftThrusterActive()){
 			setAngle(getAngle() - (delta*0.05f*(1 + getThrusterStrength())));
@@ -317,9 +319,9 @@ public class Ship extends MovableObject {
 			setAngle(getAngle() + (delta*0.05f*(1 + getThrusterStrength())));
 		}
 		if (isSpaceBrake()){
-			getVelocity().x -= Math.sin(getVelocity().getTheta());
-			getVelocity().y -= Math.cos(getVelocity().getTheta());
-		}
+			getVelocity().scale(0.95f);
+
+		}else getVelocity().scale(0.999f);
 		
 		super.update(delta);
 		
