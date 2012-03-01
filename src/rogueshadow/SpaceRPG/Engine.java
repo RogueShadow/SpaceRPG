@@ -157,7 +157,7 @@ public class Engine implements Game {
 		
 		if (toggleQT)g.drawString("UpdateTime: " + timers[1]/10000, 100, 160);
 		if (toggleQT)g.drawString("RenderTime: " + timers[3]/10000, 100, 180);
-
+		
 	}
 
 	public static PlayerShip getPlayer() {

@@ -46,7 +46,7 @@ public class Minimap {
 		g.drawRect(0,0, getWidth(), getHeight());
 		
 		ArrayList<WorldObject> maplist;
-		maplist = Engine.getWorld().dataStructure.get(Engine.getWorld().getCamera().getBB().copy().grow(4300));
+		maplist = Engine.getWorld().dataStructure.get(Engine.getWorld().getCamera().getBB());
 		
 		for (WorldObject e: maplist){
 			if (e instanceof PlayerShip){
