@@ -3,26 +3,32 @@ package rogueshadow.SpaceRPG.entities;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
-
+    
+import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.World;
 import rogueshadow.SpaceRPG.util.BB;
-import rogueshadow.SpaceRPG.util.GridObject;
 import rogueshadow.SpaceRPG.util.Point;
 
-public class WorldObject extends GridObject  {
+public class WorldObject {
 	public World world;
 	public Shape shape;
 	Vector2f position = null;
+	public Point oldPos;
+
+	public boolean removed = false;
 	
 	public WorldObject(float x, float y) {
-		super();
 		this.world = null;
 		this.position = new Vector2f(x,y);
+		oldPos = new Point(x,y);
 	}
 	public World getWorld() {
 		return world;
 	}
 	public void update(int delta){
+		if (!Engine.getBB().contains(getBB())){
+			getWorld().remove(this);
+		}
 	}
 	public boolean isAlwaysUpdated() {
 		// TODO Auto-generated method stub
@@ -59,6 +65,7 @@ public class WorldObject extends GridObject  {
 	}
 	public void setPosition(Vector2f position){
 		this.position = position;
+		checkPosition();
 	}
 	
 	public BB getBB() {
@@ -68,7 +75,19 @@ public class WorldObject extends GridObject  {
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
+	
+	public boolean checkPosition(){ // returns true if moved.
+
+		if (getPosition().x != oldPos.x || getPosition().y != oldPos.y){
+			getWorld().hasMoved(new Point(oldPos), this);
+			oldPos.x = getPosition().x;
+			oldPos.y = getPosition().y;
+			return true;
+		}
+
+		return false;
+	}
+	
 	public Point getPoint() {
 		return new Point(getPosition().x,getPosition().y);
 	}

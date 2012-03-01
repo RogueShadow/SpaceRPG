@@ -25,6 +25,8 @@ public class MovableObject extends WorldObject  {
 	@Override
 	public void update(int delta) {
 		getPosition().add(getVelocity().copy().scale(delta/1000f));
+		checkPosition();
+		super.update(delta);
 	}
 
 

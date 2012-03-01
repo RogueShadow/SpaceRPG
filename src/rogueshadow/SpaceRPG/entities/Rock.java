@@ -4,7 +4,6 @@ package rogueshadow.SpaceRPG.entities;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
-import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.util.BB;
@@ -54,6 +53,8 @@ public class Rock extends MovableObject {
 	public void update(int delta) {
 
 		rotate += rotateSpeed;
+		
+		super.update(delta);
 	}
 
 
@@ -95,8 +96,6 @@ public class Rock extends MovableObject {
 	public void collided(WorldObject c) {
 		// TODO Auto-generated method stub
 		if (c instanceof Bullet){
-			Vector2f a = ((Bullet) c).getVelocity();
-			getVelocity().add(a.copy().scale(0.1f));
 			((Bullet) c).getWorld().remove((WorldObject)c);
 			Engine.getEngine().explosion(((Bullet) c).getX(), ((Bullet) c).getY(), 2);
 			getWorld().remove(this);

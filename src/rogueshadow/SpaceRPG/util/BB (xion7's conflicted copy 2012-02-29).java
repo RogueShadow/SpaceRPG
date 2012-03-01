@@ -12,6 +12,9 @@ public class BB {
 
 	public BB(Point min,  Point max){
 		super();
+		if (min.x > max.x){
+			
+		}
 		this.min = min;
 		this.max = max;
 	}
@@ -19,7 +22,7 @@ public class BB {
 		this(new Point(box.min), new Point(box.max));
 	}
 	
-	public BB grow(float value){
+	public BB grow(double value){
 		min.x -= value;
 		min.y -= value;
 		max.x += value;
@@ -28,7 +31,7 @@ public class BB {
 	}
 	
 	public void render(Graphics g){
-		g.drawRect((float)min.x,(float)min.y,(float)getWidth(),(float)getHeight());
+		g.drawRect(min.x,min.y,getWidth(),getHeight());
 	}
 	
 	public BB copy(){
@@ -36,41 +39,41 @@ public class BB {
 	}
 	
 	public boolean intersects(BB bb){
-		if (min.x >= bb.max.x || max.x < bb.min.x){
+		if (min.x > bb.max.x || max.x < bb.min.x){
 			return false;
 		}
-		if (min.y >= bb.max.y || max.y < bb.min.y){
+		if (min.y > bb.max.y || max.y < bb.min.y){
 			return false;
 		}
 		return true;
 	}
 	
 	public boolean contains(BB box){
-		if (min.x >= box.min.x)return false;
+		if (min.x > box.min.x)return false;
 		if (max.x < box.max.x)return false;
-		if (min.y >= box.min.y)return false;
+		if (min.y > box.min.y)return false;
 		if (max.y < box.max.y)return false;
 		return true;
 	}
 	
 	public boolean contains(Point p){
-		if (p.x >= min.x && p.x < max.x){
-			if (p.y >= min.y && p.y < max.y){
+		if (p.x > min.x && p.x < max.x){
+			if (p.y > min.y && p.y < max.y){
 				return true;
 			}
 		}
 		return false;
 	}
-	public double getWidth(){
+	public float getWidth(){
 		return max.x - min.x;
 	}
-	public double getHeight(){
+	public float getHeight(){
 		return max.y - min.y;
 	}
 	
 	@Override	
 	public String toString(){
-		return "Min"+min.toString() + " Max" + max.toString();
+		return "Min x/y(" + min.x + ","+min.y+") Max(" + max.x + "," + max.y + ")";
 		
 	}
 	

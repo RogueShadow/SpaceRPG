@@ -45,7 +45,7 @@ public class Ship extends MovableObject {
 
 	private int shotTimer;
 
-	private int shotTime = 1;
+	private int shotTime = 50;
 
 	private boolean canShoot;
 
@@ -157,10 +157,8 @@ public class Ship extends MovableObject {
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.rotate(0, 0, getAngle()+90);
-		g.setColor(new Color(0x808080));
-		g.draw(getShape());
+		Art.ship.drawCentered(0, 0);
 		g.popTransform();
-		getBB().render(g);
 		super.render(g);
 	}
 
@@ -304,9 +302,12 @@ public class Ship extends MovableObject {
 
 			getVelocity().add(new Vector2f((getAngle())).scale(delta*0.05f*(getEngineStrength()+1)));
 			
-			if (getVelocity().lengthSquared() > (getTopSpeedLvl()*10000)+10000)getVelocity().scale(0.95f);
+			if (getVelocity().lengthSquared() > (getTopSpeedLvl()*10000)+10000){
+				setVelocity(new Vector2f(getVelocity().getNormal().scale(1000)));
+			}
 			
 			Vector2f pos = getPosition().copy().add(new Vector2f(getAngle()).scale(-15));
+			pos.add(getVelocity());
 			Engine.getEngine().addBox(pos.getX(), pos.getY());
 		}
 		if (isLeftThrusterActive()){
@@ -316,7 +317,8 @@ public class Ship extends MovableObject {
 			setAngle(getAngle() + (delta*0.05f*(1 + getThrusterStrength())));
 		}
 		if (isSpaceBrake()){
-			getVelocity().scale(0.95f);
+			getVelocity().x -= Math.sin(getVelocity().getTheta());
+			getVelocity().y -= Math.cos(getVelocity().getTheta());
 		}
 		
 		super.update(delta);

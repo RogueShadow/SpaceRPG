@@ -4,6 +4,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.entities.Art;
+
 public class BoxParticle extends AbstractParticle implements Particle {
 	float size;
 	public float scale;
@@ -26,7 +28,8 @@ public class BoxParticle extends AbstractParticle implements Particle {
 		g.rotate(0, 0, rotation);
 		color.a = 1-(life/maxLife);
 		g.setColor(color);
-		g.drawRect(-size/2, -size/2, size, size);
+		//g.drawRect(-size/2, -size/2, size, size);
+		Art.star.drawCentered(0, 0);
 		g.popTransform();
 	}
 

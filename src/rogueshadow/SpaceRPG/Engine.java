@@ -10,9 +10,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.entities.Art;
 import rogueshadow.SpaceRPG.entities.PlayerShip;
+import rogueshadow.SpaceRPG.util.BB;
 import rogueshadow.particles.PHelper;
 import rogueshadow.utility.KeyBind;
 
@@ -46,10 +49,21 @@ public class Engine implements Game {
 	
 	public static long[] timers = {0,0,0,0};
 	public static boolean toggleQT = false;
+	public static boolean initialized = false;
 	
 	KeyBind keyBinds;
 
 	public void init(GameContainer container) throws SlickException {
+		
+		long[] timer = {0,0};
+		timer[0] = System.nanoTime();
+		
+		
+		Art.loadThings();
+		
+		
+		container.setAlwaysRender(true);
+		container.setUpdateOnlyWhenVisible(false);
 		
 		try {
 			Log.setPrintStream(new PrintStream((new File("Log.txt"))));
@@ -96,9 +110,12 @@ public class Engine implements Game {
 		getPlayer().setEngineStrength(200);
 		getPlayer().setThrusterStrength(7);
 		
+		timer[1] = System.nanoTime();
+		timer[1] -= timer[0];
+		System.out.println("Initialize Time: " + timer[1]);
 		//TODO May need some kind of configuration loader, .ini file perhaps. Saving configs.
 		//TODO Some kind of level file format, to handle loading various entities, NPCs, etc.
-
+		initialized = true;
 		
 	}
 
@@ -123,14 +140,23 @@ public class Engine implements Game {
 		int[] c = gameToWorld(getPlayer().getX(),getPlayer().getY());
 		g.drawString("Ship x/y : " + c[0] + " / " + c[1], 100, 120);
 		g.drawString("ConstantMovingObjects: " + world.updatelist.size(), 100, 140);
-		if (toggleQT)g.drawString("QuadTreeCount: " + getWorld().dataStructure.count() , 100, 220);
+		if (toggleQT){
+			g.drawString("Grid Count: " + getWorld().dataStructure.count() , 100, 220);
+			float startx = (float)getWorld().getCamera().getBB().min.x;
+			float starty = (float)getWorld().getCamera().getBB().min.y;
+			float endx = (float)getWorld().getCamera().getBB().max.x;
+			float endy = (float)getWorld().getCamera().getBB().max.y;
+			g.fillRect(startx, starty, endx-startx, endy-starty);
+			g.drawString(getWorld().getCamera().getBB().toString(), 100, 240);
+		}
 		
+		g.drawString(getWorld().getCamera().getX() + " / " + getWorld().getCamera().getY(), 100, 260);
 
 		
 		timers[3] = System.nanoTime() - timers[2];
 		
-		g.drawString("UpdateTime: " + timers[1]/1000000, 100, 160);
-		g.drawString("RenderTime: " + timers[3]/1000000, 100, 180);
+		if (toggleQT)g.drawString("UpdateTime: " + timers[1]/10000, 100, 160);
+		if (toggleQT)g.drawString("RenderTime: " + timers[3]/10000, 100, 180);
 
 	}
 
@@ -211,6 +237,14 @@ public class Engine implements Game {
 	@Override
 	public String getTitle() {
 		return name;
+	}
+
+	public static BB getBB() {
+		if (!initialized){
+			System.err.println("Must not access before initialization.");
+			return null;
+		}
+		return new BB(0,0,WORLD_WIDTH,WORLD_HEIGHT);
 	}
 
 }
