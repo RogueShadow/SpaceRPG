@@ -3,6 +3,7 @@ package rogueshadow.SpaceRPG.WorldObjects;
 import java.io.Serializable;
 
 import rogueshadow.SpaceRPG.Engine;
+import rogueshadow.SpaceRPG.Sounds;
 
 
 public class PlayerShip extends Ship implements Serializable {
@@ -22,6 +23,7 @@ public class PlayerShip extends Ship implements Serializable {
 		if (other instanceof Rock){
 			getWorld().remove(other);
 			Engine.getEngine().explosion(getX(), getY(), 5);
+			Sounds.explosion.play();
 		}
 	}
 

@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.SpaceRPG.WorldObjects.Ship;
+import rogueshadow.utility.Point;
 
 public class PHelper extends ParticleEngine {
 	int updateDistance = 200;
@@ -74,8 +75,8 @@ public class PHelper extends ParticleEngine {
 		add(b);
 	}
 	public void explosion(float x, float y, int size){
-		for (int i = 0; i < 6*size; i ++){
-			BoxParticle b = new BoxParticle(new Vector2f(x,y),new Vector2f(Math.random()*360).scale((float)Math.random()*66*size), 2000*(size/2f), (float)Math.random()*28*(size/2f));
+		for (int i = 0; i < 16; i ++){
+			DebriParticle b = new DebriParticle(new Vector2f(x,y),new Vector2f(Math.random()*360).scale((float)Math.random()*166*size), 1000, (float)Math.random()*2*(size/2f));
 			b.setRotationSpeed((float)-4 + (float)Math.random()*8);
 			b.setColor(new Color(184,134,11));
 			add(b);

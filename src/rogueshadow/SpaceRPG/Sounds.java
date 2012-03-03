@@ -11,9 +11,4 @@ public class Sounds {
 		explosion = new Sound("res/blast2.wav");
 		shot = new Sound("res/shot2.wav");
 	}
-
-	public static void Play(String snd){
-		if (snd == "Shoot")shot.play();
-		if (snd == "Explode")explosion.play();
-	}
 }

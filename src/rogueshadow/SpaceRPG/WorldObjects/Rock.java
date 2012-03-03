@@ -7,6 +7,7 @@ import org.newdawn.slick.geom.Polygon;
 
 import rogueshadow.SpaceRPG.Art;
 import rogueshadow.SpaceRPG.Engine;
+import rogueshadow.SpaceRPG.Sounds;
 import rogueshadow.utility.BB;
 
 
@@ -98,9 +99,12 @@ public class Rock extends MovableObject {
 		// TODO Auto-generated method stub
 		if (c instanceof Bullet){
 			((Bullet) c).getWorld().remove((WorldObject)c);
-			Engine.getEngine().explosion(((Bullet) c).getX(), ((Bullet) c).getY(), 2);
+
 			getWorld().remove(this);
-			
+			if (getWorld().getCamera().getBB().copy().grow(700).intersects(getBB())){
+				Engine.getEngine().explosion(((Bullet) c).getX(), ((Bullet) c).getY(), 2);
+				Sounds.explosion.play();	
+			}
 		}
 	}
 	

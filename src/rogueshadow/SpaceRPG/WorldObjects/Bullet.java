@@ -1,6 +1,5 @@
 package rogueshadow.SpaceRPG.WorldObjects;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
