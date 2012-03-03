@@ -24,6 +24,11 @@ public class PlayerShip extends Ship implements Serializable {
 			getWorld().remove(other);
 			Engine.getEngine().explosion(getX(), getY(), 5);
 			Sounds.explosion.play();
+		}else
+		if (other instanceof Bullet){
+			getWorld().remove(other);
+			Engine.getEngine().explosion(getX(), getY(), 1);
+			
 		}
 	}
 

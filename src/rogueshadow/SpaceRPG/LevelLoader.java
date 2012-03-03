@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import rogueshadow.SpaceRPG.WorldObjects.Baddy;
 import rogueshadow.SpaceRPG.WorldObjects.Planet;
 import rogueshadow.SpaceRPG.WorldObjects.PlayerShip;
 import rogueshadow.SpaceRPG.WorldObjects.Rock;
@@ -59,7 +60,7 @@ public class LevelLoader {
 						counts[2]++;
 					}else
 					if (color == 0xff0000){
-						world.add(new Ship(x*scale,y*scale));
+						world.add(new Baddy(x*scale,y*scale));
 						counts[3]++;
 					}
 					
