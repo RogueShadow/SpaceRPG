@@ -1,14 +1,15 @@
-package rogueshadow.SpaceRPG;
+package rogueshadow.SpaceRPG.WorldObjects;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.WorldObjects.WorldObject;
 
-public class MovableObject extends WorldObject {
+public class MovableObject extends WorldObject  {
 	private Vector2f velocity;
+
 
 	public MovableObject(float x, float y) {
 		super(x, y);
+
 		velocity = new Vector2f(0,0);
 	}
 	
@@ -20,15 +21,13 @@ public class MovableObject extends WorldObject {
 		this.velocity = velocity;
 	}
 
-	@Override
-	public boolean isAlwaysUpdated() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public void update(int delta) {
 		getPosition().add(getVelocity().copy().scale(delta/1000f));
+		checkPosition();
+		super.update(delta);
 	}
+
 
 }

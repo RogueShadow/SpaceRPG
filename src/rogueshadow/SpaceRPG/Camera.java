@@ -3,7 +3,7 @@ package rogueshadow.SpaceRPG;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.entities.WorldObject;
+import rogueshadow.SpaceRPG.WorldObjects.WorldObject;
 import rogueshadow.utility.BB;
 
 //TODO When rotating the world is positions weird, needs fix (if using rotation will ever be needed)

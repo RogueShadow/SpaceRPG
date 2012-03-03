@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
 
-import rogueshadow.SpaceRPG.entities.Bullet;
-import rogueshadow.SpaceRPG.entities.WorldObject;
+import rogueshadow.SpaceRPG.WorldObjects.Bullet;
+import rogueshadow.SpaceRPG.WorldObjects.WorldObject;
 import rogueshadow.SpaceRPG.util.Grid;
 import rogueshadow.utility.Point;
 
@@ -66,11 +66,6 @@ public class World {
 		for (WorldObject r: visiblelist){
 			r.render(g);
 		}
-//		for (WorldObject u: updatelist){
-//			if (getCamera().isVisible(u)){
-//				u.render(g);
-//			}
-//		}
 	}
 
 	public void add(WorldObject obj){

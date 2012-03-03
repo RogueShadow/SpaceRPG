@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
 
-import rogueshadow.SpaceRPG.entities.WorldObject;
+import rogueshadow.SpaceRPG.WorldObjects.WorldObject;
 import rogueshadow.utility.BB;
 import rogueshadow.utility.Point;
 

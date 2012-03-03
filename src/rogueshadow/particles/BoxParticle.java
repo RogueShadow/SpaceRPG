@@ -4,7 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.entities.Art;
+import rogueshadow.SpaceRPG.Art;
 
 public class BoxParticle extends AbstractParticle implements Particle {
 	float size;

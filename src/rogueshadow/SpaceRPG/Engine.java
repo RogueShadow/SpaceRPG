@@ -10,11 +10,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.entities.Art;
-import rogueshadow.SpaceRPG.entities.PlayerShip;
+import rogueshadow.SpaceRPG.WorldObjects.PlayerShip;
 import rogueshadow.particles.PHelper;
 import rogueshadow.utility.BB;
 import rogueshadow.utility.KeyBind;

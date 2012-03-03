@@ -5,11 +5,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import rogueshadow.SpaceRPG.entities.Planet;
-import rogueshadow.SpaceRPG.entities.PlayerShip;
-import rogueshadow.SpaceRPG.entities.Rock;
-import rogueshadow.SpaceRPG.entities.Ship;
-import rogueshadow.SpaceRPG.entities.Star;
+import rogueshadow.SpaceRPG.WorldObjects.Planet;
+import rogueshadow.SpaceRPG.WorldObjects.PlayerShip;
+import rogueshadow.SpaceRPG.WorldObjects.Rock;
+import rogueshadow.SpaceRPG.WorldObjects.Ship;
+import rogueshadow.SpaceRPG.WorldObjects.Star;
 
 public class LevelLoader {
 	

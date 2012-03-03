@@ -7,7 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import rogueshadow.SpaceRPG.Engine;
-import rogueshadow.SpaceRPG.entities.Ship;
+import rogueshadow.SpaceRPG.WorldObjects.Ship;
 
 public class PHelper extends ParticleEngine {
 	int updateDistance = 200;

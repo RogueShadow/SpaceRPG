@@ -6,12 +6,12 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import rogueshadow.SpaceRPG.entities.Bullet;
-import rogueshadow.SpaceRPG.entities.Planet;
-import rogueshadow.SpaceRPG.entities.PlayerShip;
-import rogueshadow.SpaceRPG.entities.Ship;
-import rogueshadow.SpaceRPG.entities.Star;
-import rogueshadow.SpaceRPG.entities.WorldObject;
+import rogueshadow.SpaceRPG.WorldObjects.Bullet;
+import rogueshadow.SpaceRPG.WorldObjects.Planet;
+import rogueshadow.SpaceRPG.WorldObjects.PlayerShip;
+import rogueshadow.SpaceRPG.WorldObjects.Ship;
+import rogueshadow.SpaceRPG.WorldObjects.Star;
+import rogueshadow.SpaceRPG.WorldObjects.WorldObject;
 
 public class Minimap {
 	float zoom = 1f;
