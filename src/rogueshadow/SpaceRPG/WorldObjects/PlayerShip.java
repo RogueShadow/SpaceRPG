@@ -2,6 +2,8 @@ package rogueshadow.SpaceRPG.WorldObjects;
 
 import java.io.Serializable;
 
+import rogueshadow.SpaceRPG.Engine;
+
 
 public class PlayerShip extends Ship implements Serializable {
 
@@ -13,6 +15,14 @@ public class PlayerShip extends Ship implements Serializable {
 	@Override
 	public boolean isAlwaysUpdated(){
 		return true;
+	}
+	
+	@Override
+	public void collided(WorldObject other){
+		if (other instanceof Rock){
+			getWorld().remove(other);
+			Engine.getEngine().explosion(getX(), getY(), 5);
+		}
 	}
 
 }

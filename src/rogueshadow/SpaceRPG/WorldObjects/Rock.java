@@ -5,6 +5,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
 
+import rogueshadow.SpaceRPG.Art;
 import rogueshadow.SpaceRPG.Engine;
 import rogueshadow.utility.BB;
 
@@ -64,7 +65,7 @@ public class Rock extends MovableObject {
 		g.translate(getX(), getY());
 		g.rotate(0,0, rotate);
 		
-		g.draw(getShape());
+		g.texture(getShape(), Art.rock, true);
 		g.popTransform();
 
 	}

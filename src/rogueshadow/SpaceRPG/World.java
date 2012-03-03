@@ -48,16 +48,14 @@ public class World {
 	private void collision() {
 		ArrayList<WorldObject> checks;
 		for (WorldObject obj: updatelist){
-			if (obj instanceof Bullet){
-				checks = dataStructure.get(obj.getPoint());
-				for (WorldObject o: checks){
-					if (obj.getBB().intersects(o.getBB())){
-						obj.collided(o);
-						o.collided(obj);
-					}
+			checks = dataStructure.get(obj.getPoint());
+			for (WorldObject o: checks){
+				if (obj.getBB().intersects(o.getBB())){
+					obj.collided(o);
+					o.collided(obj);
 				}
-				checks.clear();
 			}
+			checks.clear();
 		}
 	}
 	

@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
+import rogueshadow.SpaceRPG.Art;
 import rogueshadow.utility.BB;
 
 
@@ -41,9 +42,7 @@ public class Bullet extends MovableObject {
 		g.pushTransform();
 		g.translate(getX(), getY());
 		g.rotate(0, 0, rotation); 
-		g.setColor(new Color(0xFF0000));
-		g.draw(getShape());
-
+		Art.bullet.drawCentered(0,0);
 		g.popTransform();
 
 	}

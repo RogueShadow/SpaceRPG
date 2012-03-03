@@ -6,12 +6,22 @@ import org.newdawn.slick.SlickException;
 
 public class Art   {
 	
+	public static final String imgDir = "/res/";
+	
 	public static Image ship;
 	public static Image star;
+	public static Image bullet;
+	public static Image rock;
 
 	public static void loadThings() throws SlickException {
-		ship = new Image(Engine.class.getResourceAsStream("/res/ship.png"), "Ship", false);
-		star = new Image(Engine.class.getResourceAsStream("/res/star.png"), "Star", false);
+		ship = load("spaceship.png");
+		star = load("star1.png");
+		bullet = load("bullet.png");
+		rock = load("rockTex.png");
+	}
+	
+	public static Image load(String file) throws SlickException{
+		return new Image(Engine.class.getResourceAsStream(imgDir + file), file, false);
 	}
 
 }
